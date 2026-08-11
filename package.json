@@ -1,0 +1,12 @@
+{
+  "name": "iko-web",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "IKO stavby s.r.o. — premium web portal (static site generator).",
+  "scripts": {
+    "build": "node src/build.mjs",
+    "serve": "node serve.mjs",
+    "dev": "node src/build.mjs && node serve.mjs"
+  }
+}
