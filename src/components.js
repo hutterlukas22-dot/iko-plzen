@@ -23,10 +23,7 @@ export function layout({ title, description, path = '/', body, ogImage = '/proje
 <meta property="og:image" content="${esc(site.url.replace(/\/$/, '') + ogImage)}">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800;900&display=swap">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800;900&display=swap">
+<link rel="preload" as="font" type="font/otf" href="/fonts/Pepi-Bold.otf" crossorigin>
 <link rel="stylesheet" href="/css/site.css">
 <script>document.documentElement.classList.remove('no-js');document.documentElement.classList.add('js');</script>
 ${jsonLd ? `<script type="application/ld+json">${jsonLd}</script>` : ''}
@@ -52,9 +49,9 @@ ${footer()}
 </html>`;
 }
 
-/* ---------- Brand wordmark ---------------------------------------------- */
-export const wordmark = (tag = 'a', href = '/') =>
-  `<${tag}${tag === 'a' ? ` href="${href}"` : ''} class="brand" aria-label="IKO — domů">IKO</${tag}>`;
+/* ---------- Brand logo (official SVG) ----------------------------------- */
+export const wordmark = (variant = 'blue') =>
+  `<a href="/" class="brand" aria-label="IKO — domů"><img src="/img/iko-logo-${variant === 'white' ? 'white' : 'blue'}.svg" alt="IKO" width="66" height="31"></a>`;
 
 /* ---------- Header ------------------------------------------------------ */
 function header(path) {
@@ -82,7 +79,7 @@ function mobileMenu(path) {
     .join('');
   return `<div class="mobile-menu" id="mobile-menu" data-menu>
   <div class="mobile-menu__top">
-    ${wordmark()}
+    ${wordmark('white')}
     <button class="mobile-menu__close" data-menu-close aria-label="Zavřít menu">${icon('x')}</button>
   </div>
   <nav aria-label="Mobilní navigace"><a href="/"${path === '/' ? ' aria-current="page"' : ''}>Domů</a>${links}</nav>
@@ -106,7 +103,7 @@ function footer() {
 <footer class="footer">
   <div class="container footer__main">
     <div>
-      ${wordmark('span')}
+      ${wordmark('white')}
       <p>${esc(site.description)}</p>
     </div>
     <div>
