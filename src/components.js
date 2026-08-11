@@ -50,8 +50,8 @@ ${footer()}
 }
 
 /* ---------- Brand logo (official SVG) ----------------------------------- */
-export const wordmark = (variant = 'blue') =>
-  `<a href="/" class="brand" aria-label="IKO — domů"><img src="/img/iko-logo-${variant === 'white' ? 'white' : 'blue'}.svg" alt="IKO" width="66" height="31"></a>`;
+export const wordmark = () =>
+  `<a href="/" class="brand" aria-label="IKO — Váš nový soused, domů"><img src="/img/iko-logo-claim.svg" alt="IKO — Váš nový soused" width="128" height="30"></a>`;
 
 /* ---------- Header ------------------------------------------------------ */
 function header(path) {
