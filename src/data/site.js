@@ -26,6 +26,10 @@ export const site = {
   },
   nav: [
     { href: '/projekty/', label: 'Projekty' },
+    { href: '/proc-iko/', label: 'Proč IKO' },
+    { href: '/pruvodce-nakupem/', label: 'Průvodce nákupem' },
+    { href: '/tym/', label: 'Tým' },
+    { href: '/aktuality/', label: 'Aktuality' },
     { href: '/o-nas/', label: 'O nás' },
     { href: '/sluzby/', label: 'Služby' },
     { href: '/kariera/', label: 'Kariéra' },

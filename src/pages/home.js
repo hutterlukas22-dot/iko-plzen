@@ -2,7 +2,8 @@ import { site, principles, milestones, services } from '../data/site.js';
 import { projects } from '../data/projects.js';
 import { esc, icon } from '../lib/util.js';
 import { eyebrow, sectionHead, btn, statBand, tape } from '../components.js';
-import { projectRow, principlesGrid, serviceBlock, timeline } from '../blocks.js';
+import { projectRow, principlesGrid, serviceBlock, timeline, newsCard } from '../blocks.js';
+import { newsSorted } from '../data/news.js';
 
 export function homePage() {
   const featured = projects; // all three current projects
@@ -84,6 +85,18 @@ ${hero()}
       ${serviceBlock(services.development, true)}
       ${serviceBlock(services.construction, false)}
     </div>
+  </div>
+</section>
+
+<section class="section" aria-labelledby="news-h">
+  <div class="container">
+    ${sectionHead({
+      eyebrow: 'Aktuality',
+      title: 'Co je nového u IKO',
+      lead: 'Kolaudace, zahájení prodeje i dny otevřených dveří — novinky ze všech projektů na jednom místě.',
+      action: btn('Všechny aktuality', '/aktuality/', 'secondary'),
+    })}
+    <div class="card-grid">${newsSorted.slice(0, 3).map((n, i) => newsCard(n, i)).join('')}</div>
   </div>
 </section>
 

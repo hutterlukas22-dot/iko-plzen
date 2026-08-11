@@ -47,6 +47,7 @@ ${footer()}
   <div class="lightbox__count"></div>
 </div>
 <script src="/js/app.js" defer></script>
+<script src="/js/units.js" defer></script>
 </body>
 </html>`;
 }
@@ -64,8 +65,10 @@ function header(path) {
   <div class="header__inner">
     ${wordmark()}
     <nav class="nav" aria-label="Hlavní navigace">${links}</nav>
-    <a class="header__phone" href="tel:${site.contact.phoneHref}">${esc(site.contact.phone)}</a>
-    <a class="btn btn--primary btn--sm header__cta" href="/projekty/">Volné domy</a>
+    <a class="header__compare" href="/porovnat/" aria-label="Porovnávač jednotek" title="Porovnávač jednotek">
+      ${icon('scale')}<span class="header__compare-count" data-compare-count hidden>0</span>
+    </a>
+    <a class="btn btn--primary btn--sm header__cta" href="/projekty/">Volné jednotky</a>
     <button class="burger" data-menu-open aria-label="Otevřít menu" aria-expanded="false" aria-controls="mobile-menu">
       <span></span><span></span><span></span>
     </button>
@@ -84,6 +87,7 @@ function mobileMenu(path) {
   </div>
   <nav aria-label="Mobilní navigace"><a href="/"${path === '/' ? ' aria-current="page"' : ''}>Domů</a>${links}</nav>
   <div class="mobile-menu__foot">
+    <a href="/porovnat/">Porovnávač jednotek</a>
     <a href="tel:${site.contact.phoneHref}">${esc(site.contact.phone)}</a>
     <a href="mailto:${site.contact.email}">${esc(site.contact.email)}</a>
   </div>

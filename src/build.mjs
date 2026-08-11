@@ -13,6 +13,12 @@ import { onasPage } from './pages/onas.js';
 import { sluzbyPage } from './pages/sluzby.js';
 import { karieraPage } from './pages/kariera.js';
 import { kontaktPage } from './pages/kontakt.js';
+import { procIkoPage } from './pages/proc-iko.js';
+import { pruvodceNakupemPage } from './pages/pruvodce-nakupem.js';
+import { tymPage } from './pages/tym.js';
+import { aktualityPage } from './pages/aktuality.js';
+import { jednotkaPage } from './pages/jednotka.js';
+import { porovnatPage } from './pages/porovnat.js';
 import { notFoundPage } from './pages/notfound.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -82,6 +88,12 @@ async function run() {
     sluzbyPage(),
     karieraPage(),
     kontaktPage(),
+    procIkoPage(),
+    pruvodceNakupemPage(),
+    tymPage(),
+    aktualityPage(),
+    jednotkaPage(),
+    porovnatPage(),
     notFoundPage(),
   ];
 

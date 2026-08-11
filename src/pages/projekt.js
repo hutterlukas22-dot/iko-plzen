@@ -4,10 +4,21 @@ import { esc, icon } from '../lib/util.js';
 import { eyebrow, btn } from '../components.js';
 import { metaGrid, gallery, unitsTable, compositionList, locationCard, projectCard } from '../blocks.js';
 import { contactForm } from '../blocks.js';
+import { projectBuildings, projectUnitList } from '../data/units.js';
+import { floorSelector, unitMarketplace } from '../units-ui.js';
+
+const rangesOf = (units) => ({
+  dispositions: [...new Set(units.map((u) => u.disposition))].sort(),
+  area: [Math.floor(Math.min(...units.map((u) => u.area))), Math.ceil(Math.max(...units.map((u) => u.area)))],
+  price: [Math.min(...units.map((u) => u.price || Infinity)), Math.max(...units.map((u) => u.price || 0))],
+});
 
 export function projektDetailPage(p) {
   const related = projects.filter((x) => x.slug !== p.slug);
   const hasUnits = Array.isArray(p.units);
+  const buildings = projectBuildings(p.slug);
+  const projUnits = projectUnitList(p.slug);
+  const hasApartments = buildings.length > 0;
 
   const body = `
 <article>
@@ -47,19 +58,33 @@ export function projektDetailPage(p) {
 </section>
 
 <section class="section bg-page">
-  <div class="container split" style="align-items:start">
-    <div data-reveal>
-      ${eyebrow('Popis projektu')}
-      <div class="prose" style="margin-top:1rem;color:var(--text-body)">
-        ${p.description.map((par) => `<p>${esc(par)}</p>`).join('')}
-      </div>
-    </div>
-    <div data-reveal data-delay="1">
-      ${locationCard(p.place)}
+  <div class="container container--narrow" data-reveal>
+    ${eyebrow('Popis projektu')}
+    <div class="prose" style="margin-top:1rem;color:var(--text-body);font-size:var(--fs-lead);line-height:var(--lh-snug)">
+      ${p.description.map((par) => `<p>${esc(par)}</p>`).join('')}
     </div>
   </div>
 </section>
 
+<section class="section--tight" id="lokalita">
+  <div class="container">
+    ${locationCard(p.place)}
+  </div>
+</section>
+
+${hasApartments ? `
+<section class="section" aria-labelledby="avail-h">
+  <div class="container">
+    <div class="sec-head" data-reveal>
+      <div>${eyebrow('Byty na prodej')}<h2 class="sec-head__title h1" id="avail-h">Vyberte si byt podle patra</h2>
+      <p class="lead muted">Klikněte na patro a prohlédněte si jeho půdorys i volné byty. Nebo si všechny jednotky projděte jako seznam či dlaždice níže.</p></div>
+    </div>
+    <div data-reveal>${floorSelector(buildings, p.name)}</div>
+    <div style="margin-top:clamp(2.5rem,5vw,4rem)" data-reveal>
+      ${unitMarketplace({ units: projUnits, projects: [], ranges: rangesOf(projUnits), showProjectFilter: false })}
+    </div>
+  </div>
+</section>` : `
 <section class="section" aria-labelledby="avail-h" data-units-root>
   <div class="container">
     <div class="sec-head" data-reveal>
@@ -69,7 +94,7 @@ export function projektDetailPage(p) {
     ${hasUnits ? unitsTable(p.units) : compositionList(p.composition)}
     ${!hasUnits ? '<p class="muted" style="margin-top:1rem;font-size:var(--fs-sm);max-width:60ch">Aktuální dostupnost a ceny jednotlivých jednotek vám rádi zašleme na vyžádání — ozvěte se nám a připravíme vám konkrétní nabídku.</p>' : ''}
   </div>
-</section>
+</section>`}
 
 <section class="section--tight bg-ink">
   <div class="container grid-2" style="align-items:center">

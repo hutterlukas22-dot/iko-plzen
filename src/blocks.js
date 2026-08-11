@@ -102,16 +102,77 @@ export function compositionList(items) {
   </table></div>`;
 }
 
-/* ---------- Location card (elegant static, no broken map) --------------- */
-export const locationCard = (place) => `<div class="loc-card" data-reveal>
-    <div class="loc-card__grid"></div>
-    <div class="loc-card__pin"></div>
-    <div class="loc-card__body">
-      <div class="eyebrow eyebrow--onbrand">${icon('map-pin')} Lokalita</div>
-      <h3 class="h2" style="color:#fff;margin:.4rem 0 .6rem">${esc(place.name)}</h3>
-      <p style="color:rgba(255,255,255,.85);max-width:44ch">${esc(place.text)}</p>
-    </div>
+/* ---------- Location: text beside a separate map preview ---------------- */
+export const mapPreview = (label = 'Plzeň') => `<div class="mapviz" role="img" aria-label="Ukázková mapa lokality ${esc(label)}">
+    <div class="mapviz__grid"></div>
+    <svg class="mapviz__roads" viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+      <path d="M-20 210 C 80 190, 150 240, 240 200 S 380 150, 430 175"/>
+      <path d="M60 -20 C 90 80, 40 150, 90 240 S 150 330, 130 360"/>
+      <path d="M-20 90 L 430 60"/>
+      <path d="M250 -20 C 240 90, 300 150, 280 260"/>
+      <path class="mapviz__river" d="M-20 260 C 120 250, 160 300, 300 280 S 420 300, 440 290"/>
+    </svg>
+    <span class="mapviz__blob mapviz__blob--a"></span>
+    <span class="mapviz__blob mapviz__blob--b"></span>
+    <div class="mapviz__pin">${icon('map-pin')}</div>
+    <span class="mapviz__tag">Ukázková mapa</span>
   </div>`;
+
+export const locationCard = (place) => `<div class="loc" data-reveal>
+    <div class="loc__text">
+      <div class="eyebrow">${icon('map-pin')} Lokalita</div>
+      <h3 class="h2" style="margin:.5rem 0 1rem">${esc(place.name)}</h3>
+      <div class="prose muted">${place.text.split('. ').reduce((acc, s, i, arr) => {
+        const sentence = s + (i < arr.length - 1 ? '.' : '');
+        return acc + (i % 2 === 0 ? (i ? '</p>' : '') + '<p>' : ' ') + esc(sentence);
+      }, '') + '</p>'}</div>
+    </div>
+    ${mapPreview(place.name)}
+  </div>`;
+
+/* ---------- News card --------------------------------------------------- */
+export function newsCard(n, idx = 0) {
+  const d = n.date.split('-');
+  const date = `${Number(d[2])}. ${Number(d[1])}. ${d[0]}`;
+  return `<article class="ncard" data-reveal data-delay="${(idx % 3) + 1}" data-cat="${esc(n.category)}">
+    <div class="ncard__media reveal-media">
+      <span class="ncard__cat">${esc(n.category)}</span>
+      <img src="${n.image}" alt="${esc(n.title)}" loading="lazy" decoding="async">
+    </div>
+    <div class="ncard__body">
+      <div class="ncard__meta">${esc(date)}${n.project ? ` · ${esc(n.project)}` : ''}</div>
+      <h3 class="ncard__title">${esc(n.title)}</h3>
+      <p class="ncard__excerpt">${esc(n.excerpt)}</p>
+      <span class="tlink" style="margin-top:auto">Číst více ${icon('arrow-right')}</span>
+    </div>
+  </article>`;
+}
+export const newsGrid = (items) => `<div class="card-grid">${items.map((n, i) => newsCard(n, i)).join('')}</div>`;
+
+/* ---------- Team card --------------------------------------------------- */
+export function teamCard(p, idx = 0) {
+  const initials = p.name.split(' ').map((w) => w[0]).join('').slice(0, 2).toUpperCase();
+  return `<article class="tcard" data-reveal data-delay="${(idx % 3) + 1}">
+    <div class="tcard__avatar" aria-hidden="true">${esc(initials)}</div>
+    <div class="tcard__body">
+      <h3 class="tcard__name">${esc(p.name)}</h3>
+      <div class="tcard__role">${esc(p.role)}</div>
+      ${p.note ? `<p class="tcard__note">${esc(p.note)}</p>` : ''}
+      <div class="tcard__contact">
+        ${p.phone ? `<a href="tel:${esc(p.phoneHref || p.phone)}">${icon('phone')} ${esc(p.phone)}</a>` : ''}
+        ${p.email ? `<a href="mailto:${esc(p.email)}">${icon('mail')} ${esc(p.email)}</a>` : ''}
+      </div>
+    </div>
+  </article>`;
+}
+
+/* ---------- FAQ accordion ----------------------------------------------- */
+export const faqList = (items) => `<div class="faq">${items
+  .map((f) => `<details class="faq__item">
+    <summary class="faq__q">${esc(f.q)}<span class="faq__icon">${icon('plus')}</span></summary>
+    <div class="faq__a"><p>${esc(f.a)}</p></div>
+  </details>`)
+  .join('')}</div>`;
 
 /* ---------- Timeline ---------------------------------------------------- */
 export const timeline = (items) =>

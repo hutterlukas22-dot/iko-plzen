@@ -3,6 +3,8 @@ import { esc, icon } from '../lib/util.js';
 import { eyebrow, btn } from '../components.js';
 import { projectCard } from '../blocks.js';
 import { ctaBand } from './home.js';
+import { allUnits, unitProjects, unitRanges } from '../data/units.js';
+import { unitMarketplace } from '../units-ui.js';
 
 export function projektyPage() {
   const body = `
@@ -14,10 +16,20 @@ export function projektyPage() {
   </div>
 </section>
 
-<section class="section" aria-labelledby="cur-h">
+<section class="section" aria-labelledby="mkt-h">
   <div class="container">
     <div class="sec-head" data-reveal>
-      <div>${eyebrow('V prodeji')}<h2 class="sec-head__title h1" id="cur-h">Aktuální projekty</h2></div>
+      <div>${eyebrow('Byty a domy na prodej')}<h2 class="sec-head__title h1" id="mkt-h">Vyberte si konkrétní jednotku</h2>
+      <p class="lead muted">Filtrujte podle projektu, dispozice, plochy a stavu. Přepněte si zobrazení na seznam nebo dlaždice s půdorysem.</p></div>
+    </div>
+    <div data-reveal>${unitMarketplace({ units: allUnits, projects: unitProjects, ranges: unitRanges, showProjectFilter: true })}</div>
+  </div>
+</section>
+
+<section class="section--tight bg-page" aria-labelledby="cur-h">
+  <div class="container">
+    <div class="sec-head" data-reveal>
+      <div>${eyebrow('Projekty')}<h2 class="sec-head__title h1" id="cur-h">Aktuální projekty</h2></div>
       <span class="count">${projects.length} projekty</span>
     </div>
     <div class="card-grid">
