@@ -284,7 +284,7 @@ body.menu-open{overflow:hidden}
 .hero__inner{position:relative;z-index:1;width:100%;max-width:var(--container);margin-inline:auto;
   padding:var(--gutter);padding-bottom:clamp(1.6rem,3vw,2.6rem);margin-top:auto}
 .hero__title{color:#fff;font-size:var(--fs-hero);font-weight:var(--fw-black);letter-spacing:var(--ls-tighter);
-  line-height:.98;max-width:16ch;margin-top:.5em}
+  line-height:.98;max-width:16ch;margin-top:.5rem}
 .hero__sub{font-size:var(--fs-lead);font-weight:var(--fw-medium);max-width:46ch;margin-top:1.1em;color:rgba(255,255,255,.92)}
 .hero__actions{display:flex;flex-wrap:wrap;gap:.9rem;margin-top:2rem}
 /* Bottom bar: current project + carousel nav, on the dark end of the scrim so
@@ -296,7 +296,9 @@ body.menu-open{overflow:hidden}
 .hero__meta-item{position:absolute;inset:0;display:flex;flex-direction:column;gap:.2em;color:#fff;
   opacity:0;pointer-events:none;transition:opacity 500ms var(--ease-out);text-shadow:0 1px 12px rgba(0,21,38,.6)}
 .hero__meta-item.is-active{opacity:1;pointer-events:auto}
-.hero__meta .k{font-size:var(--fs-micro);letter-spacing:var(--ls-label);text-transform:uppercase;color:rgba(255,255,255,.72)}
+/* hero eyebrow shares the bottom-bar label style so the two read as one system */
+.hero__meta .k,.hero__eyebrow{font-size:var(--fs-micro);letter-spacing:var(--ls-label);text-transform:uppercase;color:rgba(255,255,255,.72)}
+.hero__eyebrow{display:block}
 .hero__meta .v{font-weight:var(--fw-bold);font-size:var(--fs-h4);line-height:1.2}
 .hero__meta-item:hover .v{text-decoration:underline}
 .hero__meta-status{display:flex;align-items:center;gap:.4em;font-size:var(--fs-sm);color:rgba(255,255,255,.85)}

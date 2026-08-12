@@ -152,7 +152,7 @@ function hero() {
   <div class="hero__media">${slides}</div>
   <div class="hero__scrim"></div>
   <div class="hero__inner">
-    <span class="chip-label" data-reveal>Plzeň · od roku 1991</span>
+    <span class="hero__eyebrow" data-reveal>Plzeň · od roku 1991</span>
     <h1 class="hero__title" data-reveal data-delay="1">Stavíme tam, kde sami chceme bydlet.</h1>
     <p class="hero__sub" data-reveal data-delay="2">Rodinné domy, řadové domy a byty v Plzni a okolí. Od lokálního developera s 35letou tradicí — realizace i prodej pod jednou střechou.</p>
     <div class="hero__actions" data-reveal data-delay="3">
