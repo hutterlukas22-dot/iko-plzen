@@ -182,17 +182,18 @@ h3,.h3{font-size:var(--fs-h3)}
 .tlink:hover .arrow{transform:translateX(5px)}
 
 /* ----- Tape motif ------------------------------------------------------- */
-/* Tape motif — per design system Tape.jsx: display face, Bold, 20px, --ls-tape.
-   Pepi ships Regular + Bold only, so Bold is --fw-bold (700). */
+/* Tape motif — the band carries the repeated IKO logotype (SVG mark, not text).
+   font-size is only the rhythm unit the item padding derives from. */
 .tape{
   overflow:hidden;white-space:nowrap;display:flex;align-items:center;
   height:var(--tape-h,44px);background:var(--tape-bg,#fff);color:var(--tape-fg,var(--iko-blue));
-  font-family:var(--font-display);font-weight:var(--fw-bold);letter-spacing:var(--ls-tape);
   font-size:var(--tape-fs,20px);user-select:none;
 }
 .tape--blue{--tape-bg:var(--iko-blue);--tape-fg:#fff}
 .tape__track{display:inline-flex;flex:0 0 auto;animation:tape-scroll 60s linear infinite}
-.tape__track span{padding-inline:.7em}
+.tape__track span{display:flex;align-items:center;flex:none;padding-inline:.7em}
+/* explicit size beats the global svg{width:1.1em} icon rule; 2.577 = mark ratio */
+.tape__mark{--m:var(--tape-mark-h,19px);height:var(--m);width:calc(var(--m) * 2.577);flex:none;display:block}
 @keyframes tape-scroll{to{transform:translateX(-50%)}}
 @media (prefers-reduced-motion:reduce){.tape__track{animation:none}}
 
