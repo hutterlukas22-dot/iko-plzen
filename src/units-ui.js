@@ -55,7 +55,7 @@ export function unitMarketplaceBar({ units, projects = [], ranges, showProjectFi
   const statusChips = [['vse', 'Vše'], ['available', 'Volné'], ['reserved', 'Rezervováno'], ['sold', 'Prodáno']]
     .map(([v, l], i) => chip(v, l, 'status', i === 0)).join('');
   const projectOptions = ['<option value="vse">Všechny projekty</option>', ...projects.map((p) => `<option value="${esc(p.slug)}">${esc(p.name)}</option>`)].join('');
-  return `<div class="mkt-bar" data-marketplace>
+  return `<div class="mkt-bar">
       ${showProjectFilter ? `<div class="mkt-group">
         <span class="mkt-group__label">Projekt</span>
         <select class="control" data-filter-select="project">${projectOptions}</select>
