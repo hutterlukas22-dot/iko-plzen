@@ -44,6 +44,10 @@
     var rows = $$('.urow', rowsBox), tiles = $$('.ucard', tilesBox);
     var listWrap = $('[data-view-list]', root), emptyEl = $('[data-empty]', root), countEl = $('[data-count]', root);
     rows.forEach(function (el, i) { el.dataset.i = i; }); tiles.forEach(function (el, i) { el.dataset.i = i; });
+    // Controls may sit outside .mkt (projects page renders the filter bar in its
+    // own blue section), so fall back to a document-wide lookup.
+    var c1 = function (sel) { return $(sel, root) || $(sel); };
+    var cA = function (sel) { var r = $$(sel, root); return r.length ? r : $$(sel); };
     function match(el) {
       var d = el.dataset;
       if (state.project !== 'vse' && d.project !== state.project) return false;
@@ -74,31 +78,31 @@
       listWrap.style.display = (state.view === 'list' && shown) ? '' : 'none';
       tilesBox.style.display = (state.view === 'tiles' && shown) ? 'grid' : 'none';
     }
-    $$('[data-filter]', root).forEach(function (btn) {
+    cA('[data-filter]').forEach(function (btn) {
       btn.addEventListener('click', function () {
         var g = btn.getAttribute('data-filter'); state[g] = btn.getAttribute('data-value');
-        $$('[data-filter="' + g + '"]', root).forEach(function (b) { b.classList.remove('is-selected'); });
+        cA('[data-filter="' + g + '"]').forEach(function (b) { b.classList.remove('is-selected'); });
         btn.classList.add('is-selected'); apply();
       });
     });
-    var projSel = $('[data-filter-select="project"]', root);
+    var projSel = c1('[data-filter-select="project"]');
     if (projSel) projSel.addEventListener('change', function () { state.project = projSel.value; apply(); });
-    var aMin = $('[data-filter-min="area"]', root), aMax = $('[data-filter-max="area"]', root);
+    var aMin = c1('[data-filter-min="area"]'), aMax = c1('[data-filter-max="area"]');
     if (aMin) aMin.addEventListener('input', function () { state.areaMin = aMin.value ? parseFloat(aMin.value) : null; apply(); });
     if (aMax) aMax.addEventListener('input', function () { state.areaMax = aMax.value ? parseFloat(aMax.value) : null; apply(); });
-    var sortSel = $('[data-sort]', root);
+    var sortSel = c1('[data-sort]');
     if (sortSel) sortSel.addEventListener('change', function () { state.sort = sortSel.value; apply(); });
-    $$('[data-view-btn]', root).forEach(function (btn) {
+    cA('[data-view-btn]').forEach(function (btn) {
       btn.addEventListener('click', function () {
         state.view = btn.getAttribute('data-view-btn');
-        $$('[data-view-btn]', root).forEach(function (b) { b.classList.remove('is-active'); });
+        cA('[data-view-btn]').forEach(function (b) { b.classList.remove('is-active'); });
         btn.classList.add('is-active'); apply();
       });
     });
-    var reset = $('[data-reset]', root);
+    var reset = c1('[data-reset]');
     if (reset) reset.addEventListener('click', function () {
       state.project = 'vse'; state.disp = 'vse'; state.status = 'vse'; state.areaMin = null; state.areaMax = null; state.sort = 'num';
-      $$('[data-filter]', root).forEach(function (b) { b.classList.toggle('is-selected', b.getAttribute('data-value') === 'vse'); });
+      cA('[data-filter]').forEach(function (b) { b.classList.toggle('is-selected', b.getAttribute('data-value') === 'vse'); });
       if (projSel) projSel.value = 'vse'; if (aMin) aMin.value = ''; if (aMax) aMax.value = ''; if (sortSel) sortSel.value = 'num';
       apply();
     });

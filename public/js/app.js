@@ -5,9 +5,27 @@
   var $ = function (s, c) { return (c || document).querySelector(s); };
   var $$ = function (s, c) { return Array.prototype.slice.call((c || document).querySelectorAll(s)); };
 
-  /* ---- Smooth scroll (Locomotive Scroll) ---- */
-  if (!reduce && window.LocomotiveScroll) {
-    var scroll = new window.LocomotiveScroll({ el: document.documentElement, smooth: true });
+  /* ---- Smooth scroll (Lenis) — desktop pointer only, native feel on touch ---- */
+  var lenis = null;
+  if (!reduce && window.Lenis) {
+    lenis = new window.Lenis({
+      duration: 1.15,
+      easing: function (t) { return Math.min(1, 1.001 - Math.pow(2, -10 * t)); },
+      smoothWheel: true,
+      touchMultiplier: 1.6,
+    });
+    (function raf(time) { lenis.raf(time); requestAnimationFrame(raf); })();
+    // in-page anchors go through Lenis so they ease instead of jumping
+    document.addEventListener('click', function (e) {
+      var a = e.target.closest('a[href^="#"]');
+      if (!a) return;
+      var id = a.getAttribute('href');
+      if (!id || id === '#') return;
+      var target = document.querySelector(id);
+      if (!target) return;
+      e.preventDefault();
+      lenis.scrollTo(target, { offset: -90 });
+    });
   }
 
   /* ---- Header scroll state ---- */
@@ -25,6 +43,7 @@
     lastFocus = document.activeElement;
     menu.classList.add('is-open');
     document.body.classList.add('menu-open');
+    if (lenis) lenis.stop();
     if (openBtn) openBtn.setAttribute('aria-expanded', 'true');
     var first = $('a, button', menu); if (first) first.focus();
   }
@@ -32,6 +51,7 @@
     if (!menu) return;
     menu.classList.remove('is-open');
     document.body.classList.remove('menu-open');
+    if (lenis) lenis.start();
     if (openBtn) { openBtn.setAttribute('aria-expanded', 'false'); }
     if (lastFocus) lastFocus.focus();
   }

@@ -25,8 +25,7 @@ export function layout({ title, description, path = '/', body, ogImage = '/proje
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="preload" as="font" type="font/otf" href="/fonts/Pepi-Bold.otf" crossorigin>
 <link rel="stylesheet" href="/css/site.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/locomotive-scroll@5.0.0-beta.16/dist/locomotive-scroll.css">
-<script src="https://cdn.jsdelivr.net/npm/locomotive-scroll@5.0.0-beta.16/dist/locomotive-scroll.umd.js"></script>
+<script src="https://unpkg.com/lenis@1.1.18/dist/lenis.min.js"></script>
 <script>document.documentElement.classList.remove('no-js');document.documentElement.classList.add('js');</script>
 ${jsonLd ? `<script type="application/ld+json">${jsonLd}</script>` : ''}
 </head>
