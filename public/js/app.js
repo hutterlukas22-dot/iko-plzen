@@ -28,6 +28,56 @@
     });
   }
 
+  /* ---- Hero carousel: one project per slide, each with its own video ---- */
+  (function () {
+    var hero = $('[data-carousel]'); if (!hero) return;
+    var slides = $$('.hero__slide', hero);
+    var dots = $$('.hero__dot', hero);
+    var metas = $$('.hero__meta-item', hero);
+    if (slides.length < 2) return;
+    var DUR = 9000, i = 0, timer = null;
+
+    function video(n) { return $('.hero__video', slides[n]); }
+    function playAt(n) {
+      var v = video(n); if (!v) return;
+      if (!v.getAttribute('src')) v.src = v.getAttribute('data-src'); // lazy: only load on first show
+      var p = v.play(); if (p && p.catch) p.catch(function () {}); // autoplay may be blocked; poster remains
+    }
+    function runProgress(n) {
+      dots.forEach(function (d) {
+        var f = $('.hero__dot-fill', d);
+        f.style.transition = 'none'; f.style.width = '0%';
+      });
+      var fill = $('.hero__dot-fill', dots[n]);
+      void fill.offsetWidth; // reflow so the reset sticks before animating
+      fill.style.transition = 'width ' + DUR + 'ms linear';
+      fill.style.width = '100%';
+    }
+    function show(n, user) {
+      i = (n + slides.length) % slides.length;
+      slides.forEach(function (s, k) { s.classList.toggle('is-active', k === i); });
+      dots.forEach(function (d, k) {
+        d.classList.toggle('is-active', k === i);
+        if (k === i) d.setAttribute('aria-current', 'true'); else d.removeAttribute('aria-current');
+      });
+      metas.forEach(function (m, k) { m.classList.toggle('is-active', k === i); });
+      slides.forEach(function (s, k) { var v = $('.hero__video', s); if (v && k !== i) v.pause(); });
+      if (!reduce) { playAt(i); runProgress(i); }
+      // preload the next clip so the crossfade has something to show
+      var nx = video((i + 1) % slides.length);
+      if (nx && !nx.getAttribute('src')) { nx.preload = 'auto'; nx.src = nx.getAttribute('data-src'); }
+      if (user) restart();
+    }
+    function restart() { clearInterval(timer); if (!reduce) timer = setInterval(function () { show(i + 1); }, DUR); }
+
+    dots.forEach(function (d, k) { d.addEventListener('click', function () { show(k, true); }); });
+    document.addEventListener('visibilitychange', function () {
+      if (document.hidden) { clearInterval(timer); var v = video(i); if (v) v.pause(); }
+      else { if (!reduce) playAt(i); restart(); }
+    });
+    show(0); restart();
+  })();
+
   /* ---- Header scroll state ---- */
   var header = $('[data-header]');
   function onScroll() { if (header) header.classList.toggle('is-scrolled', window.scrollY > 8); }

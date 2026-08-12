@@ -270,25 +270,56 @@ body.menu-open{overflow:hidden}
 }
 
 /* ----- Hero ------------------------------------------------------------- */
-.hero{position:relative;min-height:min(92svh,900px);display:flex;align-items:flex-end;
+.hero{position:relative;min-height:min(92svh,900px);display:flex;flex-direction:column;justify-content:flex-end;
   color:#fff;overflow:hidden;isolation:isolate}
 .hero__media{position:absolute;inset:0;z-index:-2}
 .hero__media img{width:100%;height:100%;object-fit:cover;transform:scale(1.06);will-change:transform}
+/* Carousel slides crossfade; only the active one plays. */
+.hero__slide{position:absolute;inset:0;opacity:0;transition:opacity 900ms var(--ease-out)}
+.hero__slide.is-active{opacity:1}
+.hero__video{width:100%;height:100%;object-fit:cover;display:block;transform:scale(1.04)}
 .hero__scrim{position:absolute;inset:0;z-index:-1;
   background:linear-gradient(90deg,rgba(0,21,38,.86) 0%,rgba(0,32,60,.6) 42%,rgba(0,47,88,.12) 78%,transparent 100%),
              linear-gradient(0deg,rgba(0,21,38,.7) 0%,transparent 42%)}
-.hero__inner{width:100%;max-width:var(--container);margin-inline:auto;padding:var(--gutter);
-  padding-bottom:clamp(2.5rem,5vw,4.5rem)}
+.hero__inner{position:relative;z-index:1;width:100%;max-width:var(--container);margin-inline:auto;
+  padding:var(--gutter);padding-bottom:clamp(1.6rem,3vw,2.6rem);margin-top:auto}
 .hero__title{color:#fff;font-size:var(--fs-hero);font-weight:var(--fw-black);letter-spacing:var(--ls-tighter);
   line-height:.98;max-width:16ch;margin-top:.5em}
 .hero__sub{font-size:var(--fs-lead);font-weight:var(--fw-medium);max-width:46ch;margin-top:1.1em;color:rgba(255,255,255,.92)}
 .hero__actions{display:flex;flex-wrap:wrap;gap:.9rem;margin-top:2rem}
-.hero__meta{position:absolute;top:calc(var(--header-h) + clamp(1rem,3vw,2.5rem));right:var(--gutter);
-  z-index:1;text-align:right;max-width:240px;display:flex;flex-direction:column;gap:.35em;
-  text-shadow:0 1px 12px rgba(0,21,38,.55)}
-.hero__meta .k{font-size:var(--fs-micro);letter-spacing:var(--ls-label);text-transform:uppercase;color:rgba(255,255,255,.7)}
-.hero__meta .v{font-weight:var(--fw-bold);font-size:var(--fs-sm)}
-@media (max-width:640px){.hero__meta{display:none}.hero{min-height:min(88svh,760px)}}
+/* Bottom bar: current project + carousel nav, on the dark end of the scrim so
+   it reads clearly (it used to sit top-right over the bright sky). */
+.hero__bar{position:relative;z-index:1;width:100%;max-width:var(--container);margin-inline:auto;
+  padding:0 var(--gutter) clamp(1.4rem,3vw,2.4rem);
+  display:flex;align-items:flex-end;justify-content:space-between;gap:1.5rem;flex-wrap:wrap}
+.hero__meta{position:relative;flex:1 1 260px;min-height:74px}
+.hero__meta-item{position:absolute;inset:0;display:flex;flex-direction:column;gap:.2em;color:#fff;
+  opacity:0;pointer-events:none;transition:opacity 500ms var(--ease-out);text-shadow:0 1px 12px rgba(0,21,38,.6)}
+.hero__meta-item.is-active{opacity:1;pointer-events:auto}
+.hero__meta .k{font-size:var(--fs-micro);letter-spacing:var(--ls-label);text-transform:uppercase;color:rgba(255,255,255,.72)}
+.hero__meta .v{font-weight:var(--fw-bold);font-size:var(--fs-h4);line-height:1.2}
+.hero__meta-item:hover .v{text-decoration:underline}
+.hero__meta-status{display:flex;align-items:center;gap:.4em;font-size:var(--fs-sm);color:rgba(255,255,255,.85)}
+.hero__meta-status svg{width:1em;height:1em;flex:none}
+
+.hero__nav{display:flex;gap:clamp(.7rem,1.5vw,1.2rem);flex:0 0 auto}
+.hero__dot{display:flex;flex-direction:column;gap:.55em;text-align:left;cursor:pointer;
+  width:clamp(74px,13vw,168px);color:inherit}
+.hero__dot-bar{display:block;height:2px;background:rgba(255,255,255,.32);overflow:hidden}
+.hero__dot-fill{display:block;height:100%;width:0;background:#fff}
+.hero__dot-label{font-size:var(--fs-micro);letter-spacing:var(--ls-label);text-transform:uppercase;
+  color:rgba(255,255,255,.6);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;transition:color var(--dur-base)}
+.hero__dot.is-active .hero__dot-label,.hero__dot:hover .hero__dot-label{color:#fff}
+
+@media (max-width:640px){
+  .hero{min-height:min(88svh,760px)}
+  .hero__bar{flex-direction:column;align-items:stretch;gap:1.1rem}
+  /* flex:1 would grow vertically once the bar stacks, opening a dead gap */
+  .hero__meta{flex:0 0 auto;min-height:70px}
+  .hero__nav{gap:.5rem}
+  .hero__dot{flex:1;width:auto}
+  .hero__dot-label{display:none}
+}
 
 /* ----- Stat band -------------------------------------------------------- */
 .statband{display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(1.5rem,3vw,3rem);

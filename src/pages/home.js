@@ -113,13 +113,44 @@ ${ctaBand()}
 }
 
 function hero() {
-  return `<section class="hero" data-hero>
-  <div class="hero__media"><img src="/projects/slovanske-udoli-01-lg.jpg" alt="${esc('Rezidenční čtvrť Slovanské údolí v Plzni od developera IKO — bytové domy obklopené zelení')}" fetchpriority="high" decoding="async"></div>
+  // One slide per project: its own video, with the project photo as poster so the
+  // first paint is instant and reduced-motion users still get an image.
+  const slides = projects
+    .map(
+      (p, i) => `<div class="hero__slide${i === 0 ? ' is-active' : ''}" data-slide="${i}">
+      <video class="hero__video" poster="${p.hero}" muted loop playsinline
+        preload="${i === 0 ? 'auto' : 'none'}" aria-hidden="true" tabindex="-1"
+        data-src="${p.heroVideo}"${i === 0 ? ` src="${p.heroVideo}"` : ''}></video>
+    </div>`
+    )
+    .join('');
+
+  // drop the type prefix and the sub-locality so the tab labels fit without clipping
+  const shortName = (n) => n.replace(/^(Rezidence|Bytový dům)\s+/, '').split(' — ')[0];
+
+  const nav = projects
+    .map(
+      (p, i) => `<button class="hero__dot${i === 0 ? ' is-active' : ''}" data-goto="${i}"
+      aria-label="Zobrazit projekt ${esc(p.name)}"${i === 0 ? ' aria-current="true"' : ''}>
+      <span class="hero__dot-bar"><span class="hero__dot-fill"></span></span>
+      <span class="hero__dot-label">${esc(shortName(p.name))}</span>
+    </button>`
+    )
+    .join('');
+
+  const meta = projects
+    .map(
+      (p, i) => `<a class="hero__meta-item${i === 0 ? ' is-active' : ''}" data-meta="${i}" href="/projekty/${p.slug}/">
+      <span class="k">Aktuální projekt</span>
+      <span class="v">${esc(p.name)}</span>
+      <span class="hero__meta-status">${icon('map-pin')} ${esc(p.location)} · ${esc(p.statusLabel)}</span>
+    </a>`
+    )
+    .join('');
+
+  return `<section class="hero" data-hero data-carousel>
+  <div class="hero__media">${slides}</div>
   <div class="hero__scrim"></div>
-  <div class="hero__meta">
-    <div><div class="k">Aktuální projekt</div><div class="v">Slovanské údolí, Plzeň</div></div>
-    <div style="margin-top:.6rem"><div class="k">Stav</div><div class="v">V prodeji</div></div>
-  </div>
   <div class="hero__inner">
     <span class="chip-label" data-reveal>Plzeň · od roku 1991</span>
     <h1 class="hero__title" data-reveal data-delay="1">Stavíme tam, kde sami chceme bydlet.</h1>
@@ -128,6 +159,10 @@ function hero() {
       ${btn('Prohlédnout projekty', '/projekty/', 'inverse', { lg: true })}
       ${btn('Sjednat prohlídku', '/kontakt/', 'ghost', { lg: true, arrow: false })}
     </div>
+  </div>
+  <div class="hero__bar">
+    <div class="hero__meta">${meta}</div>
+    <div class="hero__nav" aria-label="Přepínač projektů">${nav}</div>
   </div>
   <span id="main-scroll"></span>
 </section>`;
