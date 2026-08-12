@@ -281,8 +281,10 @@ body.menu-open{overflow:hidden}
 .hero__scrim{position:absolute;inset:0;z-index:-1;
   background:linear-gradient(90deg,rgba(0,21,38,.86) 0%,rgba(0,32,60,.6) 42%,rgba(0,47,88,.12) 78%,transparent 100%),
              linear-gradient(0deg,rgba(0,21,38,.7) 0%,transparent 42%)}
+/* fills the space above the bottom bar and centres the block within it */
 .hero__inner{position:relative;z-index:1;width:100%;max-width:var(--container);margin-inline:auto;
-  padding:var(--gutter);padding-bottom:clamp(1.6rem,3vw,2.6rem);margin-top:auto}
+  padding:var(--gutter);
+  flex:1;display:flex;flex-direction:column;justify-content:center}
 .hero__title{color:#fff;font-size:var(--fs-hero);font-weight:var(--fw-black);letter-spacing:var(--ls-tighter);
   line-height:.98;max-width:16ch;margin-top:.5rem}
 .hero__sub{font-size:var(--fs-lead);font-weight:var(--fw-medium);max-width:46ch;margin-top:1.1em;color:rgba(255,255,255,.92)}
