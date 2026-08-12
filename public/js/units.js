@@ -289,6 +289,23 @@
       }).join('');
     })();
 
+    /* enquiry form: carry the unit so the salesperson knows what it is about */
+    var ctx = $('[data-form-ctx]');
+    if (ctx) {
+      var ci = $('[data-form-ctx-img]', ctx);
+      if (ci) { ci.src = rel(u.img); ci.alt = 'Půdorys ' + u.label; }
+      var cn = $('[data-form-ctx-name]', ctx); if (cn) cn.textContent = u.label + ' · ' + u.project;
+      var cs = $('[data-form-ctx-sub]', ctx);
+      if (cs) cs.textContent = u.disposition + ' · ' + areaTxt(u.area) + (u.floor ? ' · ' + u.floor : '') + ' · ' + fmtPrice(u.price);
+      var fu = $('[data-form-unit]'); if (fu) fu.value = u.label + ' (' + u.project + ', ' + u.disposition + ', ' + areaTxt(u.area) + ') — ID ' + id;
+      var fuu = $('[data-form-unit-url]'); if (fuu) fuu.value = location.href;
+    }
+
+    /* assigned salesperson for this project */
+    var agentBox = $('[data-ud-agent]'), agents = {};
+    try { agents = JSON.parse($('[data-agents]').textContent); } catch (e) {}
+    if (agentBox && agents[u.projectSlug]) agentBox.innerHTML = agents[u.projectSlug];
+
     // compare toggle
     var ct = $('[data-compare-toggle]', root); if (ct) { ct.setAttribute('data-id', id); ct.addEventListener('click', function () { toggleC(id); }); }
     document.title = u.label + ' — ' + u.project + ' — IKO';

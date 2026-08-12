@@ -4,15 +4,7 @@ import { eyebrow } from '../components.js';
 import { teamCard } from '../blocks.js';
 import { ctaBand } from './home.js';
 
-// Demo team — placeholder names; a CMS/implementer replaces with real people + photos.
-const team = [
-  { name: 'Jan Novák', role: 'Jednatel', note: 'Vede firmu i výběr lokalit. Za IKO ručí svým jménem.', email: 'iko@ikoplzen.cz' },
-  { name: 'Petra Svobodová', role: 'Vedoucí prodeje', note: 'První kontakt pro zájemce — provede vás nabídkou i rezervací.', phone: '371 656 916', phoneHref: '+420371656916', email: 'projekty@ikoplzen.cz' },
-  { name: 'Martin Dvořák', role: 'Hlavní stavbyvedoucí', note: 'Odpovídá za kvalitu provedení na stavbách IKO.', phone: '371 656 911', phoneHref: '+420371656911' },
-  { name: 'Lucie Marková', role: 'Klientské změny', note: 'Pomůže upravit standard bytu podle vašich představ.', email: 'projekty@ikoplzen.cz' },
-  { name: 'Tomáš Beneš', role: 'Financování', note: 'Poradí s hypotékou i splátkovým kalendářem.', email: 'iko@ikoplzen.cz' },
-  { name: 'Eva Horáková', role: 'Administrativa a smlouvy', note: 'Připraví smluvní dokumentaci a provede vás podpisy.', phone: '371 656 911', phoneHref: '+420371656911' },
-];
+import { team } from '../data/team.js';
 
 export function tymPage() {
   const body = `

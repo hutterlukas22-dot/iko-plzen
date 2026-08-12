@@ -142,7 +142,11 @@ function footer() {
   </div>
   <div class="container footer__bar">
     <span>© ${new Date().getFullYear()} IKO stavby s.r.o. · 35 let na trhu</span>
-    <span>${esc(c.ico)}</span>
+    <span class="footer__ico">${esc(c.ico)}</span>
+    <a class="footer__by" href="https://www.impnet.cz" target="_blank" rel="noopener">
+      <span>Developed by</span>
+      <img src="/img/impnet-logo.svg" alt="IMPnet" width="90" height="22" onerror="this.replaceWith(Object.assign(document.createElement('b'),{textContent:'IMPnet'}))">
+    </a>
   </div>
 </footer>`;
 }

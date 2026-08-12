@@ -4,7 +4,8 @@ import { site } from '../data/site.js';
 import { esc, icon } from '../lib/util.js';
 import { eyebrow } from '../components.js';
 import { unitJSON } from '../units-ui.js';
-import { mapPreview } from '../blocks.js';
+import { mapPreview, contactForm, agentCard } from '../blocks.js';
+import { team, salesContact, byId } from '../data/team.js';
 
 // Per-project imagery the client picks from once it knows which unit is shown.
 const projMedia = {};
@@ -253,17 +254,18 @@ export function jednotkaPage() {
   </div>
 </section>
 
-<!-- Contact -->
-<section class="section--tight bg-brand">
-  <div class="container grid-2" style="align-items:center">
+<!-- Contact: assigned salesperson + a form that carries this unit -->
+<section class="section bg-brand" id="kontakt">
+  <div class="container split" style="align-items:start">
     <div data-reveal>
       ${eyebrow('Kontakt', { onbrand: true })}
-      <h2 class="display" style="color:#fff;margin:.5rem 0 1rem">Projdeme to s vámi<br>od začátku do konce.</h2>
-      <p style="color:rgba(255,255,255,.9);max-width:44ch">Domluvíme prohlídku, pošleme podklady nebo poradíme s financováním. Ozveme se do 24 hodin.</p>
+      <h2 class="display" style="color:#fff;margin:.5rem 0 1rem">Zeptejte se přímo<br>na tuto jednotku.</h2>
+      <p style="color:rgba(255,255,255,.9);max-width:44ch">Poptávka dorazí s označením konkrétní jednotky, takže se vám ozve člověk, který ji zná. Odpovídáme do 24 hodin.</p>
+      <div data-ud-agent style="margin-top:1.8rem"></div>
+      <a class="btn btn--ghost btn--lg" href="tel:${site.contact.phoneHref}" style="margin-top:1rem">${icon('phone')} ${esc(site.contact.phone)}</a>
     </div>
-    <div data-reveal data-delay="1" style="display:flex;flex-direction:column;gap:.8rem">
-      <a class="btn btn--inverse btn--lg" data-ud-inquire href="/kontakt/">Nezávazná poptávka</a>
-      <a class="btn btn--ghost btn--lg" href="tel:${site.contact.phoneHref}">${icon('phone')} ${esc(site.contact.phone)}</a>
+    <div data-reveal data-delay="1">
+      ${contactForm({ unitContext: true })}
     </div>
   </div>
 </section>
@@ -272,6 +274,9 @@ export function jednotkaPage() {
 <script type="application/json" data-projmedia>${JSON.stringify(projMedia).replace(/</g, '\\u003c')}</script>
 <script type="application/json" data-amenicons>${JSON.stringify(
     Object.fromEntries(AMENITIES.map((a) => [a.label, icon(a.icon)]))
+  ).replace(/</g, '\\u003c')}</script>
+<script type="application/json" data-agents>${JSON.stringify(
+    Object.fromEntries(Object.entries(salesContact).map(([slug, pid]) => [slug, agentCard(byId(pid), { onDark: true })]))
   ).replace(/</g, '\\u003c')}</script>
 ${unitJSON(allUnits)}
 `;

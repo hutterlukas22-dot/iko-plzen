@@ -277,14 +277,20 @@
     }
     function buildMailto() {
       var get = function (n) { var el = form.querySelector('[name="' + n + '"]'); return el ? el.value.trim() : ''; };
-      var subject = 'Poptávka z webu — ' + (get('interest') || 'bydlení');
-      var lines = [
+      // A unit enquiry leads with the unit so it is identifiable straight from the inbox.
+      var unit = get('unit');
+      var subject = unit
+        ? 'Poptávka jednotky — ' + unit.split(' (')[0] + ' — ' + (get('interest') || 'dotaz')
+        : 'Poptávka z webu — ' + (get('interest') || 'bydlení');
+      var lines = [];
+      if (unit) { lines.push('JEDNOTKA: ' + unit); if (get('unitUrl')) lines.push('Odkaz: ' + get('unitUrl')); lines.push(''); }
+      lines.push(
         'Jméno: ' + get('firstName') + ' ' + get('lastName'),
         'E-mail: ' + get('email'),
         'Telefon: ' + (get('phone') || '—'),
-        'Zajímá mě: ' + get('interest'),
+        (unit ? 'Požadavek: ' : 'Zajímá mě: ') + get('interest'),
         '', (get('message') || '')
-      ];
+      );
       return 'mailto:' + EMAIL_TO + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(lines.join('\n'));
     }
     // live-clear errors

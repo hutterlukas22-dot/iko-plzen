@@ -166,6 +166,23 @@ export function teamCard(p, idx = 0) {
   </article>`;
 }
 
+/* ---------- Sales contact (broker card) --------------------------------- */
+export function agentCard(p, { onDark = false } = {}) {
+  const initials = p.name.split(' ').map((w) => w[0]).join('').slice(0, 2).toUpperCase();
+  return `<div class="agent${onDark ? ' agent--dark' : ''}">
+    <div class="agent__avatar" aria-hidden="true">${esc(initials)}</div>
+    <div class="agent__b">
+      <span class="agent__k">Váš kontakt pro tuto jednotku</span>
+      <b class="agent__name">${esc(p.name)}</b>
+      <span class="agent__role">${esc(p.role)}</span>
+      <div class="agent__links">
+        ${p.phone ? `<a href="tel:${esc(p.phoneHref || p.phone)}">${icon('phone')} ${esc(p.phone)}</a>` : ''}
+        ${p.email ? `<a href="mailto:${esc(p.email)}">${icon('mail')} ${esc(p.email)}</a>` : ''}
+      </div>
+    </div>
+  </div>`;
+}
+
 /* ---------- FAQ accordion ----------------------------------------------- */
 export const faqList = (items) => `<div class="faq">${items
   .map((f) => `<details class="faq__item">
@@ -239,9 +256,19 @@ export const careerCard = (c) => `<div class="career-card" data-reveal>
   </div>`;
 
 /* ---------- Contact form (real validation, endpoint-ready) -------------- */
-export function contactForm({ compact = false } = {}) {
+export function contactForm({ compact = false, unitContext = false } = {}) {
   return `<form class="form-card" data-contact-form novalidate action="/api/lead" method="post" aria-label="Kontaktní formulář">
     <div data-form-fields>
+      ${unitContext ? `<div class="form-ctx" data-form-ctx>
+        <img class="form-ctx__img" data-form-ctx-img src="" alt="">
+        <span class="form-ctx__b">
+          <span class="form-ctx__k">Poptávaná jednotka</span>
+          <b data-form-ctx-name>—</b>
+          <small data-form-ctx-sub></small>
+        </span>
+      </div>
+      <input type="hidden" name="unit" data-form-unit>
+      <input type="hidden" name="unitUrl" data-form-unit-url>` : ''}
       <div class="form-grid">
         <div class="field"><label for="cf-fname">Jméno <span class="req">*</span></label>
           <input class="control" id="cf-fname" name="firstName" type="text" autocomplete="given-name" required placeholder="Jan">
@@ -258,10 +285,13 @@ export function contactForm({ compact = false } = {}) {
           <input class="control" id="cf-phone" name="phone" type="tel" autocomplete="tel" placeholder="+420">
           <span class="err">Zadejte platné telefonní číslo.</span></div>
       </div>
-      <div class="field" style="margin-top:1.1rem"><label for="cf-interest">Zajímá mě</label>
+      <div class="field" style="margin-top:1.1rem"><label for="cf-interest">${unitContext ? 'Co potřebujete' : 'Zajímá mě'}</label>
         <select class="control" id="cf-interest" name="interest">
-          <option>Rodinný dům</option><option>Řadový dům</option><option>Dvojdům</option>
-          <option>Byt</option><option>Nevím, poraďte mi</option><option>Kariéra / pozice stavbyvedoucí</option>
+          ${unitContext
+            ? `<option>Domluvit prohlídku</option><option>Poslat cenovou nabídku a podklady</option>
+               <option>Poradit s financováním</option><option>Rezervovat tuto jednotku</option><option>Mám jiný dotaz</option>`
+            : `<option>Rodinný dům</option><option>Řadový dům</option><option>Dvojdům</option>
+               <option>Byt</option><option>Nevím, poraďte mi</option><option>Kariéra / pozice stavbyvedoucí</option>`}
         </select></div>
       ${compact ? '' : `<div class="field" style="margin-top:1.1rem"><label for="cf-msg">Zpráva</label>
         <textarea class="control" id="cf-msg" name="message" placeholder="Napište nám, co potřebujete…"></textarea></div>`}
