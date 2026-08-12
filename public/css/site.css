@@ -182,11 +182,13 @@ h3,.h3{font-size:var(--fs-h3)}
 .tlink:hover .arrow{transform:translateX(5px)}
 
 /* ----- Tape motif ------------------------------------------------------- */
+/* Tape motif — per design system Tape.jsx: display face, Bold, 20px, --ls-tape.
+   Pepi ships Regular + Bold only, so Bold is --fw-bold (700). */
 .tape{
   overflow:hidden;white-space:nowrap;display:flex;align-items:center;
   height:var(--tape-h,44px);background:var(--tape-bg,#fff);color:var(--tape-fg,var(--iko-blue));
-  font-weight:var(--fw-extrabold);letter-spacing:var(--ls-tape);
-  font-size:var(--tape-fs,1.05rem);user-select:none;
+  font-family:var(--font-display);font-weight:var(--fw-bold);letter-spacing:var(--ls-tape);
+  font-size:var(--tape-fs,20px);user-select:none;
 }
 .tape--blue{--tape-bg:var(--iko-blue);--tape-fg:#fff}
 .tape__track{display:inline-flex;flex:0 0 auto;animation:tape-scroll 60s linear infinite}
