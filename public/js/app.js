@@ -5,10 +5,9 @@
   var $ = function (s, c) { return (c || document).querySelector(s); };
   var $$ = function (s, c) { return Array.prototype.slice.call((c || document).querySelectorAll(s)); };
 
-  /* ---- Smooth scroll (GSAP ScrollSmoother) ---- */
-  if (!reduce && window.gsap && window.gsap.registerPlugin) {
-    gsap.registerPlugin(window.ScrollSmoother);
-    window.ScrollSmoother && window.ScrollSmoother.create({ smooth: 1.5, effects: true });
+  /* ---- Smooth scroll (Locomotive Scroll) ---- */
+  if (!reduce && window.LocomotiveScroll) {
+    var scroll = new window.LocomotiveScroll({ el: document.documentElement, smooth: true });
   }
 
   /* ---- Header scroll state ---- */
