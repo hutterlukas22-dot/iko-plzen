@@ -64,7 +64,6 @@ export function unitMarketplaceBar({ units, projects = [], ranges, showProjectFi
       <div class="mkt-group"><span class="mkt-group__label">Stav</span><div class="mkt-chips">${statusChips}</div></div>
       <div class="mkt-group"><span class="mkt-group__label">Plocha (m²)</span><div class="mkt-range"><input class="control" type="number" inputmode="numeric" data-filter-min="area" placeholder="od" min="0"><span>–</span><input class="control" type="number" inputmode="numeric" data-filter-max="area" placeholder="do"></div></div>
       <div class="mkt-group mkt-spacer"><span class="mkt-group__label">Řazení</span><select class="control" data-sort><option value="num">Doporučené</option><option value="price-asc">Cena: od nejnižší</option><option value="price-desc">Cena: od nejvyšší</option><option value="area-asc">Plocha: od nejmenší</option><option value="area-desc">Plocha: od největší</option></select></div>
-      <div class="mkt-group"><span class="mkt-group__label">Zobrazení</span><div class="vtoggle" data-view><button data-view-btn="list" class="is-active">${icon('layers')} Seznam</button><button data-view-btn="tiles">${icon('building')} Dlaždice</button></div></div>
     </div>`;
 }
 
@@ -105,11 +104,11 @@ export function unitMarketplace({ units, projects = [], ranges, showProjectFilte
       <div class="mkt-group"><span class="mkt-group__label">Stav</span><div class="mkt-chips">${statusChips}</div></div>
       <div class="mkt-group"><span class="mkt-group__label">Plocha (m²)</span><div class="mkt-range"><input class="control" type="number" inputmode="numeric" data-filter-min="area" placeholder="od" min="0"><span>–</span><input class="control" type="number" inputmode="numeric" data-filter-max="area" placeholder="do"></div></div>
       <div class="mkt-group mkt-spacer"><span class="mkt-group__label">Řazení</span><select class="control" data-sort><option value="num">Doporučené</option><option value="price-asc">Cena: od nejnižší</option><option value="price-desc">Cena: od nejvyšší</option><option value="area-asc">Plocha: od nejmenší</option><option value="area-desc">Plocha: od největší</option></select></div>
-      <div class="mkt-group"><span class="mkt-group__label">Zobrazení</span><div class="vtoggle" data-view><button data-view-btn="list" class="is-active">${icon('layers')} Seznam</button><button data-view-btn="tiles">${icon('building')} Dlaždice</button></div></div>
     </div>` : ''}
 
     <div class="mkt-head">
       <span class="mkt-count" data-count><b>${units.length}</b> jednotek</span>
+      <div class="vtoggle" data-view style="margin-left:auto"><button data-view-btn="list" class="is-active">${icon('layers')} Seznam</button><button data-view-btn="tiles">${icon('building')} Dlaždice</button></div>
       <span class="mkt-reset" data-reset>Zrušit filtry</span>
     </div>
 
