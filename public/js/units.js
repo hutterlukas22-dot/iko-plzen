@@ -162,11 +162,14 @@
     var st = $('[data-ud-status]', root); if (st) st.innerHTML = pill(u.status);
     var plan = $('[data-ud-plan]', root); if (plan) plan.src = rel(u.img);
     var planLink = $('[data-ud-plan-link]', root); if (planLink) planLink.href = rel(u.img);
-    var ext = u.terrace ? 'Terasa' : u.balcony ? 'Balkon' : '—';
     var specs = [['Dispozice', u.disposition], ['Plocha', areaTxt(u.area)], ['Podlaží', u.floor || '—'], ['Orientace', u.orient || '—'],
-      ['Parkování', u.parking ? 'Garážové stání' : '—'], ['Sklep', u.cellar ? 'Ano' : '—'], ['Venkovní prostor', ext], ['Typ', u.type || 'Byt']];
+      ['Cena za m²', u.price && u.area ? fmtPrice(Math.round(u.price / u.area)) : '—'], ['Typ', u.type || 'Byt'],
+      ['Vybavení', (u.amen && u.amen.length) ? u.amen.join(' · ') : '—']];
     var sp = $('[data-ud-specs]', root);
-    if (sp) sp.innerHTML = specs.map(function (s) { return '<div class="c"><div class="k">' + s[0] + '</div><div class="v">' + s[1] + '</div></div>'; }).join('');
+    if (sp) sp.innerHTML = specs.map(function (s) {
+      var wide = s[0] === 'Vybavení' ? ' c--wide' : '';
+      return '<div class="c' + wide + '"><div class="k">' + s[0] + '</div><div class="v">' + s[1] + '</div></div>';
+    }).join('');
     var pl = $('[data-ud-project-link]', root);
     if (pl && u.projectSlug) { pl.href = rel('/projekty/') + u.projectSlug + '/'; pl.textContent = u.project; }
     var inq = rel('/kontakt/') + '?jednotka=' + encodeURIComponent(u.label);

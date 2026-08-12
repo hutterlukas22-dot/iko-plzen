@@ -30,6 +30,14 @@ function unitRow(u) {
 
 function unitTile(u) {
   const sold = u.status === 'sold';
+  const house = u.type === 'Dům';
+  // orientation is only known for some units, so it rides along as a chip rather
+  // than a fact column that would sit empty on most cards
+  const all = (u.orient ? [{ key: 'orient', label: `Orientace ${u.orient}`, icon: 'compass' }] : []).concat(u.amenities || []);
+  const shown = all.slice(0, 4);
+  const rest = all.length - shown.length;
+  const ppm = u.price && u.area ? Math.round(u.price / u.area) : null;
+
   return `<a href="/jednotka/?id=${esc(u.id)}" class="ucard${sold ? ' ucard--sold' : ''}" ${dataAttrs(u)}>
     <div class="ucard__media">
       <span class="badge badge--${u.status} badge--onmedia"><span class="dot"></span>${ST[u.status]}</span>
@@ -37,11 +45,24 @@ function unitTile(u) {
       <span class="ucard__disp">${esc(u.disposition)}</span>
     </div>
     <div class="ucard__body">
-      <div class="ucard__name">${esc(u.label)}</div>
-      <div class="ucard__specs"><span><b>${areaTxt(u.area)}</b></span>${u.floor ? `<span>${esc(u.floor)}</span>` : ''}${u.orient ? `<span>${esc(u.orient)}</span>` : ''}</div>
+      <div class="ucard__head">
+        <span class="ucard__name">${esc(u.label)}</span>
+        <span class="ucard__project">${esc(u.projectName)}</span>
+      </div>
+      <dl class="ucard__facts">
+        <div><dt>Plocha</dt><dd>${areaTxt(u.area)}</dd></div>
+        <div><dt>${house ? 'Parcela' : 'Podlaží'}</dt><dd>${house ? (u.plot ? esc(u.plot) : '—') : (u.floor ? esc(u.floor) : '—')}</dd></div>
+        <div><dt>Cena / m²</dt><dd>${ppm ? fmtPrice(ppm) : '—'}</dd></div>
+      </dl>
+      ${shown.length ? `<ul class="ucard__amen">${shown
+        .map((a) => `<li><span class="ucard__amen-ic">${icon(a.icon)}</span>${esc(a.label)}</li>`)
+        .join('')}${rest > 0 ? `<li class="ucard__amen-more" title="${esc(all.slice(4).map((a) => a.label).join(', '))}">+${rest}</li>` : ''}</ul>` : ''}
       <div class="ucard__foot">
-        <span class="ucard__price">${fmtPrice(u.price)}</span>
-        <span class="pcard__more">Detail ${icon('arrow-right')}</span>
+        <span class="ucard__price-wrap">
+          <span class="ucard__ppm">Cena celkem</span>
+          <span class="ucard__price">${fmtPrice(u.price)}</span>
+        </span>
+        <span class="ucard__cta">${sold ? 'Prohlédnout' : 'Mám zájem'} ${icon('arrow-right')}</span>
       </div>
     </div>
   </a>`;
@@ -76,6 +97,7 @@ export const unitJSON = (units) =>
         disposition: u.disposition, area: u.area,
         floor: u.floor, status: u.status, price: u.price, orient: u.orient,
         parking: u.parking, cellar: u.cellar, terrace: u.terrace, balcony: u.balcony,
+        amen: (u.amenities || []).map((a) => a.label),
         img: u.img, type: u.type, plot: u.plot || null,
       }])
     )

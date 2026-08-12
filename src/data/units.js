@@ -60,6 +60,42 @@ export const houseUnits = (rado?.units || []).map((u, i) => ({
 
 export const allUnits = [...apartmentUnits, ...houseUnits];
 
+// ---- Equipment / amenities ------------------------------------------------
+// DEMO like the prices: seeded from the unit id so a unit always keeps the same
+// equipment across builds. A CMS supplies the real list per unit.
+export const AMENITIES = [
+  { key: 'terrace', label: 'Terasa', icon: 'sun' },
+  { key: 'balcony', label: 'Balkon', icon: 'balcony' },
+  { key: 'garden', label: 'Předzahrádka', icon: 'leaf' },
+  { key: 'airCon', label: 'Klimatizace', icon: 'snowflake' },
+  { key: 'blinds', label: 'Venkovní žaluzie', icon: 'blinds' },
+  { key: 'parking', label: 'Parkovací stání', icon: 'car' },
+  { key: 'cellar', label: 'Sklep', icon: 'box' },
+  { key: 'elevator', label: 'Výtah', icon: 'elevator' },
+];
+
+const hash = (s) => {
+  let h = 2166136261;
+  for (let i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 16777619); }
+  return h >>> 0;
+};
+
+for (const u of allUnits) {
+  const h = hash(u.id);
+  if (u.type === 'Dům') {
+    u.terrace = true; u.garden = true; u.elevator = false;
+    u.airCon = (h >> 2) % 100 < 45;
+    u.blinds = (h >> 5) % 100 < 70;
+    u.cellar = (h >> 8) % 100 < 55;
+  } else {
+    u.elevator = true; // all three apartment buildings have a lift
+    u.garden = u.floor === '1.NP' && (h >> 2) % 100 < 65; // front garden only at ground level
+    u.airCon = (h >> 5) % 100 < 40;
+    u.blinds = (h >> 8) % 100 < 75;
+  }
+  u.amenities = AMENITIES.filter((a) => u[a.key]);
+}
+
 // distinct projects that actually have units, in display order
 export const unitProjects = [];
 for (const u of allUnits) if (!unitProjects.some((p) => p.slug === u.projectSlug))
