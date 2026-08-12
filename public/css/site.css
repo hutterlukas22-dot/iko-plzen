@@ -888,7 +888,13 @@ html.no-js [data-reveal],.no-reveal [data-reveal]{opacity:1;transform:none}
 .ud-hero__facts b{font-size:var(--fs-sm);font-weight:var(--fw-bold)}
 .ud-hero__buy{background:rgba(0,21,38,.55);border:1px solid rgba(255,255,255,.18);backdrop-filter:blur(10px);
   padding:clamp(1.1rem,2.5vw,1.6rem);min-width:min(100%,320px);display:flex;flex-direction:column;gap:.5rem}
-.ud-hero__status .spill{background:rgba(255,255,255,.14);color:#fff}
+/* .spill is built for inline use in list rows and carries no padding, so give it
+   real badge geometry here — pill, per the design system's badge exception. */
+.ud-hero__status{margin-bottom:.2rem}
+.ud-hero__status .spill{background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.24);
+  color:#fff;padding:.45em .85em;border-radius:var(--radius-pill);font-size:var(--fs-label);
+  letter-spacing:.02em;backdrop-filter:blur(4px)}
+.ud-hero__status .spill .dot{width:8px;height:8px;box-shadow:0 0 0 3px rgba(255,255,255,.14)}
 .ud-hero__price{font-size:var(--fs-h1);font-weight:var(--fw-black);letter-spacing:-.02em;line-height:1.1}
 .ud-hero__ppm{font-size:var(--fs-sm);color:rgba(255,255,255,.75);margin-top:-.3rem}
 .ud-hero__cta{margin-top:.5rem;justify-content:center}
