@@ -5,11 +5,10 @@
   var $ = function (s, c) { return (c || document).querySelector(s); };
   var $$ = function (s, c) { return Array.prototype.slice.call((c || document).querySelectorAll(s)); };
 
-  /* ---- Smooth scroll (Lenis) ---- */
-  if (!reduce && window.Lenis) {
-    var lenis = new window.Lenis({ duration: 1.2, easing: function (t) { return Math.min(1, 1.001 - Math.pow(2, -10 * t)); } });
-    function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
-    requestAnimationFrame(raf);
+  /* ---- Smooth scroll (GSAP ScrollSmoother) ---- */
+  if (!reduce && window.gsap && window.gsap.registerPlugin) {
+    gsap.registerPlugin(window.ScrollSmoother);
+    window.ScrollSmoother && window.ScrollSmoother.create({ smooth: 1.5, effects: true });
   }
 
   /* ---- Header scroll state ---- */
