@@ -248,7 +248,8 @@ h3,.h3{font-size:var(--fs-h3)}
 body.menu-open{overflow:hidden}
 
 @media (max-width:1180px){
-  .nav,.header__phone,.header__cta,.header__compare{display:none}
+  .nav,.header__phone,.header__cta{display:none}
+  .header__compare{display:inline-grid}
   .burger{display:flex}
 }
 
