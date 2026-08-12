@@ -89,6 +89,9 @@ body{
   -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
   font-synthesis:none;overflow-x:hidden;
 }
+/* [hidden] must beat author display rules (e.g. the compare badge is display:grid) */
+[hidden]{display:none !important}
+
 /* Lenis smooth scroll */
 html.lenis,html.lenis body{height:auto}
 .lenis.lenis-smooth{scroll-behavior:auto !important}
@@ -223,7 +226,9 @@ h3,.h3{font-size:var(--fs-h3)}
 .header__compare:hover{border-color:var(--iko-blue);color:var(--iko-blue);background:var(--blue-50)}
 .header__compare-count{position:absolute;top:-6px;right:-6px;min-width:18px;height:18px;padding:0 4px;border-radius:999px;
   background:var(--iko-blue);color:#fff;font-size:11px;font-weight:var(--fw-bold);display:grid;place-items:center;line-height:1}
-.burger{display:none;flex-direction:column;justify-content:center;gap:5px;width:44px;height:44px;margin-right:-8px}
+/* -10px pulls the 44px tap target out so the 24px glyph lands on the gutter,
+   optically mirroring the logo on the left. */
+.burger{display:none;flex-direction:column;justify-content:center;gap:5px;width:44px;height:44px;margin-right:-10px}
 .burger span{display:block;height:2px;width:24px;margin-inline:auto;background:var(--text-strong);
   transition:transform var(--dur-base) var(--ease-out),opacity var(--dur-fast)}
 
@@ -255,7 +260,9 @@ body.menu-open{overflow:hidden}
 
 @media (max-width:1180px){
   .nav,.header__phone,.header__cta{display:none}
-  .header__compare{display:inline-grid}
+  /* .nav carried margin-right:auto; with it hidden, push the controls right so
+     the burger sits on the gutter, mirroring the logo on the left. */
+  .header__compare{display:inline-grid;margin-left:auto}
   .burger{display:flex}
 }
 
