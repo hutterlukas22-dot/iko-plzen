@@ -4,17 +4,23 @@ import { eyebrow, btn } from '../components.js';
 import { projectCard } from '../blocks.js';
 import { ctaBand } from './home.js';
 import { allUnits, unitProjects, unitRanges } from '../data/units.js';
-import { unitMarketplace } from '../units-ui.js';
+import { unitMarketplaceBar, unitMarketplace } from '../units-ui.js';
 
 export function projektyPage() {
   const body = `
 <section class="section bg-brand" style="padding-top:calc(var(--header-h) + clamp(2rem,5vw,3rem))" aria-labelledby="mkt-h">
   <div class="container">
     <div class="sec-head" data-reveal>
-      <div>${eyebrow('Byty a domy na prodej')}<h2 class="sec-head__title h1" id="mkt-h">Vyberte si konkrétní jednotku</h2>
-      <p class="lead muted">Filtrujte podle projektu, dispozice, plochy a stavu. Přepněte si zobrazení na seznam nebo dlaždice s půdorysem.</p></div>
+      <div>${eyebrow('Byty a domy na prodej', { onbrand: true })}<h2 class="sec-head__title h1" id="mkt-h" style="color:#fff">Vyberte si konkrétní jednotku</h2>
+      <p class="lead" style="color:rgba(255,255,255,.9)">Filtrujte podle projektu, dispozice, plochy a stavu. Přepněte si zobrazení na seznam nebo dlaždice s půdorysem.</p></div>
     </div>
-    <div data-reveal>${unitMarketplace({ units: allUnits, projects: unitProjects, ranges: unitRanges, showProjectFilter: true })}</div>
+    <div data-reveal>${unitMarketplaceBar({ units: allUnits, projects: unitProjects, ranges: unitRanges, showProjectFilter: true })}</div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div data-reveal>${unitMarketplace({ units: allUnits, projects: unitProjects, ranges: unitRanges, showProjectFilter: true, hideBar: true })}</div>
   </div>
 </section>
 

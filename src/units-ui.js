@@ -47,6 +47,27 @@ function unitTile(u) {
   </a>`;
 }
 
+// Marketplace filters only — for separate blue section on projects page
+export function unitMarketplaceBar({ units, projects = [], ranges, showProjectFilter = true }) {
+  const chip = (val, label, group, sel = false) =>
+    `<button class="tag${sel ? ' is-selected' : ''}" data-filter="${group}" data-value="${esc(val)}">${esc(label)}</button>`;
+  const dispChips = ['Vše', ...ranges.dispositions].map((d) => chip(d === 'Vše' ? 'vse' : d, d, 'disp', d === 'Vše')).join('');
+  const statusChips = [['vse', 'Vše'], ['available', 'Volné'], ['reserved', 'Rezervováno'], ['sold', 'Prodáno']]
+    .map(([v, l], i) => chip(v, l, 'status', i === 0)).join('');
+  const projectOptions = ['<option value="vse">Všechny projekty</option>', ...projects.map((p) => `<option value="${esc(p.slug)}">${esc(p.name)}</option>`)].join('');
+  return `<div class="mkt-bar" data-marketplace>
+      ${showProjectFilter ? `<div class="mkt-group">
+        <span class="mkt-group__label">Projekt</span>
+        <select class="control" data-filter-select="project">${projectOptions}</select>
+      </div>` : ''}
+      <div class="mkt-group"><span class="mkt-group__label">Dispozice</span><div class="mkt-chips">${dispChips}</div></div>
+      <div class="mkt-group"><span class="mkt-group__label">Stav</span><div class="mkt-chips">${statusChips}</div></div>
+      <div class="mkt-group"><span class="mkt-group__label">Plocha (m²)</span><div class="mkt-range"><input class="control" type="number" inputmode="numeric" data-filter-min="area" placeholder="od" min="0"><span>–</span><input class="control" type="number" inputmode="numeric" data-filter-max="area" placeholder="do"></div></div>
+      <div class="mkt-group mkt-spacer"><span class="mkt-group__label">Řazení</span><select class="control" data-sort><option value="num">Doporučené</option><option value="price-asc">Cena: od nejnižší</option><option value="price-desc">Cena: od nejvyšší</option><option value="area-asc">Plocha: od nejmenší</option><option value="area-desc">Plocha: od největší</option></select></div>
+      <div class="mkt-group"><span class="mkt-group__label">Zobrazení</span><div class="vtoggle" data-view><button data-view-btn="list" class="is-active">${icon('layers')} Seznam</button><button data-view-btn="tiles">${icon('building')} Dlaždice</button></div></div>
+    </div>`;
+}
+
 // full data map for the modal / detail page (client reads by id)
 export const unitJSON = (units) =>
   `<script type="application/json" data-units>${JSON.stringify(
@@ -64,8 +85,9 @@ export const unitJSON = (units) =>
 /**
  * Unit marketplace: filters + Seznam/Dlaždice, server-rendered rows & tiles
  * (data-* driven client filtering/sorting; works without JS as a full list).
+ * hideBar: set to true when filters are shown separately in blue section
  */
-export function unitMarketplace({ units, projects = [], ranges, showProjectFilter = true }) {
+export function unitMarketplace({ units, projects = [], ranges, showProjectFilter = true, hideBar = false }) {
   const chip = (val, label, group, sel = false) =>
     `<button class="tag${sel ? ' is-selected' : ''}" data-filter="${group}" data-value="${esc(val)}">${esc(label)}</button>`;
   const dispChips = ['Vše', ...ranges.dispositions].map((d) => chip(d === 'Vše' ? 'vse' : d, d, 'disp', d === 'Vše')).join('');
@@ -74,41 +96,17 @@ export function unitMarketplace({ units, projects = [], ranges, showProjectFilte
   const projectOptions = ['<option value="vse">Všechny projekty</option>', ...projects.map((p) => `<option value="${esc(p.slug)}">${esc(p.name)}</option>`)].join('');
 
   return `<div class="mkt" data-marketplace>
-    <div class="mkt-bar">
+    ${!hideBar ? `<div class="mkt-bar">
       ${showProjectFilter ? `<div class="mkt-group">
         <span class="mkt-group__label">Projekt</span>
         <select class="control" data-filter-select="project">${projectOptions}</select>
       </div>` : ''}
-      <div class="mkt-group">
-        <span class="mkt-group__label">Dispozice</span>
-        <div class="mkt-chips">${dispChips}</div>
-      </div>
-      <div class="mkt-group">
-        <span class="mkt-group__label">Stav</span>
-        <div class="mkt-chips">${statusChips}</div>
-      </div>
-      <div class="mkt-group">
-        <span class="mkt-group__label">Plocha (m²)</span>
-        <div class="mkt-range"><input class="control" type="number" inputmode="numeric" data-filter-min="area" placeholder="od" min="0"><span>–</span><input class="control" type="number" inputmode="numeric" data-filter-max="area" placeholder="do"></div>
-      </div>
-      <div class="mkt-group mkt-spacer">
-        <span class="mkt-group__label">Řazení</span>
-        <select class="control" data-sort>
-          <option value="num">Doporučené</option>
-          <option value="price-asc">Cena: od nejnižší</option>
-          <option value="price-desc">Cena: od nejvyšší</option>
-          <option value="area-asc">Plocha: od nejmenší</option>
-          <option value="area-desc">Plocha: od největší</option>
-        </select>
-      </div>
-      <div class="mkt-group">
-        <span class="mkt-group__label">Zobrazení</span>
-        <div class="vtoggle" data-view>
-          <button data-view-btn="list" class="is-active">${icon('layers')} Seznam</button>
-          <button data-view-btn="tiles">${icon('building')} Dlaždice</button>
-        </div>
-      </div>
-    </div>
+      <div class="mkt-group"><span class="mkt-group__label">Dispozice</span><div class="mkt-chips">${dispChips}</div></div>
+      <div class="mkt-group"><span class="mkt-group__label">Stav</span><div class="mkt-chips">${statusChips}</div></div>
+      <div class="mkt-group"><span class="mkt-group__label">Plocha (m²)</span><div class="mkt-range"><input class="control" type="number" inputmode="numeric" data-filter-min="area" placeholder="od" min="0"><span>–</span><input class="control" type="number" inputmode="numeric" data-filter-max="area" placeholder="do"></div></div>
+      <div class="mkt-group mkt-spacer"><span class="mkt-group__label">Řazení</span><select class="control" data-sort><option value="num">Doporučené</option><option value="price-asc">Cena: od nejnižší</option><option value="price-desc">Cena: od nejvyšší</option><option value="area-asc">Plocha: od nejmenší</option><option value="area-desc">Plocha: od největší</option></select></div>
+      <div class="mkt-group"><span class="mkt-group__label">Zobrazení</span><div class="vtoggle" data-view><button data-view-btn="list" class="is-active">${icon('layers')} Seznam</button><button data-view-btn="tiles">${icon('building')} Dlaždice</button></div></div>
+    </div>` : ''}
 
     <div class="mkt-head">
       <span class="mkt-count" data-count><b>${units.length}</b> jednotek</span>
