@@ -129,7 +129,6 @@ function hero() {
       ${btn('Sjednat prohlídku', '/kontakt/', 'ghost', { lg: true, arrow: false })}
     </div>
   </div>
-  <a href="#main-scroll" class="scroll-cue" aria-hidden="true"><span class="line"></span> Objevujte</a>
   <span id="main-scroll"></span>
 </section>`;
 }
