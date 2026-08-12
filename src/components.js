@@ -145,7 +145,7 @@ function footer() {
     <span class="footer__ico">${esc(c.ico)}</span>
     <a class="footer__by" href="https://www.impnet.cz" target="_blank" rel="noopener">
       <span>Developed by</span>
-      <img src="/img/impnet-logo.svg" alt="IMPnet" width="90" height="22" onerror="this.replaceWith(Object.assign(document.createElement('b'),{textContent:'IMPnet'}))">
+      <img src="/img/impnet-logo.svg" alt="IMPnet" width="66" height="18" onerror="this.replaceWith(Object.assign(document.createElement('b'),{textContent:'IMPnet'}))">
     </a>
   </div>
 </footer>`;
