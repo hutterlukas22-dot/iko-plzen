@@ -8,15 +8,7 @@ import { unitMarketplace } from '../units-ui.js';
 
 export function projektyPage() {
   const body = `
-<section class="section--tight bg-brand" style="padding-top:calc(var(--header-h) + clamp(2rem,5vw,4rem))">
-  <div class="container" data-reveal>
-    ${eyebrow('Portfolio · Plzeň a okolí', { onbrand: true })}
-    <h1 class="display balance" style="color:#fff;margin:.6rem 0 1rem;max-width:18ch">Rezidenční projekty, které tvoří místa pro život.</h1>
-    <p class="lead" style="color:rgba(255,255,255,.9);max-width:56ch">Od městských bytů po rodinné domy se zahradou. Prohlédněte si, co právě stavíme a prodáváme, co připravujeme a co už v Plzni stojí.</p>
-  </div>
-</section>
-
-<section class="section" aria-labelledby="mkt-h">
+<section class="section" style="padding-top:calc(var(--header-h) + clamp(2rem,5vw,3rem))" aria-labelledby="mkt-h">
   <div class="container">
     <div class="sec-head" data-reveal>
       <div>${eyebrow('Byty a domy na prodej')}<h2 class="sec-head__title h1" id="mkt-h">Vyberte si konkrétní jednotku</h2>
