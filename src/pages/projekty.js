@@ -8,7 +8,7 @@ import { unitMarketplace } from '../units-ui.js';
 
 export function projektyPage() {
   const body = `
-<section class="section" style="padding-top:calc(var(--header-h) + clamp(2rem,5vw,3rem))" aria-labelledby="mkt-h">
+<section class="section bg-brand" style="padding-top:calc(var(--header-h) + clamp(2rem,5vw,3rem))" aria-labelledby="mkt-h">
   <div class="container">
     <div class="sec-head" data-reveal>
       <div>${eyebrow('Byty a domy na prodej')}<h2 class="sec-head__title h1" id="mkt-h">Vyberte si konkrétní jednotku</h2>
