@@ -543,7 +543,9 @@ textarea.control{resize:vertical;min-height:120px;line-height:1.5}
 .field.has-error .err{display:block}
 .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.1rem}
 @media (max-width:560px){.form-grid{grid-template-columns:1fr}}
-.form-card{background:#fff;border:1px solid var(--border-subtle);border-radius:var(--radius-xl);
+/* The card brings its own white surface, so it must own its text colour too —
+   otherwise it inherits white from a dark section and the copy disappears. */
+.form-card{background:#fff;color:var(--text-body);border:1px solid var(--border-subtle);border-radius:var(--radius-xl);
   box-shadow:var(--shadow-md);padding:clamp(1.5rem,3vw,2.4rem)}
 .form-note{font-size:var(--fs-label);color:var(--text-subtle);text-align:center;margin-top:.4rem}
 .form-success{text-align:center;padding:clamp(2rem,5vw,3.5rem) 1rem}
