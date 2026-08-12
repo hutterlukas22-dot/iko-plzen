@@ -10,9 +10,16 @@ const dataAttrs = (u) =>
   `data-unit="${esc(u.id)}" data-project="${esc(u.projectSlug)}" data-disp="${esc(u.disposition)}" ` +
   `data-status="${u.status}" data-area="${u.area}" data-price="${u.price || 0}" data-num="${typeof u.num === 'number' ? u.num : 0}" data-type="${esc(u.type)}"`;
 
+/* The whole card is clickable, but the compare button must not be nested inside a
+   link, so the anchor is stretched over the card and the button sits above it. */
+const compareBtn = (u, onMedia = false) =>
+  `<button type="button" class="ucmp${onMedia ? ' ucmp--onmedia' : ''}" data-compare-toggle data-id="${esc(u.id)}"
+    aria-label="Přidat ${esc(u.label)} do porovnání" title="Přidat do porovnání">${icon('scale')}</button>`;
+
 function unitRow(u) {
   const sold = u.status === 'sold';
-  return `<a href="/jednotka/?id=${esc(u.id)}" class="urow${sold ? ' urow--sold' : ''}" ${dataAttrs(u)}>
+  return `<div class="urow${sold ? ' urow--sold' : ''}" ${dataAttrs(u)}>
+    <a class="urow__link" href="/jednotka/?id=${esc(u.id)}" aria-label="Detail — ${esc(u.label)}"></a>
     <img class="urow__thumb" src="${u.img}" alt="Půdorys ${esc(u.label)}" loading="lazy" decoding="async">
     <div class="urow__cell--name">
       <div class="urow__name">${esc(u.label)}</div>
@@ -24,8 +31,8 @@ function unitRow(u) {
     <div class="urow__cell--floor urow__v">${u.floor ? esc(u.floor) : '—'}</div>
     <div class="urow__cell--status">${statusPill(u.status)}</div>
     <div class="urow__cell--price urow__price">${fmtPrice(u.price)}</div>
-    <div class="urow__cta">${icon('arrow-right')}</div>
-  </a>`;
+    <div class="urow__cta">${compareBtn(u)}<span class="urow__arrow">${icon('arrow-right')}</span></div>
+  </div>`;
 }
 
 function unitTile(u) {
@@ -38,9 +45,11 @@ function unitTile(u) {
   const rest = all.length - shown.length;
   const ppm = u.price && u.area ? Math.round(u.price / u.area) : null;
 
-  return `<a href="/jednotka/?id=${esc(u.id)}" class="ucard${sold ? ' ucard--sold' : ''}" ${dataAttrs(u)}>
+  return `<div class="ucard${sold ? ' ucard--sold' : ''}" ${dataAttrs(u)}>
+    <a class="ucard__link" href="/jednotka/?id=${esc(u.id)}" aria-label="Detail — ${esc(u.label)}"></a>
     <div class="ucard__media">
       <span class="badge badge--${u.status} badge--onmedia"><span class="dot"></span>${ST[u.status]}</span>
+      ${compareBtn(u, true)}
       <img src="${u.img}" alt="Půdorys ${esc(u.label)}" loading="lazy" decoding="async">
       <span class="ucard__disp">${esc(u.disposition)}</span>
     </div>
@@ -65,7 +74,7 @@ function unitTile(u) {
         <span class="ucard__cta">${sold ? 'Prohlédnout' : 'Mám zájem'} ${icon('arrow-right')}</span>
       </div>
     </div>
-  </a>`;
+  </div>`;
 }
 
 // Marketplace filters only — for separate blue section on projects page

@@ -1029,3 +1029,26 @@ html.no-js [data-reveal],.no-reveal [data-reveal]{opacity:1;transform:none}
 .footer__by:hover img{opacity:1}
 .footer__by b{font-weight:var(--fw-bold);color:var(--gray-300)}
 @media (max-width:640px){.footer__by{margin-left:0}}
+
+/* ---- Quick "add to comparison" on rows and tiles -------------------------
+   The card is clickable via a stretched link rather than by wrapping everything
+   in an <a>, so the compare button can sit above it without nesting one
+   interactive element inside another. */
+.urow,.ucard{position:relative}
+/* The link must paint above the card's own content (which is positioned in
+   places), so it sits at z-index 1 and the compare button at 2. */
+.urow__link,.ucard__link{position:absolute;inset:0;z-index:1}
+.urow__link:focus-visible,.ucard__link:focus-visible{outline:2px solid var(--iko-blue);outline-offset:-2px}
+.urow__cta{display:flex;align-items:center;gap:.5rem;justify-content:flex-end}
+.urow__arrow{display:inline-flex;color:var(--iko-blue)}
+
+.ucmp{display:inline-grid;place-items:center;width:34px;height:34px;flex:none;cursor:pointer;
+  position:relative;z-index:2;background:#fff;border:1px solid var(--border-default);color:var(--text-subtle);
+  transition:background var(--dur-fast),border-color var(--dur-fast),color var(--dur-fast)}
+.ucmp svg{width:16px;height:16px}
+.ucmp:hover{border-color:var(--iko-blue);color:var(--iko-blue);background:var(--blue-50)}
+.ucmp:focus-visible{outline:2px solid var(--iko-blue);outline-offset:2px}
+.ucmp.is-active{background:var(--iko-blue);border-color:var(--iko-blue);color:#fff}
+.ucmp--onmedia{position:absolute;top:12px;right:12px;background:rgba(255,255,255,.94);backdrop-filter:blur(4px)}
+.ucmp--onmedia.is-active{background:var(--iko-blue)}
+@media (max-width:760px){.urow__cta{gap:.35rem}.ucmp{width:32px;height:32px}}

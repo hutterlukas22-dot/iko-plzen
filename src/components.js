@@ -40,7 +40,7 @@ ${footer()}
 <div class="lightbox" id="lightbox" aria-hidden="true" role="dialog" aria-label="Galerie">
   <button class="lightbox__close" aria-label="Zavřít">${icon('x')}</button>
   <button class="lightbox__nav lightbox__nav--prev" aria-label="Předchozí">${icon('arrow-left')}</button>
-  <img src="" alt="">
+  <img alt=""><!-- src is set when the lightbox opens; an empty src would refetch the page -->
   <button class="lightbox__nav lightbox__nav--next" aria-label="Další">${icon('arrow-right')}</button>
   <div class="lightbox__count"></div>
 </div>

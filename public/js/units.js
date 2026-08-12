@@ -7,6 +7,10 @@
   function fmtPrice(n) { return n ? (Math.round(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + ' Kč') : 'Cena na vyžádání'; }
   function areaTxt(a) { return String(a).replace('.', ',') + ' m²'; }
   function pill(s) { return '<span class="spill spill--' + s + '"><span class="dot"></span>' + (ST[s] || s) + '</span>'; }
+  // scale icon, mirrored from lib/util.js for the client-rendered cards
+  var SCALE_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
+    '<path d="m16 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="m2 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/>' +
+    '<path d="M7 21h10"/><path d="M12 3v18"/><path d="M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2"/></svg>';
 
   var brand = $('.brand[href]');
   var PREFIX = brand ? brand.getAttribute('href') : './';
@@ -25,6 +29,16 @@
   function setC(a) { try { localStorage.setItem(CKEY, JSON.stringify(a)); } catch (e) {} updateCompareUI(); }
   function inC(id) { return getC().indexOf(id) >= 0; }
   function toggleC(id) { var a = getC(); var i = a.indexOf(id); if (i >= 0) a.splice(i, 1); else a.push(id); setC(a); return a.indexOf(id) >= 0; }
+  // One delegated handler for every compare control on the page (rows, tiles,
+  // detail). Cards are clickable, so stop the click reaching the stretched link.
+  document.addEventListener('click', function (e) {
+    var btn = e.target.closest && e.target.closest('[data-compare-toggle]');
+    if (!btn) return;
+    e.preventDefault(); e.stopPropagation();
+    var id = btn.getAttribute('data-id') || window.__unitId;
+    if (id) toggleC(id);
+  });
+
   function updateCompareUI() {
     var n = getC().length;
     $$('[data-compare-count]').forEach(function (el) { el.textContent = n; el.hidden = n === 0; });
@@ -275,8 +289,10 @@
       wrap.hidden = false;
       box.innerHTML = sim.map(function (k) {
         var s = UNITS[k], sppm = (s.price && s.area) ? Math.round(s.price / s.area) : null;
-        return '<a href="' + detailHref(k) + '" class="ucard">' +
+        return '<div class="ucard">' +
+          '<a class="ucard__link" href="' + detailHref(k) + '" aria-label="Detail — ' + s.label + '"></a>' +
           '<div class="ucard__media"><span class="badge badge--' + s.status + ' badge--onmedia"><span class="dot"></span>' + ST[s.status] + '</span>' +
+          '<button type="button" class="ucmp ucmp--onmedia" data-compare-toggle data-id="' + k + '" aria-label="Přidat ' + s.label + ' do porovnání" title="Přidat do porovnání">' + SCALE_SVG + '</button>' +
           '<img src="' + rel(s.img) + '" alt="Půdorys ' + s.label + '" loading="lazy"><span class="ucard__disp">' + s.disposition + '</span></div>' +
           '<div class="ucard__body"><div class="ucard__head"><span class="ucard__name">' + s.label + '</span>' +
           '<span class="ucard__project">' + s.project + '</span></div>' +
@@ -285,7 +301,7 @@
           '<div><dt>Cena / m²</dt><dd>' + (sppm ? fmtPrice(sppm) : '—') + '</dd></div></dl>' +
           '<div class="ucard__foot"><span class="ucard__price-wrap"><span class="ucard__ppm">Cena celkem</span>' +
           '<span class="ucard__price">' + fmtPrice(s.price) + '</span></span>' +
-          '<span class="ucard__cta">Mám zájem</span></div></div></a>';
+          '<span class="ucard__cta">Mám zájem</span></div></div></div>';
       }).join('');
     })();
 
@@ -306,8 +322,8 @@
     try { agents = JSON.parse($('[data-agents]').textContent); } catch (e) {}
     if (agentBox && agents[u.projectSlug]) agentBox.innerHTML = agents[u.projectSlug];
 
-    // compare toggle
-    var ct = $('[data-compare-toggle]', root); if (ct) { ct.setAttribute('data-id', id); ct.addEventListener('click', function () { toggleC(id); }); }
+    // compare toggle — the click itself is handled by the delegated listener
+    var ct = $('[data-compare-toggle]', root); if (ct) ct.setAttribute('data-id', id);
     document.title = u.label + ' — ' + u.project + ' — IKO';
   })();
 
