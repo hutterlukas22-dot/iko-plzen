@@ -170,18 +170,125 @@
       var wide = s[0] === 'Vybavení' ? ' c--wide' : '';
       return '<div class="c' + wide + '"><div class="k">' + s[0] + '</div><div class="v">' + s[1] + '</div></div>';
     }).join('');
-    var pl = $('[data-ud-project-link]', root);
-    if (pl && u.projectSlug) { pl.href = rel('/projekty/') + u.projectSlug + '/'; pl.textContent = u.project; }
+    var pl = $$('[data-ud-project-link],[data-ud-project-link2]', root);
+    pl.forEach(function (a) {
+      if (!u.projectSlug) return;
+      a.href = rel('/projekty/') + u.projectSlug + '/';
+      if (a.hasAttribute('data-ud-project-link')) a.textContent = u.project;
+    });
     var inq = rel('/kontakt/') + '?jednotka=' + encodeURIComponent(u.label);
-    $$('[data-ud-inquire],[data-ud-inquire2]', root).forEach(function (a) { a.href = inq; if (u.status === 'sold') { a.classList.add('btn--secondary'); a.setAttribute('aria-disabled', 'true'); } });
-    // visualizations
-    var viz = $('[data-ud-viz]', root), projviz = {};
-    try { projviz = JSON.parse($('[data-projviz]').textContent); } catch (e) {}
-    var imgs = (projviz[u.projectSlug] || []).slice(0, 4);
-    if (viz) viz.innerHTML = imgs.map(function (src, i) {
-      var span = i === 0 ? 'g-span-4' : 'g-span-2';
-      return '<figure class="' + span + '" data-full="' + rel(src) + '"><img src="' + rel(src) + '" alt="Vizualizace projektu ' + u.project + '" loading="lazy"></figure>';
+    $$('[data-ud-inquire]', root).forEach(function (a) {
+      a.href = inq;
+      if (u.status === 'sold') { a.setAttribute('aria-disabled', 'true'); a.textContent = 'Zeptat se na podobnou jednotku'; }
+    });
+
+    var ppm = (u.price && u.area) ? Math.round(u.price / u.area) : null;
+    set('[data-ud-ppm]', ppm ? fmtPrice(ppm) + ' / m²' : '');
+
+    /* hero facts */
+    var hf = $('[data-ud-herofacts]', root);
+    if (hf) {
+      var facts = [['Dispozice', u.disposition], ['Plocha', areaTxt(u.area)]];
+      if (u.type === 'Dům') facts.push(['Parcela', u.plot || '—']); else facts.push(['Podlaží', u.floor || '—']);
+      if (u.orient) facts.push(['Orientace', u.orient]);
+      hf.innerHTML = facts.map(function (f) { return '<li><span>' + f[0] + '</span><b>' + f[1] + '</b></li>'; }).join('');
+    }
+
+    /* project media: hero image, gallery, location text */
+    var media = {};
+    try { media = JSON.parse($('[data-projmedia]').textContent)[u.projectSlug] || {}; } catch (e) {}
+    var heroImg = $('[data-ud-hero]', root);
+    if (heroImg && media.hero) { heroImg.src = rel(media.hero); heroImg.alt = 'Vizualizace projektu ' + u.project; }
+    var gal = $('[data-ud-gallery]', root);
+    if (gal && media.gallery) gal.innerHTML = media.gallery.map(function (g, i) {
+      var span = i === 0 ? 'g-span-4' : (i === 1 ? 'g-span-2' : 'g-span-2');
+      return '<figure class="' + span + '" data-full="' + rel(g.src) + '"><img src="' + rel(g.src) + '" alt="' + g.alt + '" loading="lazy"></figure>';
     }).join('');
+    if (media.place) {
+      set('[data-ud-place-name]', media.place.name);
+      var pt = $('[data-ud-place-text]', root);
+      if (pt) pt.innerHTML = '<p>' + media.place.text + '</p>';
+    }
+
+    /* amenities with icons */
+    var amenBox = $('[data-ud-amen]', root), amenIcons = {};
+    try { amenIcons = JSON.parse($('[data-amenicons]').textContent); } catch (e) {}
+    if (amenBox) {
+      var list = u.amen || [];
+      amenBox.innerHTML = list.length
+        ? list.map(function (l) { return '<li>' + (amenIcons[l] || '') + '<span>' + l + '</span></li>'; }).join('')
+        : '<li><span>Rozsah vybavení upřesníme na vyžádání.</span></li>';
+    }
+
+    /* sticky bar */
+    var sticky = $('[data-ud-sticky]');
+    set('[data-ud-sticky-name]', u.label);
+    set('[data-ud-sticky-sub]', u.disposition + ' · ' + areaTxt(u.area));
+    set('[data-ud-sticky-price]', fmtPrice(u.price));
+    if (sticky) {
+      var heroEl = $('.ud-hero', root);
+      var onScroll = function () {
+        var past = heroEl ? (heroEl.getBoundingClientRect().bottom < 80) : window.scrollY > 400;
+        sticky.classList.toggle('is-on', past);
+      };
+      onScroll(); window.addEventListener('scroll', onScroll, { passive: true });
+    }
+
+    /* financing calculator */
+    (function () {
+      var fin = $('[data-fin]', root); if (!fin || !u.price) return;
+      var own = $('[data-fin-own]', fin), yrs = $('[data-fin-years]', fin), rate = $('[data-fin-rate]', fin);
+      function calc() {
+        var o = +own.value, y = +yrs.value, r = +rate.value;
+        var down = Math.round(u.price * o / 100), loan = u.price - down;
+        var i = r / 100 / 12, n = y * 12;
+        var m = i > 0 ? loan * i / (1 - Math.pow(1 + i, -n)) : loan / n;
+        $('[data-fin-own-out]', fin).textContent = o + ' %';
+        $('[data-fin-own-abs]', fin).textContent = fmtPrice(down);
+        $('[data-fin-years-out]', fin).textContent = y + ' let';
+        $('[data-fin-rate-out]', fin).textContent = r.toFixed(1).replace('.', ',') + ' %';
+        $('[data-fin-monthly]', fin).textContent = fmtPrice(Math.round(m));
+        $('[data-fin-price]', fin).textContent = fmtPrice(u.price);
+        $('[data-fin-own2]', fin).textContent = fmtPrice(down);
+        $('[data-fin-loan]', fin).textContent = fmtPrice(loan);
+        $('[data-fin-interest]', fin).textContent = fmtPrice(Math.round(m * n - loan));
+      }
+      [own, yrs, rate].forEach(function (el) { el.addEventListener('input', calc); });
+      calc();
+      // modelled payment schedule
+      var res = 100000, sosb = Math.round(u.price * 0.2);
+      set('[data-pay-1]', fmtPrice(res));
+      set('[data-pay-2]', fmtPrice(sosb - res > 0 ? sosb - res : sosb));
+      set('[data-pay-3]', fmtPrice(u.price - sosb));
+    })();
+
+    /* similar units: same project, still available, closest area */
+    (function () {
+      var wrap = $('[data-ud-similar-wrap]'), box = $('[data-ud-similar]');
+      if (!wrap || !box) return;
+      var sim = Object.keys(UNITS).filter(function (k) {
+        return k !== id && UNITS[k].projectSlug === u.projectSlug && UNITS[k].status === 'available';
+      }).sort(function (a, b) {
+        return Math.abs(UNITS[a].area - u.area) - Math.abs(UNITS[b].area - u.area);
+      }).slice(0, 3);
+      if (!sim.length) return;
+      wrap.hidden = false;
+      box.innerHTML = sim.map(function (k) {
+        var s = UNITS[k], sppm = (s.price && s.area) ? Math.round(s.price / s.area) : null;
+        return '<a href="' + detailHref(k) + '" class="ucard">' +
+          '<div class="ucard__media"><span class="badge badge--' + s.status + ' badge--onmedia"><span class="dot"></span>' + ST[s.status] + '</span>' +
+          '<img src="' + rel(s.img) + '" alt="Půdorys ' + s.label + '" loading="lazy"><span class="ucard__disp">' + s.disposition + '</span></div>' +
+          '<div class="ucard__body"><div class="ucard__head"><span class="ucard__name">' + s.label + '</span>' +
+          '<span class="ucard__project">' + s.project + '</span></div>' +
+          '<dl class="ucard__facts"><div><dt>Plocha</dt><dd>' + areaTxt(s.area) + '</dd></div>' +
+          '<div><dt>' + (s.type === 'Dům' ? 'Parcela' : 'Podlaží') + '</dt><dd>' + (s.type === 'Dům' ? (s.plot || '—') : (s.floor || '—')) + '</dd></div>' +
+          '<div><dt>Cena / m²</dt><dd>' + (sppm ? fmtPrice(sppm) : '—') + '</dd></div></dl>' +
+          '<div class="ucard__foot"><span class="ucard__price-wrap"><span class="ucard__ppm">Cena celkem</span>' +
+          '<span class="ucard__price">' + fmtPrice(s.price) + '</span></span>' +
+          '<span class="ucard__cta">Mám zájem</span></div></div></a>';
+      }).join('');
+    })();
+
     // compare toggle
     var ct = $('[data-compare-toggle]', root); if (ct) { ct.setAttribute('data-id', id); ct.addEventListener('click', function () { toggleC(id); }); }
     document.title = u.label + ' — ' + u.project + ' — IKO';

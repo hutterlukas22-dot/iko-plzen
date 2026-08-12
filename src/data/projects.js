@@ -18,6 +18,7 @@ export const projects = [
     coverAlt: 'Bytové domy Rezidence Slovanské údolí s barevnými fasádami a zelení, pohled z ulice',
     hero: P('slovanske-udoli', 6),
     heroVideo: '/video/hero-slovanske-udoli.mp4',
+    interiorImg: 11,
     heroAlt: 'Letecký pohled na Rezidenci Slovanské údolí — nová rezidenční čtvrť v zeleném údolí v Plzni',
     intro:
       'Nová rezidenční čtvrť v zeleném plzeňském údolí. Bytové domy, dvojdomy a řadové domy propojené parkovou zelení a klidnými pěšími trasami — místo, kde má bydlení lidské měřítko.',
@@ -65,6 +66,7 @@ export const projects = [
     coverAlt: 'Cihelná fasáda bytového domu Cukrovarská s předzahradou a zelení',
     hero: P('cukrovarska', 1),
     heroVideo: '/video/hero-cukrovarska.mp4',
+    interiorImg: 6,
     heroAlt: 'Bytový dům Cukrovarská — současná cihelná architektura se zelenými terasami v ulici v Plzni',
     intro:
       'Městský bytový dům, který citlivě doplňuje zavedenou plzeňskou ulici. Cihelná fasáda, zelené terasy a byty navržené pro každodenní pohodlí — bydlení ve městě, které zůstává klidné.',
@@ -112,6 +114,7 @@ export const projects = [
     coverAlt: 'Moderní rodinný dvojdům v projektu Radobyčice — Břízová',
     hero: P('radobycice', 2),
     heroVideo: '/video/hero-radobycice.mp4',
+    interiorImg: 5,
     heroAlt: 'Rodinné domy v projektu Radobyčice — Břízová v Plzni, moderní architektura s předzahradou',
     intro:
       'Klidná rezidenční čtvrť rodinných, řadových a dvojdomů v Radobyčicích. Čistá současná architektura, promyšlené dispozice a navazující rekonstrukce Břízové ulice.',
