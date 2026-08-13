@@ -7,6 +7,13 @@
   function fmtPrice(n) { return n ? (Math.round(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + ' Kč') : 'Cena na vyžádání'; }
   function areaTxt(a) { return String(a).replace('.', ',') + ' m²'; }
   function pill(s) { return '<span class="spill spill--' + s + '"><span class="dot"></span>' + (ST[s] || s) + '</span>'; }
+  // '3.NP' -> '2. patro' — mirrors floorLabel() in data/units.js
+  function floorTxt(code) {
+    var m = /^(\d)\.(NP|PP)$/.exec(code || '');
+    if (!m) return code || '';
+    if (m[2] === 'PP') return 'Suterén';
+    return m[1] === '1' ? 'Přízemí' : (Number(m[1]) - 1) + '. patro';
+  }
   // scale icon, mirrored from lib/util.js for the client-rendered cards
   var SCALE_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
     '<path d="m16 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="m2 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/>' +
@@ -161,96 +168,152 @@
     fi = firstWithUnits(data[bi]); renderFloors(); renderStage();
   });
 
-  /* ---------- Unit detail page ---------- */
+  /* ---------- Unit detail page ----------------------------------------------
+     Renders the whole template from the unit record chosen by ?id, so the page
+     works for any unit and drops sections it has no data for. ------------- */
   (function () {
     var root = $('[data-unit-detail]'); if (!root) return;
     var id = new URLSearchParams(location.search).get('id');
     if (!UNITS[id]) id = Object.keys(UNITS)[0];
     var u = UNITS[id]; if (!u) return;
     window.__unitId = id;
-    var set = function (sel, val) { var el = $(sel, root); if (el) el.textContent = val; };
-    set('[data-ud-eyebrow]', u.project + (u.floor ? ' · ' + u.floor : ''));
+
+    var set = function (sel, val) { var el = $(sel); if (el) el.textContent = val; };
+    var house = u.type === 'Dům';
+    var ppm = (u.price && u.area) ? Math.round(u.price / u.area) : null;
+
+    /* --- identity ------------------------------------------------------- */
+    set('[data-ud-project-name]', u.project);
     set('[data-ud-title]', u.label);
     set('[data-ud-crumb]', u.label);
     set('[data-ud-price]', fmtPrice(u.price));
-    var st = $('[data-ud-status]', root); if (st) st.innerHTML = pill(u.status);
-    var plan = $('[data-ud-plan]', root); if (plan) plan.src = rel(u.img);
-    var planLink = $('[data-ud-plan-link]', root); if (planLink) planLink.href = rel(u.img);
-    var specs = [['Dispozice', u.disposition], ['Plocha', areaTxt(u.area)], ['Podlaží', u.floor || '—'], ['Orientace', u.orient || '—'],
-      ['Cena za m²', u.price && u.area ? fmtPrice(Math.round(u.price / u.area)) : '—'], ['Typ', u.type || 'Byt'],
-      ['Vybavení', (u.amen && u.amen.length) ? u.amen.join(' · ') : '—']];
-    var sp = $('[data-ud-specs]', root);
-    if (sp) sp.innerHTML = specs.map(function (s) {
-      var wide = s[0] === 'Vybavení' ? ' c--wide' : '';
-      return '<div class="c' + wide + '"><div class="k">' + s[0] + '</div><div class="v">' + s[1] + '</div></div>';
-    }).join('');
-    var pl = $$('[data-ud-project-link],[data-ud-project-link2]', root);
-    pl.forEach(function (a) {
+    set('[data-ud-ppm]', ppm ? fmtPrice(ppm) + ' / m²' : '');
+    var sum = [u.disposition, areaTxt(u.area)];
+    if (!house && u.floor) sum.push(floorTxt(u.floor));
+    if (house && u.plot) sum.push('parcela ' + u.plot);
+    set('[data-ud-summary]', sum.join('  ·  '));
+    var st = $('[data-ud-status]'); if (st) st.innerHTML = pill(u.status);
+    document.title = u.label + ' — ' + u.project + ' — IKO';
+
+    /* --- facts bar: only what the unit actually has ---------------------- */
+    var facts = [[areaTxt(u.area), 'Podlahová plocha'], [u.disposition, 'Dispozice']];
+    if (!house && u.floor) facts.push([u.floor, 'Podlaží']);
+    if (house && u.plot) facts.push([u.plot, 'Parcela']);
+    if (u.terrace) facts.push(['Ano', 'Terasa']);
+    if (u.balcony) facts.push(['Ano', 'Balkon']);
+    if (u.garden) facts.push(['Ano', 'Předzahrádka']);
+    if (u.parking) facts.push(['1×', 'Parkovací stání']);
+    if (u.cellar) facts.push(['1×', 'Sklepní kóje']);
+    if (u.orient) facts.push([u.orient, 'Orientace']);
+    var fb = $('[data-ud-facts]');
+    if (fb) fb.innerHTML = facts.map(function (f) { return '<li><b>' + f[0] + '</b><span>' + f[1] + '</span></li>'; }).join('');
+
+    /* --- specification groups: skip anything the unit lacks -------------- */
+    var groups = [
+      ['Základní informace', [
+        ['Jednotka', u.label], ['Dispozice', u.disposition], ['Podlahová plocha', areaTxt(u.area)],
+        [house ? 'Parcela' : 'Podlaží', house ? u.plot : (u.floor ? u.floor + ' · ' + floorTxt(u.floor) : null)],
+        ['Orientace', u.orient], ['Typ', u.type]
+      ]],
+      ['Venkovní prostor', [
+        ['Terasa', u.terrace ? 'Ano' : null], ['Balkon', u.balcony ? 'Ano' : null],
+        ['Předzahrádka', u.garden ? 'Ano' : null]
+      ]],
+      ['Parkování a sklep', [
+        ['Parkovací stání', u.parking ? 'Ano' : null], ['Sklepní kóje', u.cellar ? 'Ano' : null],
+        ['Výtah v domě', u.elevator ? 'Ano' : null]
+      ]],
+      ['Cena', [
+        ['Cena celkem', fmtPrice(u.price)], ['Cena za m²', ppm ? fmtPrice(ppm) : null],
+        ['Dostupnost', ST[u.status]]
+      ]]
+    ];
+    var sp = $('[data-ud-spec]');
+    if (sp) {
+      sp.innerHTML = groups.map(function (g) {
+        var rows = g[1].filter(function (r) { return r[1]; });
+        if (!rows.length) return '';
+        return '<div class="specg"><h3>' + g[0] + '</h3><dl>' + rows.map(function (r) {
+          return '<div><dt>' + r[0] + '</dt><dd>' + r[1] + '</dd></div>';
+        }).join('') + '</dl></div>';
+      }).join('');
+    }
+
+    /* --- rooms ---------------------------------------------------------- */
+    var rl = $('[data-ud-rooms]');
+    if (rl) {
+      if (u.rooms && u.rooms.length) {
+        rl.innerHTML = u.rooms.map(function (r) {
+          return '<li><span>' + r.name + '</span><b>' + areaTxt(r.area) + '</b></li>';
+        }).join('');
+      } else {
+        var box = rl.closest('.ud-rooms'); if (box) box.hidden = true;
+      }
+    }
+
+    /* --- plan ----------------------------------------------------------- */
+    var plan = $('[data-ud-plan]');
+    if (plan) { plan.src = rel(u.img); plan.alt = 'Půdorys jednotky ' + u.label + ' — ' + u.disposition + ', ' + areaTxt(u.area); }
+    var planLink = $('[data-ud-plan-link]'); if (planLink) planLink.href = rel(u.img);
+
+    /* --- project media -------------------------------------------------- */
+    var media = {};
+    try { media = JSON.parse($('[data-projmedia]').textContent)[u.projectSlug] || {}; } catch (e) {}
+    var heroImg = $('[data-ud-hero]');
+    if (heroImg && media.hero) { heroImg.src = rel(media.hero); heroImg.alt = 'Vizualizace interiéru — ' + u.project; }
+    var living = $('[data-ud-living]');
+    if (living && media.living) { living.src = rel(media.living); living.alt = media.livingAlt || ('Vizualizace — ' + u.project); }
+    var gal = $('[data-ud-gallery]');
+    if (gal && media.gallery && media.gallery.length) {
+      gal.innerHTML = media.gallery.map(function (g, i) {
+        return '<figure class="' + (i === 0 ? 'g-span-4' : 'g-span-2') + '" data-full="' + rel(g.src) + '">' +
+          '<img src="' + rel(g.src) + '" alt="' + g.alt + '" loading="lazy"></figure>';
+      }).join('');
+    } else if (gal) { var gs = gal.closest('section'); if (gs) gs.hidden = true; }
+
+    if (media.place) {
+      set('[data-ud-place-name]', media.place.name);
+      var pt = $('[data-ud-place-text]'); if (pt) pt.innerHTML = '<p>' + media.place.text + '</p>';
+    }
+    if (media.project) {
+      set('[data-ud-proj-name]', media.project.name);
+      set('[data-ud-proj-intro]', media.project.intro);
+      var pimg = $('[data-ud-proj-img]');
+      if (pimg) { pimg.src = rel(media.project.img); pimg.alt = 'Vizualizace projektu ' + media.project.name; }
+    }
+
+    /* --- links ---------------------------------------------------------- */
+    $$('[data-ud-project-link],[data-ud-project-link2]').forEach(function (a) {
       if (!u.projectSlug) return;
       a.href = rel('/projekty/') + u.projectSlug + '/';
       if (a.hasAttribute('data-ud-project-link')) a.textContent = u.project;
     });
     var inq = rel('/kontakt/') + '?jednotka=' + encodeURIComponent(u.label);
-    $$('[data-ud-inquire]', root).forEach(function (a) {
+    $$('[data-ud-inquire]').forEach(function (a) {
       a.href = inq;
-      if (u.status === 'sold') { a.setAttribute('aria-disabled', 'true'); a.textContent = 'Zeptat se na podobnou jednotku'; }
+      if (u.status !== 'sold') return;
+      a.setAttribute('aria-disabled', 'true');
+      // the sticky/mobile bars are narrow, so they get a short label
+      var compact = a.closest('.ud-sticky') || a.closest('.ud-bar');
+      a.textContent = compact ? 'Zeptat se' : 'Zeptat se na podobnou jednotku';
     });
 
-    var ppm = (u.price && u.area) ? Math.round(u.price / u.area) : null;
-    set('[data-ud-ppm]', ppm ? fmtPrice(ppm) + ' / m²' : '');
-
-    /* hero facts */
-    var hf = $('[data-ud-herofacts]', root);
-    if (hf) {
-      var facts = [['Dispozice', u.disposition], ['Plocha', areaTxt(u.area)]];
-      if (u.type === 'Dům') facts.push(['Parcela', u.plot || '—']); else facts.push(['Podlaží', u.floor || '—']);
-      if (u.orient) facts.push(['Orientace', u.orient]);
-      hf.innerHTML = facts.map(function (f) { return '<li><span>' + f[0] + '</span><b>' + f[1] + '</b></li>'; }).join('');
-    }
-
-    /* project media: hero image, gallery, location text */
-    var media = {};
-    try { media = JSON.parse($('[data-projmedia]').textContent)[u.projectSlug] || {}; } catch (e) {}
-    var heroImg = $('[data-ud-hero]', root);
-    if (heroImg && media.hero) { heroImg.src = rel(media.hero); heroImg.alt = 'Vizualizace projektu ' + u.project; }
-    var gal = $('[data-ud-gallery]', root);
-    if (gal && media.gallery) gal.innerHTML = media.gallery.map(function (g, i) {
-      var span = i === 0 ? 'g-span-4' : (i === 1 ? 'g-span-2' : 'g-span-2');
-      return '<figure class="' + span + '" data-full="' + rel(g.src) + '"><img src="' + rel(g.src) + '" alt="' + g.alt + '" loading="lazy"></figure>';
-    }).join('');
-    if (media.place) {
-      set('[data-ud-place-name]', media.place.name);
-      var pt = $('[data-ud-place-text]', root);
-      if (pt) pt.innerHTML = '<p>' + media.place.text + '</p>';
-    }
-
-    /* amenities with icons */
-    var amenBox = $('[data-ud-amen]', root), amenIcons = {};
-    try { amenIcons = JSON.parse($('[data-amenicons]').textContent); } catch (e) {}
-    if (amenBox) {
-      var list = u.amen || [];
-      amenBox.innerHTML = list.length
-        ? list.map(function (l) { return '<li>' + (amenIcons[l] || '') + '<span>' + l + '</span></li>'; }).join('')
-        : '<li><span>Rozsah vybavení upřesníme na vyžádání.</span></li>';
-    }
-
-    /* sticky bar */
-    var sticky = $('[data-ud-sticky]');
-    set('[data-ud-sticky-name]', u.label);
-    set('[data-ud-sticky-sub]', u.disposition + ' · ' + areaTxt(u.area));
+    /* --- sticky header + mobile bar ------------------------------------- */
+    var sub = u.disposition + ' · ' + areaTxt(u.area);
+    set('[data-ud-sticky-name]', u.label); set('[data-ud-sticky-sub]', sub);
     set('[data-ud-sticky-price]', fmtPrice(u.price));
-    if (sticky) {
-      var heroEl = $('.ud-hero', root);
-      var onScroll = function () {
-        var past = heroEl ? (heroEl.getBoundingClientRect().bottom < 80) : window.scrollY > 400;
-        sticky.classList.toggle('is-on', past);
-      };
-      onScroll(); window.addEventListener('scroll', onScroll, { passive: true });
+    set('[data-ud-bar-name]', u.label); set('[data-ud-bar-sub]', sub + ' · ' + fmtPrice(u.price));
+    var sticky = $('[data-ud-sticky]'), bar = $('[data-ud-bar]'), heroEl = $('.ud-hero');
+    function onScroll() {
+      var past = heroEl ? (heroEl.getBoundingClientRect().bottom < 80) : window.scrollY > 400;
+      if (sticky) sticky.classList.toggle('is-on', past);
+      if (bar) bar.classList.toggle('is-on', past);
     }
+    onScroll(); window.addEventListener('scroll', onScroll, { passive: true });
 
-    /* financing calculator */
+    /* --- financing ------------------------------------------------------- */
     (function () {
-      var fin = $('[data-fin]', root); if (!fin || !u.price) return;
+      var fin = $('[data-fin]'); if (!fin || !u.price) return;
       var own = $('[data-fin-own]', fin), yrs = $('[data-fin-years]', fin), rate = $('[data-fin-rate]', fin);
       function calc() {
         var o = +own.value, y = +yrs.value, r = +rate.value;
@@ -269,14 +332,13 @@
       }
       [own, yrs, rate].forEach(function (el) { el.addEventListener('input', calc); });
       calc();
-      // modelled payment schedule
       var res = 100000, sosb = Math.round(u.price * 0.2);
       set('[data-pay-1]', fmtPrice(res));
       set('[data-pay-2]', fmtPrice(sosb - res > 0 ? sosb - res : sosb));
       set('[data-pay-3]', fmtPrice(u.price - sosb));
     })();
 
-    /* similar units: same project, still available, closest area */
+    /* --- similar units --------------------------------------------------- */
     (function () {
       var wrap = $('[data-ud-similar-wrap]'), box = $('[data-ud-similar]');
       if (!wrap || !box) return;
@@ -305,26 +367,25 @@
       }).join('');
     })();
 
-    /* enquiry form: carry the unit so the salesperson knows what it is about */
+    /* --- enquiry form carries the unit ----------------------------------- */
     var ctx = $('[data-form-ctx]');
     if (ctx) {
       var ci = $('[data-form-ctx-img]', ctx);
       if (ci) { ci.src = rel(u.img); ci.alt = 'Půdorys ' + u.label; }
-      var cn = $('[data-form-ctx-name]', ctx); if (cn) cn.textContent = u.label + ' · ' + u.project;
-      var cs = $('[data-form-ctx-sub]', ctx);
-      if (cs) cs.textContent = u.disposition + ' · ' + areaTxt(u.area) + (u.floor ? ' · ' + u.floor : '') + ' · ' + fmtPrice(u.price);
-      var fu = $('[data-form-unit]'); if (fu) fu.value = u.label + ' (' + u.project + ', ' + u.disposition + ', ' + areaTxt(u.area) + ') — ID ' + id;
+      set('[data-form-ctx-name]', u.label + ' · ' + u.project);
+      set('[data-form-ctx-sub]', sub + (u.floor ? ' · ' + u.floor : '') + ' · ' + fmtPrice(u.price));
+      var fu = $('[data-form-unit]');
+      if (fu) fu.value = u.label + ' (' + u.project + ', ' + u.disposition + ', ' + areaTxt(u.area) + ') — ID ' + id;
       var fuu = $('[data-form-unit-url]'); if (fuu) fuu.value = location.href;
     }
 
-    /* assigned salesperson for this project */
+    /* --- assigned salesperson -------------------------------------------- */
     var agentBox = $('[data-ud-agent]'), agents = {};
     try { agents = JSON.parse($('[data-agents]').textContent); } catch (e) {}
     if (agentBox && agents[u.projectSlug]) agentBox.innerHTML = agents[u.projectSlug];
 
-    // compare toggle — the click itself is handled by the delegated listener
+    // compare toggle — clicks handled by the delegated listener
     var ct = $('[data-compare-toggle]', root); if (ct) ct.setAttribute('data-id', id);
-    document.title = u.label + ' — ' + u.project + ' — IKO';
   })();
 
   /* ---------- Compare page ---------- */

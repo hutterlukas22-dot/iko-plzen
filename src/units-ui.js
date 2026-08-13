@@ -1,5 +1,6 @@
 import { esc, icon, fmtPrice } from './lib/util.js';
 import { floorLabel } from './data/units.js';
+import { rooms as roomsOf } from './data/unit-content.js';
 
 const ST = { available: 'Volný', reserved: 'Rezervováno', sold: 'Prodáno' };
 export const statusPill = (s) => `<span class="spill spill--${s}"><span class="dot"></span>${ST[s] || s}</span>`;
@@ -97,11 +98,13 @@ export function unitMarketplaceBar({ units, projects = [], ranges, showProjectFi
     </div>`;
 }
 
-// full data map for the modal / detail page (client reads by id)
-export const unitJSON = (units) =>
+// full data map for the modal / detail page (client reads by id).
+// `withRooms` adds the room breakdown — only the detail template needs it.
+export const unitJSON = (units, { withRooms = false } = {}) =>
   `<script type="application/json" data-units>${JSON.stringify(
     Object.fromEntries(
       units.map((u) => [u.id, {
+        ...(withRooms ? { rooms: roomsOf(u.disposition, u.area) } : {}),
         label: u.label, project: u.projectName, projectSlug: u.projectSlug,
         disposition: u.disposition, area: u.area,
         floor: u.floor, status: u.status, price: u.price, orient: u.orient,
