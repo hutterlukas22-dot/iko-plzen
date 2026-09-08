@@ -104,11 +104,11 @@ export function jednotkaPage() {
 </section>
 
 <!-- 08 — CAN I AFFORD IT --------------------------------------------------- -->
-<section class="section bg-ink" id="financovani">
+<section class="section bg-brand" id="financovani">
   <div class="container">
     <div class="sec-head sec-head--onbrand" data-reveal><div>${eyebrow('Financování', { onbrand: true })}
       <h2 class="sec-head__title h1" style="color:#fff">Kolik může stát vaše bydlení?</h2>
-      <p class="lead" style="color:var(--gray-300)">Posuňte vlastní zdroje a dobu splácení. Orientační výpočet — konkrétní nabídku připravíme na míru.</p></div>
+      <p class="lead" style="color:rgba(255,255,255,.9)">Posuňte vlastní zdroje a dobu splácení. Orientační výpočet — konkrétní nabídku připravíme na míru.</p></div>
     </div>
     <div class="fin" data-fin data-reveal>
       <div class="fin__controls">

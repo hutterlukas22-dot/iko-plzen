@@ -50,7 +50,7 @@ export function procIkoPage() {
   </div>
 </section>
 
-<section class="bg-ink"><div class="container">${statBand(site.stats, true)}</div></section>
+<section class="bg-brand"><div class="container">${statBand(site.stats, true)}</div></section>
 
 <section class="section">
   <div class="container">

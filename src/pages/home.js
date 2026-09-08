@@ -61,12 +61,12 @@ ${hero()}
 
 <!-- media bleeds to the section's top, right and bottom edges, so it sits outside
      the container; on mobile it falls back into the flow below the copy -->
-<section class="section bg-ink edge-band" aria-labelledby="story-h">
+<section class="section bg-brand edge-band" aria-labelledby="story-h">
   <div class="container edge-band__inner">
     <div data-reveal>
       ${eyebrow('35 let', { onbrand: true })}
       <h2 class="display" style="color:#fff;margin:.6rem 0 1.2rem">Zkušenost, kterou<br>je vidět na domech.</h2>
-      <p style="color:var(--gray-300);max-width:46ch">Od první stavby v roce 1991 po dnešní rezidenční čtvrti. Podívejte se, jak se z rodinné stavební firmy stal jeden z etablovaných plzeňských developerů.</p>
+      <p style="color:rgba(255,255,255,.9);max-width:46ch">Od první stavby v roce 1991 po dnešní rezidenční čtvrti. Podívejte se, jak se z rodinné stavební firmy stal jeden z etablovaných plzeňských developerů.</p>
       <div style="margin-top:1.8rem">${btn('Celý příběh IKO', '/o-nas/', 'inverse')}</div>
     </div>
   </div>

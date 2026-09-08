@@ -119,7 +119,7 @@ h1,h2,h3,h4{font-weight:var(--fw-extrabold);line-height:var(--lh-heading);letter
 .section--tight{padding-block:clamp(3rem, 2rem + 3vw, 5rem)}
 .bg-page{background:var(--surface-page)}
 .bg-brand{background:var(--iko-blue);color:#fff}
-.bg-ink{background:var(--surface-dark);color:#fff}
+
 .hr{height:1px;background:var(--border-subtle);border:0}
 
 /* ----- Type utilities --------------------------------------------------- */
@@ -1310,14 +1310,14 @@ html.no-js [data-reveal],.no-reveal [data-reveal]{opacity:1;transform:none}
 /* On the brand grey the muted greys of the dark theme lose contrast, so raise
    the secondary text to translucent white. (White body copy on #8A8D8F measures
    3.34:1 — under the 4.5:1 AA threshold; see note to client.) */
-.bg-ink .lead,.bg-ink p{color:rgba(255,255,255,.92)}
+.bg-brand .lead,.bg-brand p{color:rgba(255,255,255,.92)}
 .footer p,.footer li,.footer a{color:rgba(255,255,255,.92)}
 .footer h4{color:rgba(255,255,255,.75)}
 .footer__bar{color:rgba(255,255,255,.8)}
 .footer__by{color:rgba(255,255,255,.8)}
 .fin__hint,.fin__disclaimer{color:rgba(255,255,255,.85)}
 .fin__break dt,.fin__k{color:rgba(255,255,255,.9)}
-.stat--ink .stat__s,.bg-ink .stat__s{color:rgba(255,255,255,.85)}
+.stat--ink .stat__s,.bg-brand .stat__s{color:rgba(255,255,255,.85)}
 
 /* careers — open application */
 .opencv{background:#fff;border:1px solid var(--border-subtle);box-shadow:var(--shadow-md);

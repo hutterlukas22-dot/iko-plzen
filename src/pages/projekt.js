@@ -96,12 +96,12 @@ ${hasApartments ? `
   </div>
 </section>`}
 
-<section class="section--tight bg-ink">
+<section class="section--tight bg-brand">
   <div class="container grid-2" style="align-items:center">
     <div data-reveal>
       ${eyebrow('Máte zájem?', { onbrand: true })}
       <h2 class="display" style="color:#fff;margin:.5rem 0 1rem">Nezávazně se zeptejte na ${esc(p.name)}.</h2>
-      <p style="color:var(--gray-300);max-width:44ch">Domluvíme prohlídku, pošleme podklady nebo poradíme s financováním. Ozveme se do 24 hodin.</p>
+      <p style="color:rgba(255,255,255,.9);max-width:44ch">Domluvíme prohlídku, pošleme podklady nebo poradíme s financováním. Ozveme se do 24 hodin.</p>
       <div style="margin-top:1.6rem;display:flex;gap:.9rem;flex-wrap:wrap">
         <a class="btn btn--ghost btn--lg" href="tel:${site.contact.phoneHref}">${icon('phone')} ${esc(site.contact.phone)}</a>
       </div>
