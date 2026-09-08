@@ -39,11 +39,15 @@ export const site = {
     { href: '/kontakt/', label: 'Kontakt' },
   ],
   // Trust numbers — all verifiable from company materials.
+  // Client: drop "2003 developerská činnost", add three new figures — which
+  // leaves the original three plus three, i.e. six columns.
   stats: [
     { v: '35', l: 'let na trhu', s: 'Rodinná firma z Plzně od roku 1991' },
     { v: '1875+', l: 'postavených bytových jednotek', s: 'Od roku 1991 po dnešek' },
     { v: '19+', l: 'realizovaných kompletních projektů', s: 'Celé obytné lokality' },
     { v: '1400+', l: 'připravovaných jednotek', s: 'V 9 lokalitách' },
+    { v: '100 %', l: 'vlastní kapitál', s: 'Bez rizika zastavení projektu' },
+    { v: '1', l: 'dodavatel', s: 'Realizace i prodej pod jednou střechou' },
   ],
 };
 

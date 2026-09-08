@@ -59,18 +59,20 @@ ${hero()}
   </div>
 </section>
 
-<section class="section bg-ink" aria-labelledby="story-h">
-  <div class="container split">
+<!-- media bleeds to the section's top, right and bottom edges, so it sits outside
+     the container; on mobile it falls back into the flow below the copy -->
+<section class="section bg-ink edge-band" aria-labelledby="story-h">
+  <div class="container edge-band__inner">
     <div data-reveal>
       ${eyebrow('35 let', { onbrand: true })}
       <h2 class="display" style="color:#fff;margin:.6rem 0 1.2rem">Zkušenost, kterou<br>je vidět na domech.</h2>
       <p style="color:var(--gray-300);max-width:46ch">Od první stavby v roce 1991 po dnešní rezidenční čtvrti. Podívejte se, jak se z rodinné stavební firmy stal jeden z etablovaných plzeňských developerů.</p>
       <div style="margin-top:1.8rem">${btn('Celý příběh IKO', '/o-nas/', 'inverse')}</div>
     </div>
-    <div class="split__media split__media--wide reveal-media" data-reveal data-delay="1">
-      <img src="/photos/home-lokalita-lg.jpg" alt="Dokončená obytná lokalita IKO v Plzni-Černicích" loading="lazy" decoding="async">
-    </div>
   </div>
+  <figure class="edge-band__media">
+    <img src="/photos/home-lokalita-lg.jpg" alt="Dokončená obytná lokalita IKO v Plzni-Černicích" loading="lazy" decoding="async">
+  </figure>
 </section>
 
 <section class="section" aria-labelledby="svc-h">
@@ -183,16 +185,18 @@ function hero() {
    (duplicated content, translated -50%). */
 function tapeBlock() {
   const cell = Array.from({ length: 9 }, () => `<span>${IKO_MARK}</span>`).join('');
-  const bands = [1, 2, 3, 4, 5, 6, 7, 8]
+  const bands = [1, 2, 3, 4]
     .map((i) => `<div class="tband tband--${i}"><div class="tband__t">${cell}${cell}</div></div>`)
     .join('');
   return `<div class="tapeblock" aria-hidden="true">${bands}</div>`;
 }
 
 export function ctaBand() {
+  // The bands sit outside the container so they can bleed to the section's top,
+  // left and bottom edges instead of stopping at the gutter.
   return `<section class="cta-band" id="zacnime">
+  ${tapeBlock()}
   <div class="container cta-band__inner" data-reveal>
-    ${tapeBlock()}
     <div class="cta-band__c">
       <h2 class="display">Začněme u vašich představ.</h2>
       <p class="lead">Řekněte nám, co hledáte. My vám představíme možnosti, které nejlépe odpovídají vašim potřebám.</p>
