@@ -19,7 +19,7 @@ for (const p of projects) {
     hero: n(p.interiorImg),
     living: n((p.gallery.find((g) => /interiér|terasa|posezení|rodin/i.test(g.alt)) || p.gallery[1]).i),
     livingAlt: (p.gallery.find((g) => /interiér|terasa|posezení|rodin/i.test(g.alt)) || p.gallery[1]).alt,
-    project: { name: p.name, intro: p.intro, slug: p.slug, img: n(p.gallery[0].i), status: p.statusLabel },
+    project: { name: p.name, intro: p.intro, slug: p.slug, img: n(p.gallery[0].i), status: p.statusLabel, web: p.web || null },
     place: p.place,
     gallery: (p.gallery || []).slice(0, 6).map((g) => ({ src: n(g.i), alt: g.alt })),
   };
@@ -153,6 +153,23 @@ export function jednotkaPage() {
         <span class="trustc__ic">${icon(t.icon)}</span>
         <b>${esc(t.t)}</b><span>${esc(t.d)}</span>
       </div>`).join('')}
+    </div>
+  </div>
+</section>
+
+<!-- Teaser to the project's own microsite, before the enquiry form -->
+<section class="webteaser" data-ud-webteaser>
+  <div class="webteaser__media"><img data-ud-web-img src="" alt="" loading="lazy" decoding="async"></div>
+  <div class="webteaser__scrim"></div>
+  <div class="container webteaser__inner">
+    <div class="webteaser__c" data-reveal>
+      <div class="eyebrow eyebrow--onbrand">Web projektu</div>
+      <h2 class="display" data-ud-web-name>Projekt</h2>
+      <p data-ud-web-intro></p>
+      <a class="btn btn--inverse btn--lg" data-ud-web-cta href="/projekty/">
+        <span data-ud-web-cta-label>Zobrazit web projektu</span> ${icon('arrow-up-right')}
+      </a>
+      <span class="webteaser__note" data-ud-web-note hidden>Samostatný web projektu právě připravujeme.</span>
     </div>
   </div>
 </section>

@@ -280,6 +280,25 @@
       set('[data-ud-proj-intro]', media.project.intro);
       var pimg = $('[data-ud-proj-img]');
       if (pimg) { pimg.src = rel(media.project.img); pimg.alt = 'Vizualizace projektu ' + media.project.name; }
+
+      /* teaser to the project's own site; falls back to the internal project
+         page while a microsite is not up yet */
+      set('[data-ud-web-name]', media.project.name);
+      set('[data-ud-web-intro]', media.project.intro);
+      var wimg = $('[data-ud-web-img]');
+      if (wimg) { wimg.src = rel(media.project.img); wimg.alt = 'Vizualizace projektu ' + media.project.name; }
+      var wcta = $('[data-ud-web-cta]'), wnote = $('[data-ud-web-note]');
+      if (wcta) {
+        if (media.project.web) {
+          wcta.href = media.project.web;
+          wcta.target = '_blank'; wcta.rel = 'noopener';
+          set('[data-ud-web-cta-label]', 'Otevřít web projektu');
+        } else {
+          wcta.href = rel('/projekty/') + media.project.slug + '/';
+          set('[data-ud-web-cta-label]', 'Zobrazit projekt');
+          if (wnote) wnote.hidden = false;
+        }
+      }
     }
 
     /* --- links ---------------------------------------------------------- */

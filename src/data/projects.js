@@ -8,6 +8,7 @@ export const projects = [
   /* ---------------------------------------------------------------- */
   {
     slug: 'rezidence-slovanske-udoli',
+    web: 'https://www.rezidenceslovanskeudoli.cz/',
     imgPrefix: 'slovanske-udoli',
     name: 'Rezidence Slovanské údolí',
     status: 'aktualni',
@@ -17,7 +18,6 @@ export const projects = [
     cover: P('slovanske-udoli', 1, 'sm'),
     coverAlt: 'Bytové domy Rezidence Slovanské údolí s barevnými fasádami a zelení, pohled z ulice',
     hero: P('slovanske-udoli', 6),
-    heroVideo: '/video/hero-slovanske-udoli.mp4',
     interiorImg: 11,
     heroAlt: 'Letecký pohled na Rezidenci Slovanské údolí — nová rezidenční čtvrť v zeleném údolí v Plzni',
     intro:
@@ -56,6 +56,7 @@ export const projects = [
   /* ---------------------------------------------------------------- */
   {
     slug: 'bytovy-dum-cukrovarska',
+    web: null, // hosting not up yet
     imgPrefix: 'cukrovarska',
     name: 'Bytový dům Cukrovarská',
     status: 'aktualni',
@@ -65,7 +66,6 @@ export const projects = [
     cover: P('cukrovarska', 3, 'sm'),
     coverAlt: 'Cihelná fasáda bytového domu Cukrovarská s předzahradou a zelení',
     hero: P('cukrovarska', 1),
-    heroVideo: '/video/hero-cukrovarska.mp4',
     interiorImg: 6,
     heroAlt: 'Bytový dům Cukrovarská — současná cihelná architektura se zelenými terasami v ulici v Plzni',
     intro:
@@ -104,6 +104,7 @@ export const projects = [
   /* ---------------------------------------------------------------- */
   {
     slug: 'radobycice-brizova',
+    web: null,
     imgPrefix: 'radobycice',
     name: 'Radobyčice — Břízová',
     status: 'aktualni',
@@ -113,7 +114,6 @@ export const projects = [
     cover: P('radobycice', 2, 'sm'),
     coverAlt: 'Moderní rodinný dvojdům v projektu Radobyčice — Břízová',
     hero: P('radobycice', 2),
-    heroVideo: '/video/hero-radobycice.mp4',
     interiorImg: 5,
     heroAlt: 'Rodinné domy v projektu Radobyčice — Břízová v Plzni, moderní architektura s předzahradou',
     intro:
