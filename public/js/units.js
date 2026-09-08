@@ -334,8 +334,14 @@
     (function () {
       var fin = $('[data-fin]'); if (!fin || !u.price) return;
       var own = $('[data-fin-own]', fin), yrs = $('[data-fin-years]', fin), rate = $('[data-fin-rate]', fin);
+      // feeds the track gradient, so the filled part shows in every browser
+      function paint(el) {
+        var pct = (el.value - el.min) / (el.max - el.min) * 100;
+        el.style.setProperty('--p', pct + '%');
+      }
       function calc() {
         var o = +own.value, y = +yrs.value, r = +rate.value;
+        [own, yrs, rate].forEach(paint);
         var down = Math.round(u.price * o / 100), loan = u.price - down;
         var i = r / 100 / 12, n = y * 12;
         var m = i > 0 ? loan * i / (1 - Math.pow(1 + i, -n)) : loan / n;
