@@ -41,6 +41,9 @@ export function projektDetailPage(p) {
       <div data-reveal>
         ${eyebrow('O projektu')}
         <p class="lead" style="margin-top:1rem;font-size:var(--fs-h3);font-weight:var(--fw-medium);color:var(--text-strong);max-width:30ch;line-height:1.3">${esc(p.intro)}</p>
+        ${p.web ? `<a class="btn btn--primary btn--lg" style="margin-top:1.8rem" href="${p.web}" target="_blank" rel="noopener">
+          Web projektu ${icon('arrow-up-right')}
+        </a>` : ''}
       </div>
       <div data-reveal data-delay="1">
         ${metaGrid(p.meta)}
