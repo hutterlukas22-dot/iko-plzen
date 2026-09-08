@@ -14,8 +14,8 @@ export function karieraPage() {
 <section class="section--tight" style="padding-top:calc(var(--header-h) + clamp(2.5rem,6vw,5rem))">
   <div class="container container--narrow" data-reveal>
     ${eyebrow('Kariéra')}
-    <h1 class="display balance" style="margin:1rem 0 1.2rem;max-width:18ch">Stavte s námi místa, kde lidé skutečně žijí.</h1>
-    <p class="lead muted" style="max-width:58ch">Hledáme zkušené profesionály, kteří chtějí za svou prací vidět hotové domy. Nabízíme stabilní zázemí rodinné firmy a smysluplné projekty v Plzni a okolí.</p>
+    <h1 class="display balance" style="margin:1rem 0 1.2rem;max-width:18ch">Dobré stavby začínají dobrými lidmi.</h1>
+    <p class="lead muted" style="max-width:58ch">Za každým domem, dokončenou stavbou a spokojeným klientem stojí práce lidí, kterým na výsledku opravdu záleží. V IKO stavby už více než 35 let vytváříme projekty, které mění Plzeň a její okolí v místa pro dobrý život.</p>
   </div>
 </section>
 
@@ -46,7 +46,37 @@ export function karieraPage() {
       </div>
       <div style="display:flex;gap:.8rem;flex-wrap:wrap">
         <a class="btn btn--primary btn--lg" href="tel:${site.contact.careersPhoneHref}">${icon('phone')} ${esc(site.contact.careersPhone)}</a>
-        <a class="btn btn--secondary btn--lg" href="mailto:${site.contact.email}?subject=Kariéra%20—%20${encodeURIComponent(career.title)}">${icon('mail')} Napsat e-mail</a>
+        <a class="btn btn--secondary btn--lg" href="mailto:${site.contact.careersEmail}?subject=Kariéra%20—%20${encodeURIComponent(career.title)}">${icon('mail')} Napsat e-mail</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Open application — so people can apply even when no role is listed -->
+<section class="section bg-page">
+  <div class="container split" style="align-items:start">
+    <div data-reveal>
+      ${eyebrow('Nenašli jste svou pozici?')}
+      <h2 class="display" style="margin:.6rem 0 1.2rem">To neznamená, že se nemůžeme potkat.</h2>
+      <div class="prose muted" style="max-width:48ch">
+        <p>Pošlete nám svůj životopis a pár vět o tom, čemu se věnujete a co by vás u nás zajímalo. Zařadíme vás do naší databáze uchazečů a ozveme se, jakmile se objeví příležitost, která by vám mohla sedět.</p>
+        <p>Každý životopis si osobně projdeme. Pokud uvidíme prostor pro spolupráci, ozveme se vám.</p>
+      </div>
+      <h3 style="font-size:var(--fs-h4);margin:1.6rem 0 .6rem">Zajímá nás především</h3>
+      <ul class="ticks">
+        ${['praxe ve stavebnictví, developmentu nebo technických oborech',
+           'zodpovědný přístup a chuť dotahovat věci do konce',
+           'schopnost spolupracovat a komunikovat na rovinu',
+           'zájem učit se a podílet se na kvalitních projektech']
+          .map((t) => `<li>${icon('check')}<span>${esc(t)}</span></li>`).join('')}
+      </ul>
+    </div>
+    <div data-reveal data-delay="1">
+      <div class="opencv">
+        <h3>Pošlete nám svůj životopis</h3>
+        <p>Stačí připojit CV a krátkou zprávu: jaké máte zkušenosti, o jakou oblast se zajímáte a proč byste chtěli pracovat právě s námi.</p>
+        <a class="btn btn--primary btn--lg btn--block" href="mailto:${site.contact.careersEmail}?subject=${encodeURIComponent('Životopis do databáze uchazečů')}">${icon('mail')} ${esc(site.contact.careersEmail)}</a>
+        <a class="btn btn--secondary btn--block" href="tel:${site.contact.careersPhoneHref}" style="margin-top:.7rem">${icon('phone')} ${esc(site.contact.careersPhone)}</a>
       </div>
     </div>
   </div>

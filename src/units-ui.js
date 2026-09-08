@@ -83,14 +83,17 @@ export function unitMarketplaceBar({ units, projects = [], ranges, showProjectFi
   const chip = (val, label, group, sel = false) =>
     `<button class="tag${sel ? ' is-selected' : ''}" data-filter="${group}" data-value="${esc(val)}">${esc(label)}</button>`;
   const dispChips = ['Vše', ...ranges.dispositions].map((d) => chip(d === 'Vše' ? 'vse' : d, d, 'disp', d === 'Vše')).join('');
-  const statusChips = [['vse', 'Vše'], ['available', 'Volné'], ['reserved', 'Rezervováno'], ['sold', 'Prodáno']]
+  const statusChips = [['vse', 'Vše'], ['available', 'Volné'], ['reserved', 'Rezervováno'], ['sold', 'Prodáno'], ['preparing', 'Připravujeme']]
     .map(([v, l], i) => chip(v, l, 'status', i === 0)).join('');
+  const typeChips = [['vse', 'Vše'], ['Byt', 'Byty'], ['Dům', 'Rodinné domy'], ['Řadový dům', 'Řadové domy'], ['Dvojdům', 'Dvojdomy'], ['Pozemek', 'Pozemky']]
+    .map(([v, l], i) => chip(v, l, 'type', i === 0)).join('');
   const projectOptions = ['<option value="vse">Všechny projekty</option>', ...projects.map((p) => `<option value="${esc(p.slug)}">${esc(p.name)}</option>`)].join('');
   return `<div class="mkt-bar">
       ${showProjectFilter ? `<div class="mkt-group">
         <span class="mkt-group__label">Projekt</span>
         <select class="control" data-filter-select="project">${projectOptions}</select>
       </div>` : ''}
+      <div class="mkt-group"><span class="mkt-group__label">Typ</span><div class="mkt-chips">${typeChips}</div></div>
       <div class="mkt-group"><span class="mkt-group__label">Dispozice</span><div class="mkt-chips">${dispChips}</div></div>
       <div class="mkt-group"><span class="mkt-group__label">Stav</span><div class="mkt-chips">${statusChips}</div></div>
       <div class="mkt-group"><span class="mkt-group__label">Plocha (m²)</span><div class="mkt-range"><input class="control" type="number" inputmode="numeric" data-filter-min="area" placeholder="od" min="0"><span>–</span><input class="control" type="number" inputmode="numeric" data-filter-max="area" placeholder="do"></div></div>
@@ -124,8 +127,10 @@ export function unitMarketplace({ units, projects = [], ranges, showProjectFilte
   const chip = (val, label, group, sel = false) =>
     `<button class="tag${sel ? ' is-selected' : ''}" data-filter="${group}" data-value="${esc(val)}">${esc(label)}</button>`;
   const dispChips = ['Vše', ...ranges.dispositions].map((d) => chip(d === 'Vše' ? 'vse' : d, d, 'disp', d === 'Vše')).join('');
-  const statusChips = [['vse', 'Vše'], ['available', 'Volné'], ['reserved', 'Rezervováno'], ['sold', 'Prodáno']]
+  const statusChips = [['vse', 'Vše'], ['available', 'Volné'], ['reserved', 'Rezervováno'], ['sold', 'Prodáno'], ['preparing', 'Připravujeme']]
     .map(([v, l], i) => chip(v, l, 'status', i === 0)).join('');
+  const typeChips = [['vse', 'Vše'], ['Byt', 'Byty'], ['Dům', 'Rodinné domy'], ['Řadový dům', 'Řadové domy'], ['Dvojdům', 'Dvojdomy'], ['Pozemek', 'Pozemky']]
+    .map(([v, l], i) => chip(v, l, 'type', i === 0)).join('');
   const projectOptions = ['<option value="vse">Všechny projekty</option>', ...projects.map((p) => `<option value="${esc(p.slug)}">${esc(p.name)}</option>`)].join('');
 
   return `<div class="mkt" data-marketplace>
@@ -134,6 +139,7 @@ export function unitMarketplace({ units, projects = [], ranges, showProjectFilte
         <span class="mkt-group__label">Projekt</span>
         <select class="control" data-filter-select="project">${projectOptions}</select>
       </div>` : ''}
+      <div class="mkt-group"><span class="mkt-group__label">Typ</span><div class="mkt-chips">${typeChips}</div></div>
       <div class="mkt-group"><span class="mkt-group__label">Dispozice</span><div class="mkt-chips">${dispChips}</div></div>
       <div class="mkt-group"><span class="mkt-group__label">Stav</span><div class="mkt-chips">${statusChips}</div></div>
       <div class="mkt-group"><span class="mkt-group__label">Plocha (m²)</span><div class="mkt-range"><input class="control" type="number" inputmode="numeric" data-filter-min="area" placeholder="od" min="0"><span>–</span><input class="control" type="number" inputmode="numeric" data-filter-max="area" placeholder="do"></div></div>

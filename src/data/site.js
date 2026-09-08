@@ -14,15 +14,18 @@ export const site = {
   contact: {
     company: 'IKO stavby s.r.o.',
     street: 'Vltavínová 1334/3',
-    city: '326 00 Plzeň',
+    city: '326 00 Plzeň — Černice',
     phone: '371 656 911',
     phoneHref: '+420371656911',
     careersPhone: '371 656 922',
     careersPhoneHref: '+420371656922',
-    email: 'iko@ikoplzen.cz',
+    email: 'projekty@ikoplzen.cz',
+    careersEmail: 'general@ikostavby.cz',
     ico: 'Krajský soud Plzeň, oddíl C, vložka 26510',
     facebook: 'https://www.facebook.com/ikostavbyplzen',
     youtube: 'https://www.youtube.com/@ikoplzen5446',
+    instagram: null, // client to supply
+    linkedin: null,  // client to supply
   },
   nav: [
     { href: '/projekty/', label: 'Projekty' },
@@ -38,37 +41,37 @@ export const site = {
   // Trust numbers — all verifiable from company materials.
   stats: [
     { v: '35', l: 'let na trhu', s: 'Rodinná firma z Plzně od roku 1991' },
-    { v: '100 %', l: 'vlastní kapitál', s: 'Bez rizika zastavení projektu' },
-    { v: '1', l: 'dodavatel', s: 'Realizace i prodej pod jednou střechou' },
-    { v: '2003', l: 'developerská činnost', s: 'Vlastní rezidenční projekty' },
+    { v: '1875+', l: 'postavených bytových jednotek', s: 'Od roku 1991 po dnešek' },
+    { v: '19+', l: 'realizovaných kompletních projektů', s: 'Celé obytné lokality' },
+    { v: '1400+', l: 'připravovaných jednotek', s: 'V 9 lokalitách' },
   ],
 };
 
-// "Proč IKO" — reframed advantages (from Výhody pro klienty). Real, not generic.
+// "Proč IKO" — six reasons, wording supplied by the client.
 export const principles = [
   {
-    t: 'Prodej bez prostředníků',
-    d: 'Prodej nemovitostí probíhá zcela v naší režii, bez účasti dalších zprostředkovatelů. Jednáte přímo s tím, kdo dům staví.',
+    t: 'Stavíme sami, ne jen zadáváme',
+    d: 'Máme vlastní stavební zkušenost a průběh realizace držíme pod kontrolou. Díky tomu víme, co se na stavbě děje, a dokážeme řešit věci přímo, ne přes řetězec prostředníků.',
   },
   {
-    t: 'Klientské změny',
-    d: 'Vyjdeme vstříc vašim požadavkům na úpravy. Změny zpracováváme interně ve spolupráci s projectstudio8.',
+    t: 'Bydlení, které má kontext',
+    d: 'Nevnímáme pozemek jako prázdnou plochu pro co nejvíce jednotek. Hledáme rovnováhu mezi domy, prostorem, zelení, dopravou a soukromím — aby lokalita dobře sloužila lidem, kteří v ní budou žít.',
   },
   {
-    t: 'Vlastní stavební dozor',
-    d: 'Realizaci vedou naši stavbyvedoucí a mistři. Kvalitu hlídáme my — od základů po předání klíčů.',
+    t: 'Plzeň známe jako domov, ne jako trh',
+    d: 'Stavíme především na okrajích Plzně a v jejím blízkém okolí. Známe charakter jednotlivých lokalit, jejich možnosti i to, co jim může skutečně prospět.',
   },
   {
-    t: 'Pomoc s financováním',
-    d: 'Poradíme a pomůžeme se zajištěním financování koupě nemovitosti, ať začínáte nebo měníte bydlení.',
+    t: 'Od prvního dotazu k předání klíčů',
+    d: 'Prodej zajišťujeme přímo. Bez provize pro realitního zprostředkovatele a bez přeposílání mezi firmami. Máte jeden tým, jasné informace a konkrétní lidi, na které se můžete obrátit.',
   },
   {
-    t: 'Jedno kontaktní místo',
-    d: 'Veškeré dotazy vyřídíte na jednom místě. Bez přehazování mezi firmami, bez ztraceného času.',
+    t: 'Domov podle vás',
+    d: 'Kde to projekt umožňuje, řešíme klientské změny individuálně — přímo v našem zázemí a ve spolupráci s projektanty. Protože domov má odpovídat vašemu životu, ne jen původnímu půdorysu.',
   },
   {
-    t: 'Vertikální integrace',
-    d: 'Kupujete jistotu, ne jen metry čtvereční. Vlastní kapitál, vlastní realizace, vlastní prodej.',
+    t: 'Zkušenost, která nekončí podpisem smlouvy',
+    d: 'Od roku 1991 jsme realizovali stavby pro investory i vlastní obytné projekty. Víme, že důvěra se nestaví reklamou, ale kvalitou práce a tím, jak se k lidem chováme i poté, co převezmou svůj nový domov.',
   },
 ];
 
@@ -97,29 +100,31 @@ export const milestones = [
 ];
 
 // Services — two sides of the business.
+// Services — wording supplied by the client.
 export const services = {
   development: {
     k: 'Development',
-    t: 'Vlastní rezidenční projekty',
-    d: 'Připravujeme, stavíme a prodáváme vlastní rezidenční projekty v Plzni a okolí — od výběru pozemku po předání hotového domova.',
+    t: 'Od pozemku k novému domovu.',
+    d: 'Vlastní developerské projekty připravujeme od první myšlenky až po předání klíčů. Hledáme perspektivní místa v Plzni a blízkém okolí, prověřujeme jejich možnosti a navrhujeme bydlení, které dává smysl lidem i lokalitě. Zajišťujeme přípravu území, projektovou a povolovací část, realizaci, prodej i klientský servis.',
     items: [
-      'Realizace vlastních developerských projektů',
-      'Rodinné domy, dvojdomy a řadové domy',
-      'Bytové domy',
-      'Příprava pozemků pro individuální výstavbu',
-      'Realitní činnost v rámci vlastního developmentu',
+      'vyhledání a přípravu pozemků',
+      'návrh a koordinaci projektu',
+      'inženýring a povolovací proces',
+      'výstavbu domů a infrastruktury',
+      'prodej nemovitostí bez zprostředkovatelů',
+      'klientské změny a podporu při financování',
     ],
   },
   construction: {
-    k: 'Stavební činnost',
-    t: 'Výstavba pro investory',
-    d: 'Stavíme také na zakázku pro externí investory. Přinášíme 35 let řemesla, vlastní realizační tým a spolehlivé vedení stavby.',
+    k: 'Stavby pro externí investory',
+    t: 'Vaše vize. Naše zkušenost ze stavby.',
+    d: 'Realizujeme také stavby pro soukromé i firemní investory. Máme zkušenosti s novostavbami, rekonstrukcemi i modernizacemi — výrobní a administrativní areály, zdravotnická zařízení, skladové haly, penziony i další občanské a komerční stavby.',
     items: [
-      'Výstavba pro externí investory',
-      'Dodávky staveb na klíč',
-      'Zajištění projektu a inženýrská činnost',
-      'Vedení stavby vlastními stavbyvedoucími',
-      'Stavební dozor a kontrola kvality',
+      'realizaci novostaveb, rekonstrukcí a modernizací',
+      'koordinaci stavby a profesí',
+      'zkušené vedení stavby a dohled nad kvalitou',
+      'kontrolu termínů, rozpočtu a postupu prací',
+      'odpovědnost za kvalitně dokončené dílo',
     ],
   },
 };

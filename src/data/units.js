@@ -13,6 +13,12 @@ const PROJECT_OF = {
   'slovanske-bd2': { slug: 'rezidence-slovanske-udoli', name: 'Rezidence Slovanské údolí', city: 'Plzeň' },
 };
 
+const PROJECT_IMG = {
+  cukrovarska: '/projects/cukrovarska-01-sm.jpg',
+  'slovanske-bd1': '/projects/slovanske-udoli-05-sm.jpg',
+  'slovanske-bd2': '/projects/slovanske-udoli-05-sm.jpg',
+};
+
 const normFloor = (code) => code.replace(/^(\d)(NP|PP)$/, '$1.$2'); // '2NP' -> '2.NP'
 const floorOrder = (code) => {
   const m = code.match(/^(\d)\.(NP|PP)$/);
@@ -40,7 +46,7 @@ for (const [key, b] of Object.entries(gen)) {
       num: u.num, disposition: u.disposition, area: u.area, floor: u.floor,
       status: u.status, price: u.price, orient: u.orient,
       parking: u.parking, cellar: u.cellar, terrace: u.terrace, balcony: u.balcony,
-      img: u.img, type: 'Byt',
+      img: PROJECT_IMG[key], type: 'Byt',
     });
   }
 }

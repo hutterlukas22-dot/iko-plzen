@@ -166,6 +166,35 @@ export function teamCard(p, idx = 0) {
   </article>`;
 }
 
+/* ---------- Current project tile ---------------------------------------- */
+/* `web` (the project's own site) wins when known, otherwise the internal detail
+   page; a project with neither renders the CTA disabled rather than dead. */
+export function currentProjectCard(p, meta, idx = 0) {
+  const m = meta[p.status] || meta.selling;
+  const href = p.web || (p.slug ? `/projekty/${p.slug}/` : null);
+  const facts = [
+    p.completion ? ['Dokončení', p.completion] : null,
+    p.units ? ['Počet jednotek', String(p.units)] : null,
+  ].filter(Boolean);
+  return `<article class="pjc" data-reveal data-delay="${(idx % 3) + 1}">
+    <div class="pjc__media">
+      <span class="badge badge--${m.cls} badge--onmedia"><span class="dot"></span>${esc(m.label)}</span>
+      ${p.img
+        ? `<img src="${p.img}" alt="${esc(p.name)}" loading="lazy" decoding="async">`
+        : `<div class="pjc__ph" aria-hidden="true"><span>IKO</span></div>`}
+    </div>
+    <div class="pjc__body">
+      <div class="pjc__loc">${icon('map-pin')} ${esc(p.location)}</div>
+      <h3 class="pjc__name">${esc(p.name)}</h3>
+      ${facts.length ? `<dl class="pjc__facts">${facts
+        .map((f) => `<div><dt>${f[0]}</dt><dd>${f[1]}</dd></div>`).join('')}</dl>` : ''}
+      ${href
+        ? `<a class="btn btn--secondary btn--sm pjc__cta" href="${href}"${p.web ? ' target="_blank" rel="noopener"' : ''}>Zobrazit projekt ${icon(p.web ? 'arrow-up-right' : 'arrow-right')}</a>`
+        : `<span class="pjc__soon">Web projektu připravujeme</span>`}
+    </div>
+  </article>`;
+}
+
 /* ---------- Sales contact (broker card) --------------------------------- */
 export function agentCard(p, { onDark = false } = {}) {
   const initials = p.name.split(' ').map((w) => w[0]).join('').slice(0, 2).toUpperCase();
@@ -206,8 +235,8 @@ export const timeline = (items) =>
 export const principlesGrid = (items) =>
   `<div class="principles">${items
     .map(
+      // no 01/02/03 numbering — the client reads it as a ranking
       (p, i) => `<div class="principle" data-reveal data-delay="${(i % 2) + 1}">
-      <div class="principle__n">${String(i + 1).padStart(2, '0')}</div>
       <h3 class="principle__t">${esc(p.t)}</h3>
       <p>${esc(p.d)}</p>
     </div>`

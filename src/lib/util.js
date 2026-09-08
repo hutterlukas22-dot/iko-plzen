@@ -47,6 +47,8 @@ const P = {
   star: '<polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>',
   'x-circle': '<circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/>',
   sun: '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>',
+  instagram: '<rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/>',
+  linkedin: '<path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-11h4v1.5A5 5 0 0 1 16 8z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/>',
   car: '<path d="M19 17h2l.64-2.54a6 6 0 0 0-.28-3.94l-1.02-2.29A3 3 0 0 0 17.6 6.4L5 7l-2 5v5h2"/><circle cx="7" cy="17" r="2"/><path d="M9 17h6"/><circle cx="17" cy="17" r="2"/>',
   // unit amenities
   snowflake: '<line x1="12" y1="2" x2="12" y2="22"/><path d="m9 5 3 3 3-3M9 19l3-3 3 3"/><line x1="3.5" y1="7" x2="20.5" y2="17"/><path d="m4.8 11.2 1.1-4.1 4.1 1.1M19.2 12.8l-1.1 4.1-4.1-1.1"/><line x1="3.5" y1="17" x2="20.5" y2="7"/><path d="m10 15.9-4.1 1.1-1.1-4.1M14 8.1l4.1-1.1 1.1 4.1"/>',

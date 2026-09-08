@@ -152,22 +152,64 @@ export const projects = [
 ];
 
 // Currently prepared / selling elsewhere (no dedicated gallery yet).
-export const pipeline = [
-  { name: 'Nové Skvrňany', location: 'Plzeň — Skvrňany', note: 'Rezidenční bydlení' },
-  { name: 'Senec — Ke Stříbrnému', location: 'Senec u Plzně', note: 'Rodinné bydlení' },
-  { name: 'Újezd — jih, Etapa 2', location: 'Plzeň — Újezd', note: 'Pokračování úspěšné lokality' },
-  { name: 'Radobyčice — JIH II', location: 'Plzeň — Radobyčice', note: 'Nová etapa' },
+/* Current offer, as supplied by the client. `web` is the project's own site — the
+   tile CTA goes there once the URL is known; until then it falls back to the
+   internal detail page (`slug`). Projects without imagery render a branded
+   placeholder rather than borrowing another project's photo. */
+export const currentProjects = [
+  { name: 'Rezidence Slovanské údolí', location: 'Plzeň — Slovanské údolí', status: 'selling',
+    completion: '2028', units: 75, slug: 'rezidence-slovanske-udoli', web: null, img: P('slovanske-udoli', 6) },
+  { name: 'Ke Střílně, Zruč — Senec', location: 'Zruč — Senec', status: 'selling',
+    completion: '2027', units: 14, slug: null, web: null, img: null },
+  { name: 'Mýto A1, U Sladovny', location: 'Mýto u Rokycan', status: 'selling',
+    completion: '2026', units: 17, slug: null, web: null, img: null },
+  { name: 'Nové Skvrňany BD 03', location: 'Plzeň — Skvrňany', status: 'selling',
+    completion: '2026', units: 51, slug: null, web: null, img: null },
+  { name: 'Újezd — jih, I. etapa', location: 'Plzeň — Újezd', status: 'soldout',
+    completion: '2026', units: null, slug: null, web: null, img: '/photos/ujezd-jih-lg.jpg' },
+  { name: 'Bytový dům Cukrovarská', location: 'Plzeň — Cukrovarská', status: 'preparing',
+    completion: null, units: 12, slug: 'bytovy-dum-cukrovarska', web: null, img: P('cukrovarska', 1) },
 ];
 
-// Completed developments — track record. Years/awards only where documented.
+export const projectStatusMeta = {
+  selling: { label: 'V prodeji', cls: 'available' },
+  preparing: { label: 'Připravujeme', cls: 'reserved' },
+  soldout: { label: 'Vyprodáno', cls: 'sold' },
+};
+
+/* In preparation — descriptions supplied by the client. */
+export const pipeline = [
+  { name: 'Újezd — jih, 2. etapa', location: 'Plzeň — Újezd', units: 242,
+    note: 'V návaznosti na probíhající výstavbu 1. etapy připravujeme pokračování výstavby v této lokalitě. Celkem se bude jednat o 242 bytových jednotek v bytových a řadových rodinných domech. Součástí bude i 6 nebytových jednotek pro zlepšení občanské vybavenosti a vybudování kompletní technické a dopravní infrastruktury včetně ploch zeleně a ploch pro sportování.' },
+  { name: 'K Cihelnám, Černice', location: 'Plzeň — Černice', units: 70,
+    note: 'Trojice bytových domů sevřených do jednoho obytného celku s vnitroblokem plným zeleně a herních prvků. Objekty obsahují 6 samostatných vstupů ve třech nadzemních a jednom podzemním podlaží, na střechách pobytové terasy pro společné využití a v suterénu parkování pro obyvatele. Celkem 70 bytových jednotek nedaleko nově vznikajícího víceúčelového sportoviště.' },
+  { name: 'Radobyčice — jih 2', location: 'Plzeň — Radobyčice', units: 77,
+    note: 'Pokračování unikátního projektu rodinného bydlení na okraji Plzně. Domy typů A–E jsou navrženy tak, aby byly v souladu s charakterem území. Celkem 77 bytových jednotek v podobě řadových domů s vlastními zahradami, garážemi nebo parkovacími stáními, včetně komunikací, veřejného prostoru a herních prvků.' },
+];
+
+/* Completed developments — real photography of finished localities. */
 export const completed = [
-  { name: 'Újezd — Na Dražkách', location: 'Plzeň — Újezd', award: 'Stavba roku Plzeňského kraje 2017' },
-  { name: 'Újezd — jih, Etapa 1', location: 'Plzeň — Újezd' },
-  { name: 'Černice — K Plzenci', location: 'Plzeň — Černice', note: 'Etapy 1–4' },
-  { name: 'Radobyčice — jih', location: 'Plzeň — Radobyčice' },
-  { name: 'Radobyčice — západ', location: 'Plzeň — Radobyčice' },
-  { name: 'Nepomucká — západ', location: 'Plzeň' },
-  { name: 'Mýta u Rokycan — U Sladovny', location: 'Mýto u Rokycan', note: 'Etapa 1 dokončena' },
+  { name: 'Obytná lokalita Plzeň Újezd, jih — 1. etapa', location: 'Plzeň — Újezd', years: '2019 — 2027',
+    img: '/photos/ujezd-jih-sm.jpg',
+    note: 'Území o rozloze 4,99 ha zahrnuje 154 bytů v bytových domech, 35 řadových domů a 15 samostatných rodinných domů. Byty 1+kk až 4+kk s výměrami 29,5 až 103,9 m², včetně balkonů, lodžií a teras.' },
+  { name: 'Radobyčice — Břízová', location: 'Plzeň — Radobyčice', years: '2023 — 2026',
+    img: P('radobycice', 2, 'sm'),
+    note: 'Projekt zahrnoval 25 bytových jednotek — 8 v řadových rodinných domech, 12 v rodinných dvojdomech a 5 v samostatných rodinných domech. Nejklidnější lokalita pro bydlení v této části města.' },
+  { name: 'Radobyčice — západ', location: 'Plzeň — Radobyčice', years: '2017 — 2023',
+    img: '/photos/radobycice-zapad-sm.jpg',
+    note: 'Výstavba 25 řadových rodinných domů, 24 bytů v řadových rodinných domech a 15 samostatných rodinných domů, včetně kompletní technické a dopravní infrastruktury.' },
+  { name: 'Obytná lokalita Plzeň Újezd, Na Dražkách', location: 'Plzeň — Újezd', years: '2015 — 2018',
+    award: 'Stavba roku Plzeňského kraje 2017', img: '/photos/ujezd-drazkach-sm.jpg',
+    note: 'Kompletní technická a dopravní infrastruktura, 4 bytové domy s 69 bytovými jednotkami, 14 řadových domů a 4 dvojdomy. Součástí lokality je odpočinkový prostor s dětským hřištěm.' },
+  { name: 'K Plzenci 3, Plzeň — Černice', location: 'Plzeň — Černice', years: '2013 — 2017',
+    img: '/photos/k-plzenci-3-sm.jpg',
+    note: 'Polyfunkční domy 1, 2, 3 a 5 s celkem 52 bytovými jednotkami, 9 nebytovými jednotkami o výměře 1 001,7 m² a administrativními prostory o výměře 1 233,3 m².' },
+  { name: 'K Plzenci 4, Plzeň — Černice', location: 'Plzeň — Černice', years: '2013 — 2015',
+    img: '/photos/k-plzenci-4-sm.jpg',
+    note: 'Deset řadových domů rozdělených do dvou řad stojících naproti sobě.' },
+  { name: '8 rodinných domů v Radobyčicích', location: 'Plzeň — Radobyčice', years: '2013 — 2014',
+    img: '/photos/radobycice-8rd-sm.jpg',
+    note: 'Nepodsklepené dvoupodlažní objekty obdélníkového tvaru s plochou střechou, navržené jako typová zhuštěná zástavba doplňující okolní zástavbu.' },
 ];
 
 export const statusMeta = {

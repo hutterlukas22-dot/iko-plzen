@@ -23,6 +23,7 @@
   --gray-0:#ffffff; --gray-50:#f6f7f8; --gray-100:#eceef0; --gray-200:#dcdfe1;
   --gray-300:#c4c8cb; --gray-400:#a7abad; --gray-500:#8A8D8F; --gray-600:#6c6f71;
   --gray-700:#4f5254; --gray-800:#333638; --gray-900:#1a1c1d; --black:#000;
+  --surface-dark:#8A8D8F; /* brand manual silver/grey (PANTONE 877) */
 
   --green-500:#2e9e5b; --green-50:#e7f5ed;
   --amber-500:#d98a1f; --amber-50:#fbf1e0;
@@ -118,7 +119,7 @@ h1,h2,h3,h4{font-weight:var(--fw-extrabold);line-height:var(--lh-heading);letter
 .section--tight{padding-block:clamp(3rem, 2rem + 3vw, 5rem)}
 .bg-page{background:var(--surface-page)}
 .bg-brand{background:var(--iko-blue);color:#fff}
-.bg-ink{background:var(--gray-900);color:#fff}
+.bg-ink{background:var(--surface-dark);color:#fff}
 .hr{height:1px;background:var(--border-subtle);border:0}
 
 /* ----- Type utilities --------------------------------------------------- */
@@ -210,7 +211,7 @@ h3,.h3{font-size:var(--fs-h3)}
 .header__inner{width:100%;max-width:var(--container);margin-inline:auto;padding-inline:var(--gutter);
   display:flex;align-items:center;gap:clamp(1rem,1.6vw,1.8rem)}
 .brand{display:inline-flex;align-items:center;line-height:1}
-.brand img{height:42px;width:auto;display:block}
+.brand img{height:52px;width:auto;display:block}
 .mobile-menu .brand img{height:48px}
 .nav{display:flex;gap:clamp(.6rem,1.2vw,1.35rem);margin-right:auto;flex-wrap:nowrap}
 .nav a{position:relative;font-weight:var(--fw-semibold);font-size:var(--fs-sm);color:var(--text-body);
@@ -222,7 +223,7 @@ h3,.h3{font-size:var(--fs-h3)}
 .nav a[aria-current="page"]{color:var(--iko-blue)}
 .header__phone{font-weight:var(--fw-bold);font-size:var(--fs-sm);color:var(--text-strong);white-space:nowrap}
 .header__phone:hover{color:var(--iko-blue)}
-.header__cta{display:inline-flex}
+.header__cta{display:inline-flex;font-size:var(--fs-sm);padding:.85em 1.4em}
 .header__compare{position:relative;display:inline-grid;place-items:center;width:42px;height:42px;border-radius:var(--radius-md);
   border:1px solid var(--border-default);color:var(--text-strong);transition:all var(--dur-fast)}
 .header__compare svg{width:20px;height:20px}
@@ -279,15 +280,15 @@ body.menu-open{overflow:hidden}
 .hero__slide.is-active{opacity:1}
 .hero__video{width:100%;height:100%;object-fit:cover;display:block;transform:scale(1.04)}
 .hero__scrim{position:absolute;inset:0;z-index:-1;
-  background:linear-gradient(90deg,rgba(0,21,38,.86) 0%,rgba(0,32,60,.6) 42%,rgba(0,47,88,.12) 78%,transparent 100%),
-             linear-gradient(0deg,rgba(0,21,38,.7) 0%,transparent 42%)}
+  background:linear-gradient(90deg,rgba(0,21,38,.72) 0%,rgba(0,32,60,.46) 44%,rgba(0,47,88,.1) 80%,transparent 100%),
+             linear-gradient(0deg,rgba(0,21,38,.52) 0%,transparent 46%)}
 /* fills the space above the bottom bar and centres the block within it */
 .hero__inner{position:relative;z-index:1;width:100%;max-width:var(--container);margin-inline:auto;
   padding:var(--gutter);
   flex:1;display:flex;flex-direction:column;justify-content:center}
-.hero__title{color:#fff;font-size:var(--fs-hero);font-weight:var(--fw-black);letter-spacing:var(--ls-tighter);
+.hero__title{color:#fff;text-shadow:0 2px 22px rgba(0,21,38,.45);font-size:var(--fs-hero);font-weight:var(--fw-black);letter-spacing:var(--ls-tighter);
   line-height:.98;max-width:16ch;margin-top:.5rem}
-.hero__sub{font-size:var(--fs-lead);font-weight:var(--fw-medium);max-width:46ch;margin-top:1.1em;color:rgba(255,255,255,.92)}
+.hero__sub{text-shadow:0 1px 14px rgba(0,21,38,.5);font-size:var(--fs-lead);font-weight:var(--fw-medium);max-width:46ch;margin-top:1.1em;color:rgba(255,255,255,.92)}
 .hero__actions{display:flex;flex-wrap:wrap;gap:.9rem;margin-top:2rem}
 /* Bottom bar: current project + carousel nav, on the dark end of the scrim so
    it reads clearly (it used to sit top-right over the bright sky). */
@@ -563,7 +564,7 @@ textarea.control{resize:vertical;min-height:120px;line-height:1.5}
 .contact-line a.v:hover{color:var(--iko-blue)}
 
 /* ----- Footer ----------------------------------------------------------- */
-.footer{background:var(--gray-900);color:#fff}
+.footer{background:var(--surface-dark);color:#fff}
 .footer__main{display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;gap:clamp(1.5rem,3vw,3rem);
   padding-block:clamp(3rem,5vw,4.5rem)}
 .footer p{color:var(--gray-300);max-width:34ch;margin-top:1rem}
@@ -1202,3 +1203,108 @@ html.no-js [data-reveal],.no-reveal [data-reveal]{opacity:1;transform:none}
 @media (max-width:900px){
   .ud-hero__mini .btn,.ud-sticky__buy .btn,.ud-bar .btn{min-height:44px}
 }
+
+/* ==========================================================================
+   Projects listing — current / preparing / completed
+   ========================================================================== */
+.pjc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,320px),1fr));gap:clamp(1rem,2vw,1.6rem)}
+.pjc{display:flex;flex-direction:column;background:#fff;border:1px solid var(--border-subtle);
+  box-shadow:var(--shadow-sm);transition:transform var(--dur-base) var(--ease-out),box-shadow var(--dur-base) var(--ease-out)}
+.pjc:hover{transform:translateY(-3px);box-shadow:var(--shadow-lg)}
+.pjc__media{position:relative;aspect-ratio:4/3;overflow:hidden;background:var(--gray-100)}
+.pjc__media img{width:100%;height:100%;object-fit:cover;transition:transform var(--dur-slow) var(--ease-out)}
+.pjc:hover .pjc__media img{transform:scale(1.04)}
+/* projects without imagery get a branded plate rather than another project's photo */
+.pjc__ph{width:100%;height:100%;display:grid;place-items:center;background:var(--blue-900)}
+.pjc__ph span{color:rgba(255,255,255,.28);font-size:2.4rem;font-weight:var(--fw-black);letter-spacing:.3em;padding-left:.3em}
+.pjc__body{padding:clamp(1.1rem,2.2vw,1.5rem);display:flex;flex-direction:column;gap:.5rem;flex:1}
+.pjc__loc{display:flex;align-items:center;gap:.4em;font-size:var(--fs-label);color:var(--text-subtle);font-weight:var(--fw-semibold)}
+.pjc__loc svg{width:14px;height:14px;flex:none}
+.pjc__name{font-size:var(--fs-h3)}
+.pjc__facts{display:grid;grid-template-columns:1fr 1fr;gap:.5rem;margin:.4rem 0 0;padding:.7rem 0;border-block:1px solid var(--border-subtle)}
+.pjc__facts dt{font-size:var(--fs-micro);letter-spacing:var(--ls-label);text-transform:uppercase;color:var(--text-subtle)}
+.pjc__facts dd{margin:0;font-weight:var(--fw-bold);color:var(--text-strong);font-size:var(--fs-sm)}
+.pjc__cta{margin-top:auto;align-self:flex-start}
+.pjc__soon{margin-top:auto;font-size:var(--fs-label);color:var(--text-subtle);font-style:italic}
+
+.prep-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:clamp(1rem,2vw,1.5rem)}
+.prep{background:#fff;border:1px solid var(--border-subtle);padding:clamp(1.3rem,2.5vw,1.8rem);
+  display:flex;flex-direction:column;gap:.5rem}
+.prep__loc{display:flex;align-items:center;gap:.4em;font-size:var(--fs-label);color:var(--text-subtle);font-weight:var(--fw-semibold)}
+.prep__loc svg{width:14px;height:14px;flex:none}
+.prep h3{font-size:var(--fs-h3)}
+.prep__u{align-self:flex-start;background:var(--blue-50);color:var(--iko-blue);font-size:var(--fs-label);
+  font-weight:var(--fw-bold);padding:.3em .7em}
+.prep p{color:var(--text-muted);font-size:var(--fs-sm)}
+
+.donec{display:flex;flex-direction:column;background:#fff;border:1px solid var(--border-subtle);overflow:hidden;box-shadow:var(--shadow-sm)}
+.donec__media{aspect-ratio:3/2;overflow:hidden;background:var(--gray-100)}
+.donec__media img{width:100%;height:100%;object-fit:cover;transition:transform var(--dur-slow) var(--ease-out)}
+.donec:hover .donec__media img{transform:scale(1.04)}
+.donec__body{padding:clamp(1.1rem,2.2vw,1.5rem);display:flex;flex-direction:column;gap:.45rem;flex:1}
+.donec__meta{display:flex;align-items:center;gap:.4em;font-size:var(--fs-label);color:var(--text-subtle);font-weight:var(--fw-semibold)}
+.donec__meta svg{width:14px;height:14px;flex:none}
+.donec h3{font-size:var(--fs-h4)}
+.donec__award{display:inline-flex;align-items:center;gap:.4em;align-self:flex-start;
+  border:1px solid var(--iko-blue);color:var(--iko-blue);font-size:var(--fs-micro);font-weight:var(--fw-bold);padding:.3em .6em}
+.donec__award svg{width:13px;height:13px}
+.donec p{color:var(--text-muted);font-size:var(--fs-sm)}
+
+/* ==========================================================================
+   CTA band — static IKO bands (left) + copy (right), per client + brand manual
+   ========================================================================== */
+.cta-band__inner{display:grid;grid-template-columns:1fr 1.05fr;gap:clamp(1.5rem,4vw,4rem);align-items:center}
+.cta-band__c{display:flex;flex-direction:column}
+.tapeblock{position:relative;display:flex;flex-direction:column;gap:clamp(.8rem,2vw,1.4rem);
+  overflow:hidden;padding-block:clamp(1rem,3vw,2rem);min-height:220px;justify-content:center}
+.tapeblock__b{display:flex;gap:1.4em;white-space:nowrap;background:#fff;color:var(--iko-blue);
+  font-family:var(--font-display);font-weight:var(--fw-bold);font-size:clamp(15px,1.7vw,20px);
+  letter-spacing:var(--ls-tape);padding:.55em 1.2em;width:max-content}
+/* opposing angles, as the bands are used across billboards and signage */
+.tapeblock__b--1{transform:rotate(-3deg) translateX(-6%)}
+.tapeblock__b--2{transform:rotate(2deg) translateX(-14%);background:var(--iko-blue);color:#fff;
+  outline:1px solid rgba(255,255,255,.35)}
+.tapeblock__b--3{transform:rotate(-1.5deg) translateX(-2%)}
+@media (max-width:860px){
+  .cta-band__inner{grid-template-columns:1fr}
+  .tapeblock{min-height:0;order:2;margin-top:1.5rem}
+  .cta-band__c{order:1}
+}
+
+/* hero: second paragraph sits quieter than the lead */
+.hero__sub--2{font-size:var(--fs-body);color:rgba(255,255,255,.85);margin-top:.8em;max-width:52ch}
+
+/* project-website link under the buy panel */
+.ud-hero__web{display:inline-flex;align-items:center;gap:.45em;margin-top:.3rem;color:#fff;
+  font-size:var(--fs-label);font-weight:var(--fw-bold);opacity:.9}
+.ud-hero__web:hover{opacity:1;text-decoration:underline}
+.ud-hero__web svg{width:14px;height:14px}
+
+/* social links — rendered only for networks that have a URL */
+.social-row{display:flex;gap:.7rem;margin-top:2rem}
+.social-row a{width:44px;height:44px;display:grid;place-items:center;background:var(--blue-50);
+  color:var(--iko-blue);border:1px solid var(--blue-100);transition:all var(--dur-fast)}
+.social-row a:hover{background:var(--iko-blue);color:#fff;border-color:var(--iko-blue)}
+.social-row svg{width:20px;height:20px}
+
+/* On the brand grey the muted greys of the dark theme lose contrast, so raise
+   the secondary text to translucent white. (White body copy on #8A8D8F measures
+   3.34:1 — under the 4.5:1 AA threshold; see note to client.) */
+.bg-ink .lead,.bg-ink p{color:rgba(255,255,255,.92)}
+.footer p,.footer li,.footer a{color:rgba(255,255,255,.92)}
+.footer h4{color:rgba(255,255,255,.75)}
+.footer__bar{color:rgba(255,255,255,.8)}
+.footer__by{color:rgba(255,255,255,.8)}
+.fin__hint,.fin__disclaimer{color:rgba(255,255,255,.85)}
+.fin__break dt,.fin__k{color:rgba(255,255,255,.9)}
+.stat--ink .stat__s,.bg-ink .stat__s{color:rgba(255,255,255,.85)}
+
+/* careers — open application */
+.opencv{background:#fff;border:1px solid var(--border-subtle);box-shadow:var(--shadow-md);
+  padding:clamp(1.4rem,3vw,2.2rem);display:flex;flex-direction:column;gap:.7rem}
+.opencv h3{font-size:var(--fs-h3)}
+.opencv p{color:var(--text-muted);font-size:var(--fs-sm)}
+.opencv .btn{margin-top:.5rem;justify-content:center}
+.ticks{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:.5rem}
+.ticks li{display:flex;gap:.55em;font-size:var(--fs-sm);color:var(--text-muted)}
+.ticks svg{width:15px;height:15px;flex:none;margin-top:.2em;color:var(--status-available)}

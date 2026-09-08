@@ -1,18 +1,41 @@
-import { projects, pipeline, completed } from '../data/projects.js';
+import { currentProjects, projectStatusMeta, pipeline, completed } from '../data/projects.js';
 import { esc, icon } from '../lib/util.js';
 import { eyebrow, btn } from '../components.js';
-import { projectCard } from '../blocks.js';
+import { currentProjectCard } from '../blocks.js';
 import { ctaBand } from './home.js';
 import { allUnits, unitProjects, unitRanges } from '../data/units.js';
 import { unitMarketplaceBar, unitMarketplace } from '../units-ui.js';
 
 export function projektyPage() {
   const body = `
-<section class="section bg-brand" style="padding-top:calc(var(--header-h) + clamp(2rem,5vw,3rem))" aria-labelledby="mkt-h">
+<!-- Projects first, unit search below (client request) -->
+<section class="section--tight" style="padding-top:calc(var(--header-h) + clamp(2rem,5vw,3.5rem))">
+  <div class="container container--narrow" data-reveal>
+    ${eyebrow('Projekty')}
+    <h1 class="display balance" style="margin:1rem 0 1.2rem;max-width:20ch">Rezidenční projekty v Plzni a okolí</h1>
+    <p class="lead muted" style="max-width:60ch">Vyberte si projekt, nebo rovnou konkrétní jednotku ve vyhledávači níže.</p>
+  </div>
+</section>
+
+<section class="section--tight" aria-labelledby="cur-h">
   <div class="container">
     <div class="sec-head" data-reveal>
-      <div>${eyebrow('Byty a domy na prodej', { onbrand: true })}<h2 class="sec-head__title h1" id="mkt-h" style="color:#fff">Vyberte si konkrétní jednotku</h2>
-      <p class="lead" style="color:rgba(255,255,255,.9)">Filtrujte podle projektu, dispozice, plochy a stavu. Přepněte si zobrazení na seznam nebo dlaždice s půdorysem.</p></div>
+      <div>${eyebrow('Aktuální nabídka')}<h2 class="sec-head__title h1" id="cur-h">Aktuální projekty</h2></div>
+      <span class="count">${currentProjects.length} projektů</span>
+    </div>
+    <div class="pjc-grid">
+      ${currentProjects.map((p, i) => currentProjectCard(p, projectStatusMeta, i)).join('')}
+    </div>
+  </div>
+</section>
+
+<!-- Unit search -->
+<section class="section bg-brand" aria-labelledby="mkt-h">
+  <div class="container">
+    <div class="sec-head" data-reveal>
+      <div>${eyebrow('Byty a domy na prodej', { onbrand: true })}
+      <h2 class="sec-head__title h1" id="mkt-h" style="color:#fff">Vyberte si konkrétní jednotku</h2>
+      <p class="lead" style="color:rgba(255,255,255,.9)">Filtrujte podle projektu, typu, dispozice, plochy a stavu. Přepněte si zobrazení na seznam nebo dlaždice.</p></div>
     </div>
     <div data-reveal>${unitMarketplaceBar({ units: allUnits, projects: unitProjects, ranges: unitRanges, showProjectFilter: true })}</div>
   </div>
@@ -24,36 +47,19 @@ export function projektyPage() {
   </div>
 </section>
 
-<section class="section--tight bg-page" aria-labelledby="cur-h">
-  <div class="container">
-    <div class="sec-head" data-reveal>
-      <div>${eyebrow('Projekty')}<h2 class="sec-head__title h1" id="cur-h">Aktuální projekty</h2></div>
-      <span class="count">${projects.length} projekty</span>
-    </div>
-    <div class="card-grid">
-      ${projects.map((p, i) => projectCard(p, i)).join('')}
-    </div>
-  </div>
-</section>
-
 <section class="section--tight bg-page" aria-labelledby="prep-h">
   <div class="container">
     <div class="sec-head" data-reveal>
       <div>${eyebrow('Připravujeme')}<h2 class="sec-head__title h1" id="prep-h">Chystané lokality</h2>
       <p class="lead muted">Nové etapy a lokality, které postupně uvádíme do prodeje. Ozvěte se a dáme vám vědět mezi prvními.</p></div>
     </div>
-    <div class="timeline" style="margin-top:1rem">
-      ${pipeline
-        .map(
-          (p) => `<div class="tl-item" data-reveal style="grid-template-columns:1fr auto;align-items:center">
-        <div class="tl-body">
-          <h3 style="margin-bottom:.3rem">${esc(p.name)}</h3>
-          <p class="muted" style="display:flex;align-items:center;gap:.5em;margin:0">${icon('map-pin', 'inline-ic')} ${esc(p.location)} · ${esc(p.note)}</p>
-        </div>
-        <span class="tag">Připravujeme</span>
-      </div>`
-        )
-        .join('')}
+    <div class="prep-grid">
+      ${pipeline.map((p, i) => `<article class="prep" data-reveal data-delay="${(i % 3) + 1}">
+        <div class="prep__loc">${icon('map-pin')} ${esc(p.location)}</div>
+        <h3>${esc(p.name)}</h3>
+        ${p.units ? `<span class="prep__u">${p.units} jednotek</span>` : ''}
+        <p>${esc(p.note)}</p>
+      </article>`).join('')}
     </div>
     <div style="margin-top:2rem" data-reveal>${btn('Chci vědět o zahájení prodeje', '/kontakt/', 'secondary')}</div>
   </div>
@@ -65,16 +71,16 @@ export function projektyPage() {
       <div>${eyebrow('Dokončené projekty')}<h2 class="sec-head__title h1" id="done-h">Co už v Plzni stojí</h2>
       <p class="lead muted">Náš track record — desítky domů a celé rezidenční lokality realizované od roku 2003.</p></div>
     </div>
-    <div class="card-grid" style="grid-template-columns:repeat(auto-fill,minmax(min(100%,280px),1fr))">
-      ${completed
-        .map(
-          (c) => `<div class="svc" style="padding:clamp(1.4rem,2.5vw,2rem)" data-reveal>
-        <div class="proj-row__loc" style="margin-bottom:.6rem">${icon('map-pin', 'inline-ic')} ${esc(c.location)}</div>
-        <h3 style="font-size:var(--fs-h3)">${esc(c.name)}</h3>
-        ${c.award ? `<div class="pill-row" style="margin-top:1rem"><span class="tag" style="border-color:var(--iko-blue);color:var(--iko-blue)">${icon('shield-check')} ${esc(c.award)}</span></div>` : c.note ? `<p class="muted" style="margin-top:.6rem;font-size:var(--fs-sm)">${esc(c.note)}</p>` : ''}
-      </div>`
-        )
-        .join('')}
+    <div class="card-grid">
+      ${completed.map((c, i) => `<article class="donec" data-reveal data-delay="${(i % 3) + 1}">
+        ${c.img ? `<div class="donec__media reveal-media"><img src="${c.img}" alt="Dokončený projekt ${esc(c.name)}" loading="lazy" decoding="async"></div>` : ''}
+        <div class="donec__body">
+          <div class="donec__meta">${icon('map-pin')} ${esc(c.location)}${c.years ? ` · ${esc(c.years)}` : ''}</div>
+          <h3>${esc(c.name)}</h3>
+          ${c.award ? `<span class="donec__award">${icon('star')} ${esc(c.award)}</span>` : ''}
+          <p>${esc(c.note)}</p>
+        </div>
+      </article>`).join('')}
     </div>
   </div>
 </section>
@@ -85,7 +91,7 @@ ${ctaBand()}
   return {
     path: '/projekty/',
     title: 'Projekty',
-    description: 'Rezidenční projekty IKO v Plzni a okolí — aktuální nabídka v prodeji, připravované lokality a dokončené developerské projekty.',
+    description: 'Rezidenční projekty IKO v Plzni a okolí — aktuální nabídka v prodeji, vyhledávač volných jednotek, připravované lokality a dokončené projekty.',
     body,
   };
 }

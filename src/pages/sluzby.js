@@ -18,8 +18,8 @@ export function sluzbyPage() {
 <section class="section--tight bg-brand" style="padding-top:calc(var(--header-h) + clamp(2rem,5vw,4rem))">
   <div class="container" data-reveal>
     ${eyebrow('Služby', { onbrand: true })}
-    <h1 class="display balance" style="color:#fff;margin:.6rem 0 1rem;max-width:18ch">Dvě strany jednoho řemesla: development a stavba.</h1>
-    <p class="lead" style="color:rgba(255,255,255,.9);max-width:56ch">IKO staví vlastní rezidenční projekty a zároveň realizuje výstavbu pro externí investory. Vše se stavební historií sahající do roku 1991.</p>
+    <h1 class="display balance" style="color:#fff;margin:.6rem 0 1rem;max-width:18ch">Stavíme vlastní projekty. A pomáháme realizovat i ty vaše.</h1>
+    <p class="lead" style="color:rgba(255,255,255,.9);max-width:62ch">Zkušenosti ze stovek staveb využíváme dvěma směry. Vyvíjíme a realizujeme vlastní rezidenční projekty — a zároveň jsme spolehlivým stavebním partnerem pro externí investory. V obou případech platí totéž: jasný proces, poctivá práce a odpovědnost za výsledek.</p>
   </div>
 </section>
 

@@ -13,8 +13,8 @@ export function kontaktPage() {
   <div class="container grid-2" style="align-items:start">
     <div data-reveal>
       ${eyebrow('Kontakt')}
-      <h1 class="display balance" style="margin:1rem 0 1.2rem;max-width:16ch">Váš nový soused vás rád provede.</h1>
-      <p class="lead muted" style="max-width:44ch">Ozveme se vám do 24 hodin — bez tlaku, s jasnými odpověďmi od člověka, který projekt zná.</p>
+      <h1 class="display balance" style="margin:1rem 0 1.2rem;max-width:18ch">Začněme u vašich představ.</h1>
+      <p class="lead muted" style="max-width:46ch">Řekněte nám, co hledáte. My vám představíme možnosti, které pro vás připadají v úvahu. Osobně, srozumitelně a bez zbytečných frází.</p>
       <div class="contact-lines">
         ${line('map-pin', 'Adresa', `${c.company}, ${c.street}, ${c.city}`)}
         ${line('phone', 'Telefon', c.phone, `tel:${c.phoneHref}`)}
@@ -24,9 +24,11 @@ export function kontaktPage() {
         <div class="stat stat--ink"><div class="stat__v">24h</div><div class="stat__l">doba odezvy</div></div>
         <div class="stat stat--ink"><div class="stat__v">35</div><div class="stat__l">let zkušeností</div></div>
       </div>
-      <div style="margin-top:2rem;display:flex;gap:1rem">
-        <a href="${c.facebook}" aria-label="Facebook IKO" class="contact-line" style="width:44px;height:44px;border-radius:var(--radius-md);background:var(--blue-50);color:var(--iko-blue);display:grid;place-items:center"><span style="width:20px">${icon('facebook')}</span></a>
-        <a href="${c.youtube}" aria-label="YouTube IKO" class="contact-line" style="width:44px;height:44px;border-radius:var(--radius-md);background:var(--blue-50);color:var(--iko-blue);display:grid;place-items:center"><span style="width:22px">${icon('youtube')}</span></a>
+      <div class="social-row">
+        ${[['facebook', 'Facebook'], ['youtube', 'YouTube'], ['instagram', 'Instagram'], ['linkedin', 'LinkedIn']]
+          .filter(([k]) => c[k]) // only networks we actually have a URL for
+          .map(([k, l]) => `<a href="${c[k]}" aria-label="${l} IKO" target="_blank" rel="noopener">${icon(k)}</a>`)
+          .join('')}
       </div>
     </div>
     <div data-reveal data-delay="1">
@@ -35,9 +37,28 @@ export function kontaktPage() {
   </div>
 </section>
 
+<section class="section--tight bg-page">
+  <div class="container split split--media-first">
+    <figure class="split__media reveal-media" data-reveal style="margin:0">
+      <img src="/photos/sidlo-lg.jpg" alt="Sídlo IKO stavby ve Vltavínové ulici v Plzni-Černicích" loading="lazy" decoding="async">
+    </figure>
+    <div data-reveal data-delay="1">
+      ${eyebrow('Kde nás najdete')}
+      <h2 class="display" style="margin:.6rem 0 1.2rem">Vltavínová 3 není<br>jen naše adresa.</h2>
+      <div class="prose muted">
+        <p>Sídlo naší společnosti najdete v Plzni-Černicích, v administrativním domě, který jsme sami postavili. Je to také ukázka naší práce.</p>
+        <p>Pokud přijíždíte autem, stačí do navigace zadat <strong>Vltavínová 3, Plzeň</strong> — ta vás zavede přímo k našemu sídlu. Zaparkujete přímo před domem, případně v některé z přilehlých ulic.</p>
+      </div>
+      <div class="contact-lines" style="margin-top:1.6rem">
+        ${line('map-pin', 'Adresa', `${c.street}, ${c.city}, 4. patro`)}
+      </div>
+    </div>
+  </div>
+</section>
+
 <section class="section--tight">
   <div class="container">
-    ${locationCard({ name: 'Plzeň', text: `${c.company} sídlí na adrese ${c.street}, ${c.city}. Osobní schůzku i prohlídku projektu si domluvíme podle vás.` })}
+    ${locationCard({ name: 'Plzeň — Černice', text: `${c.company} sídlí na adrese ${c.street}, ${c.city}. Osobní schůzku i prohlídku projektu si domluvíme podle vás.` })}
   </div>
 </section>
 `;

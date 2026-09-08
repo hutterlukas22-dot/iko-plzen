@@ -3,25 +3,28 @@ import { eyebrow, btn } from '../components.js';
 import { faqList } from '../blocks.js';
 import { ctaBand } from './home.js';
 
+/* Eight steps, wording supplied by the client. */
 const steps = [
   { t: 'Výběr jednotky', d: 'Vyberte si byt nebo dům podle dispozice, plochy a patra. Pomůže vám interaktivní výběr podle podlaží i porovnávač jednotek.' },
   { t: 'Nezávazná rezervace', d: 'Vybranou jednotku vám na dohodnutou dobu blokujeme. Bez závazku a bez poplatku, než si vše v klidu promyslíte.' },
-  { t: 'Financování', d: 'Projdeme s vámi možnosti financování a pomůžeme zajistit hypotéku. Poradíme s výší splátky i s načasováním.' },
-  { t: 'Rezervační smlouva', d: 'Podpisem rezervační smlouvy a složením rezervačního poplatku je jednotka závazně vaše.' },
-  { t: 'Klientské změny', d: 'Máte prostor upravit standard podle sebe — dispoziční i materiálové změny řešíme interně s naším studiem.' },
-  { t: 'Smlouva a předání', d: 'Následuje smlouva o smlouvě budoucí, dokončení stavby a předání hotového domova s protokolem a klíči.' },
+  { t: 'Financování', d: 'V případě zájmu zprostředkujeme financování.' },
+  { t: 'Rezervační smlouva', d: 'Podpisem rezervační smlouvy a složením rezervačního poplatku je jednotka závazně potvrzena.' },
+  { t: 'Uzavření SoSBK', d: 'Uzavření Smlouvy o smlouvě budoucí kupní a platba první splátky.' },
+  { t: 'Klientské změny', d: 'Naši specialisté z klientského centra s vámi projdou standardy a pomohou s případným výběrem nadstandardů.' },
+  { t: 'Dokončení jednotky', d: 'Kolaudace a předání jednotky k dokončení.' },
+  { t: 'Kupní smlouva a předání', d: 'Úhrada celé kupní ceny včetně klientských změn, podpis kupní smlouvy a převod jednotky na katastru nemovitostí.' },
 ];
 
 const financing = [
   { ic: 'wallet', t: 'Hypotéka', d: 'Provedeme vás nabídkami bank a pomůžeme vybrat řešení na míru — bez běhání po pobočkách.' },
-  { ic: 'key', t: 'Vlastní zdroje', d: 'Kupujete-li z vlastního, nastavíme splátkový kalendář podle postupu výstavby.' },
+  { ic: 'key', t: 'Vlastní zdroje', d: 'Kupujete-li z vlastního, nastavíme individuální financování.' },
   { ic: 'handshake', t: 'Kombinace', d: 'Část vlastními prostředky, část hypotékou — poradíme s optimálním poměrem.' },
 ];
 
 const faqs = [
   { q: 'Jak dlouho platí nezávazná rezervace?', a: 'Vybranou jednotku vám blokujeme po dohodnutou dobu (obvykle několik dní), abyste měli klid na rozmyšlenou i na jednání s bankou. Konkrétní podmínky vám sdělíme u konkrétní jednotky.' },
-  { q: 'Mohu si upravit dispozici nebo standard bytu?', a: 'Ano. Klientské změny — dispoziční i materiálové — zpracováváme interně ve spolupráci s projektovým studiem. Rozsah závisí na fázi výstavby dané jednotky.' },
-  { q: 'Pomůžete mi se zajištěním hypotéky?', a: 'Pomůžeme. Projdeme s vámi nabídky bank a pomůžeme vybrat financování na míru. Cílem je, abyste vše vyřídili s minimem starostí.' },
+  { q: 'Mohu si upravit dispozici nebo standard bytu?', a: 'Ano. Klientské změny — dispoziční i materiálové — zpracováváme interně v rámci našeho klientského centra a při náročnějších změnách také ve spolupráci s projektovým studiem. Rozsah závisí na fázi výstavby dané jednotky.' },
+  { q: 'Pomůžete mi se zajištěním hypotéky?', a: 'Pomůžeme. V případě zájmu zprostředkujeme financování koupě jednotky.' },
   { q: 'Kdy platím jakou částku?', a: 'Platby jsou navázané na jednotlivé kroky — rezervační poplatek, smlouvu o smlouvě budoucí a doplatek při předání. Přesný splátkový kalendář dostanete ke konkrétní jednotce.' },
   { q: 'Co všechno je součástí ceny?', a: 'Rozsah dodávky je uvedený v podkladech ke každé jednotce (prodejní list a katalogový list). Rádi vám ho projdeme položku po položce.' },
   { q: 'Jak probíhá předání?', a: 'Po kolaudaci vás pozveme na předání, kde společně zkontrolujeme byt, sepíšeme protokol a předáme klíče. Případné připomínky řešíme obratem.' },
@@ -39,7 +42,7 @@ export function pruvodceNakupemPage() {
 
 <section class="section--tight">
   <div class="container">
-    <div class="sec-head" data-reveal><div>${eyebrow('Proces koupě')}<h2 class="sec-head__title h1">Šest kroků k rezervaci</h2></div></div>
+    <div class="sec-head" data-reveal><div>${eyebrow('Proces koupě')}<h2 class="sec-head__title h1">Osm kroků k novému domovu</h2></div></div>
     <div class="steps">
       ${steps.map((s, i) => `<div class="step" data-reveal data-delay="${(i % 3) + 1}"><div class="step__n">${i + 1}</div><h3>${esc(s.t)}</h3><p>${esc(s.d)}</p></div>`).join('')}
     </div>

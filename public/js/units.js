@@ -283,7 +283,7 @@
     }
 
     /* --- links ---------------------------------------------------------- */
-    $$('[data-ud-project-link],[data-ud-project-link2]').forEach(function (a) {
+    $$('[data-ud-project-link],[data-ud-project-link2],[data-ud-web]').forEach(function (a) {
       if (!u.projectSlug) return;
       a.href = rel('/projekty/') + u.projectSlug + '/';
       if (a.hasAttribute('data-ud-project-link')) a.textContent = u.project;

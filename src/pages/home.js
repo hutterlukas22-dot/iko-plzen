@@ -17,7 +17,7 @@ ${hero()}
 <section class="section">
   <div class="container split split--media-first">
     <div class="split__media reveal-media" data-reveal>
-      <img src="/projects/slovanske-udoli-11-lg.jpg" alt="Rodina na terase řadového domu v projektu Slovanské údolí" loading="lazy" decoding="async">
+      <img src="/photos/home-domov-lg.jpg" alt="Dokončený rodinný dům IKO s terasou v Plzni-Černicích" loading="lazy" decoding="async">
     </div>
     <div data-reveal data-delay="1">
       ${eyebrow('Kdo je IKO')}
@@ -52,7 +52,7 @@ ${hero()}
   <div class="container">
     ${sectionHead({
       eyebrow: 'Proč IKO',
-      title: 'Šest důvodů, proč u nás kupujete klidněji',
+      title: 'V čem jsme lepší',
       lead: 'Prodáváme ve vlastní režii, bez prostředníků. To, co slíbíme, také postavíme.',
     })}
     ${principlesGrid(principles)}
@@ -68,7 +68,7 @@ ${hero()}
       <div style="margin-top:1.8rem">${btn('Celý příběh IKO', '/o-nas/', 'inverse')}</div>
     </div>
     <div class="split__media split__media--wide reveal-media" data-reveal data-delay="1">
-      <img src="/projects/radobycice-01-lg.jpg" alt="Letecký pohled na rezidenční čtvrť postavenou firmou IKO v Radobyčicích" loading="lazy" decoding="async">
+      <img src="/photos/home-lokalita-lg.jpg" alt="Dokončená obytná lokalita IKO v Plzni-Černicích" loading="lazy" decoding="async">
     </div>
   </div>
 </section>
@@ -112,38 +112,46 @@ ${ctaBand()}
   };
 }
 
+/* Hero carousel — one slide per current offer, each with the client's own clip. */
+const heroSlides = [
+  { tab: 'Slovanské údolí — byty', name: 'Rezidence Slovanské údolí — byty', location: 'Plzeň — Slovanské údolí',
+    status: 'V prodeji', video: '/video/hero-slovanske-byty.mp4', poster: '/projects/slovanske-udoli-05-lg.jpg',
+    href: '/projekty/rezidence-slovanske-udoli/' },
+  { tab: 'Slovanské údolí — domy', name: 'Rezidence Slovanské údolí — domy', location: 'Plzeň — Slovanské údolí',
+    status: 'V prodeji', video: '/video/hero-slovanske-domy.mp4', poster: '/projects/slovanske-udoli-11-lg.jpg',
+    href: '/projekty/rezidence-slovanske-udoli/' },
+  { tab: 'Cukrovarská', name: 'Bytový dům Cukrovarská', location: 'Plzeň — Cukrovarská',
+    status: 'Připravujeme', video: '/video/hero-cukrovarska.mp4', poster: '/projects/cukrovarska-01-lg.jpg',
+    href: '/projekty/bytovy-dum-cukrovarska/' },
+];
+
 function hero() {
-  // One slide per project: its own video, with the project photo as poster so the
-  // first paint is instant and reduced-motion users still get an image.
-  const slides = projects
+  const slides = heroSlides
     .map(
-      (p, i) => `<div class="hero__slide${i === 0 ? ' is-active' : ''}" data-slide="${i}">
-      <video class="hero__video" poster="${p.hero}" muted loop playsinline
+      (s, i) => `<div class="hero__slide${i === 0 ? ' is-active' : ''}" data-slide="${i}">
+      <video class="hero__video" poster="${s.poster}" muted loop playsinline
         preload="${i === 0 ? 'auto' : 'none'}" aria-hidden="true" tabindex="-1"
-        data-src="${p.heroVideo}"${i === 0 ? ` src="${p.heroVideo}"` : ''}></video>
+        data-src="${s.video}"${i === 0 ? ` src="${s.video}"` : ''}></video>
     </div>`
     )
     .join('');
 
-  // drop the type prefix and the sub-locality so the tab labels fit without clipping
-  const shortName = (n) => n.replace(/^(Rezidence|Bytový dům)\s+/, '').split(' — ')[0];
-
-  const nav = projects
+  const nav = heroSlides
     .map(
-      (p, i) => `<button class="hero__dot${i === 0 ? ' is-active' : ''}" data-goto="${i}"
-      aria-label="Zobrazit projekt ${esc(p.name)}"${i === 0 ? ' aria-current="true"' : ''}>
+      (s, i) => `<button class="hero__dot${i === 0 ? ' is-active' : ''}" data-goto="${i}"
+      aria-label="Zobrazit projekt ${esc(s.name)}"${i === 0 ? ' aria-current="true"' : ''}>
       <span class="hero__dot-bar"><span class="hero__dot-fill"></span></span>
-      <span class="hero__dot-label">${esc(shortName(p.name))}</span>
+      <span class="hero__dot-label">${esc(s.tab)}</span>
     </button>`
     )
     .join('');
 
-  const meta = projects
+  const meta = heroSlides
     .map(
-      (p, i) => `<a class="hero__meta-item${i === 0 ? ' is-active' : ''}" data-meta="${i}" href="/projekty/${p.slug}/">
+      (s, i) => `<a class="hero__meta-item${i === 0 ? ' is-active' : ''}" data-meta="${i}" href="${s.href}">
       <span class="k">Aktuální projekt</span>
-      <span class="v">${esc(p.name)}</span>
-      <span class="hero__meta-status">${icon('map-pin')} ${esc(p.location)} · ${esc(p.statusLabel)}</span>
+      <span class="v">${esc(s.name)}</span>
+      <span class="hero__meta-status">${icon('map-pin')} ${esc(s.location)} · ${esc(s.status)}</span>
     </a>`
     )
     .join('');
@@ -154,7 +162,8 @@ function hero() {
   <div class="hero__inner">
     <span class="hero__eyebrow" data-reveal>Plzeň · od roku 1991</span>
     <h1 class="hero__title" data-reveal data-delay="1">Stavíme tam, kde sami chceme bydlet.</h1>
-    <p class="hero__sub" data-reveal data-delay="2">Rodinné domy, řadové domy a byty v Plzni a okolí. Od lokálního developera s 35letou tradicí — realizace i prodej pod jednou střechou.</p>
+    <p class="hero__sub" data-reveal data-delay="2">Protože domov není jen místo, kde žijete. Je to místo, kam se každý den chcete vracet.</p>
+    <p class="hero__sub hero__sub--2" data-reveal data-delay="2">Tvoříme rodinné domy, řadové domy a byty v Plzni a jejím okolí. Vybíráme místa, která mají budoucnost, navrhujeme domy pro skutečný život a celý proces držíme pod jednou střechou.</p>
     <div class="hero__actions" data-reveal data-delay="3">
       ${btn('Prohlédnout projekty', '/projekty/', 'inverse', { lg: true })}
       ${btn('Sjednat prohlídku', '/kontakt/', 'ghost', { lg: true, arrow: false })}
@@ -168,17 +177,28 @@ function hero() {
 </section>`;
 }
 
+/* Static IKO bands set at opposing angles, per the brand manual — the client
+   asked for these instead of the scrolling marquee. */
+function tapeBlock() {
+  const row = (n) => Array.from({ length: n }, () => '<span>IKO</span>').join('');
+  return `<div class="tapeblock" aria-hidden="true">
+    <div class="tapeblock__b tapeblock__b--1">${row(10)}</div>
+    <div class="tapeblock__b tapeblock__b--2">${row(10)}</div>
+    <div class="tapeblock__b tapeblock__b--3">${row(10)}</div>
+  </div>`;
+}
+
 export function ctaBand() {
   return `<section class="cta-band">
-  ${tape({ blue: false })}
   <div class="container cta-band__inner" data-reveal>
-    <div>
-      <h2 class="display">Váš nový soused<br>vás rád provede.</h2>
-      <p class="lead">Ozveme se vám do 24 hodin — bez tlaku, s jasnými odpověďmi od člověka, který projekt zná.</p>
-    </div>
-    <div style="display:flex;gap:.9rem;flex-wrap:wrap">
-      ${btn('Nezávazná poptávka', '/kontakt/', 'inverse', { lg: true })}
-      <a class="btn btn--ghost btn--lg" href="tel:${site.contact.phoneHref}">${icon('phone')} ${esc(site.contact.phone)}</a>
+    ${tapeBlock()}
+    <div class="cta-band__c">
+      <h2 class="display">Začněme u vašich představ.</h2>
+      <p class="lead">Řekněte nám, co hledáte. My vám představíme možnosti, které nejlépe odpovídají vašim potřebám.</p>
+      <div style="display:flex;gap:.9rem;flex-wrap:wrap;margin-top:1.8rem">
+        ${btn('Nezávazná poptávka', '/kontakt/', 'inverse', { lg: true })}
+        <a class="btn btn--ghost btn--lg" href="tel:${site.contact.phoneHref}">${icon('phone')} ${esc(site.contact.phone)}</a>
+      </div>
     </div>
   </div>
 </section>`;

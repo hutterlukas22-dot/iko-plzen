@@ -9,14 +9,14 @@ export function onasPage() {
 <section class="section--tight" style="padding-top:calc(var(--header-h) + clamp(2.5rem,6vw,5rem))">
   <div class="container container--narrow" style="text-align:center" data-reveal>
     ${eyebrow('O nás')}
-    <h1 class="display balance" style="margin:1rem auto 1.4rem;max-width:16ch">Rodinná firma, která v Plzni staví od roku 1991.</h1>
-    <p class="lead muted balance" style="max-width:60ch;margin-inline:auto">Začínali jsme jako stavební firma dodávající domy na klíč. Dnes připravujeme, stavíme a prodáváme vlastní rezidenční projekty — a stále platí, že stavíme tam, kde bychom sami chtěli bydlet.</p>
+    <h1 class="display balance" style="margin:1rem auto 1.4rem;max-width:16ch">Nejdřív místo. Pak dům. Nakonec domov.</h1>
+    <p class="lead muted balance" style="max-width:60ch;margin-inline:auto">Domov nezačíná ve chvíli, kdy otočíte klíčem ve dveřích. Začíná mnohem dřív — výběrem místa, promyšleným návrhem a poctivě odvedenou prací na stavbě. Právě tak pracujeme v IKO stavby už od roku 1991.</p>
   </div>
 </section>
 
 <section class="section--tight">
   <div class="container reveal-media" data-reveal>
-    <img src="/projects/slovanske-udoli-06-lg.jpg" alt="Letecký pohled na rozsáhlou rezidenční čtvrť Slovanské údolí realizovanou firmou IKO" style="width:100%;border-radius:var(--radius-lg);aspect-ratio:16/8;object-fit:cover" loading="lazy" decoding="async">
+    <img src="/photos/ujezd-drazkach-lg.jpg" alt="Dokončená obytná lokalita Újezd — Na Dražkách, oceněná Stavba roku Plzeňského kraje 2017" style="width:100%;border-radius:var(--radius-lg);aspect-ratio:16/8;object-fit:cover" loading="lazy" decoding="async">
   </div>
 </section>
 
@@ -32,7 +32,7 @@ export function onasPage() {
 <section class="section bg-page">
   <div class="container split split--media-first">
     <div class="split__media reveal-media" data-reveal>
-      <img src="/projects/cukrovarska-02-lg.jpg" alt="Bytový dům Cukrovarská ve zavedené plzeňské ulici se vzrostlým stromem" loading="lazy" decoding="async">
+      <img src="/photos/radobycice-zapad-lg.jpg" alt="Dokončené řadové domy v lokalitě Radobyčice — západ" loading="lazy" decoding="async">
     </div>
     <div data-reveal data-delay="1">
       ${eyebrow('Náš přístup')}
