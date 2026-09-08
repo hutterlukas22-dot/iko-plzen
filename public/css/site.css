@@ -1255,19 +1255,38 @@ html.no-js [data-reveal],.no-reveal [data-reveal]{opacity:1;transform:none}
    ========================================================================== */
 .cta-band__inner{display:grid;grid-template-columns:1fr 1.05fr;gap:clamp(1.5rem,4vw,4rem);align-items:center}
 .cta-band__c{display:flex;flex-direction:column}
-.tapeblock{position:relative;display:flex;flex-direction:column;gap:clamp(.8rem,2vw,1.4rem);
-  overflow:hidden;padding-block:clamp(1rem,3vw,2rem);min-height:220px;justify-content:center}
-.tapeblock__b{display:flex;gap:1.4em;white-space:nowrap;background:#fff;color:var(--iko-blue);
-  font-family:var(--font-display);font-weight:var(--fw-bold);font-size:clamp(15px,1.7vw,20px);
-  letter-spacing:var(--ls-tape);padding:.55em 1.2em;width:max-content}
-/* opposing angles, as the bands are used across billboards and signage */
-.tapeblock__b--1{transform:rotate(-3deg) translateX(-6%)}
-.tapeblock__b--2{transform:rotate(2deg) translateX(-14%);background:var(--iko-blue);color:#fff;
-  outline:1px solid rgba(255,255,255,.35)}
-.tapeblock__b--3{transform:rotate(-1.5deg) translateX(-2%)}
+/* Bands overlap at angles and each one scrolls on its own. The strips are wider
+   than the frame and clipped by it, so the ends stay off-canvas like the manual. */
+.tapeblock{position:relative;overflow:hidden;min-height:clamp(300px,34vw,460px)}
+/* wider than the frame and started above it, so bands run off every edge */
+.tband{position:absolute;left:-40%;width:190%;overflow:hidden;
+  background:#fff;color:var(--iko-blue);
+  box-shadow:0 12px 28px rgba(0,21,38,.42), 0 2px 6px rgba(0,21,38,.28);
+  transform-origin:center}
+/* the mark is drawn, so the band hugs it: minimal padding above/below and between */
+.tband__t{display:flex;align-items:center;width:max-content;white-space:nowrap;
+  padding-block:7px;animation:tband-run var(--d,26s) linear infinite}
+.tband__t span{display:flex;align-items:center;padding-inline:.30em}
+/* explicit width beats the global svg{width:1.1em}; 2.577 = the mark's ratio */
+.tband__t svg{--h:clamp(20px,2.4vw,30px);height:var(--h);width:calc(var(--h) * 2.577);
+  display:block;flex:none;fill:currentColor}
+@keyframes tband-run{to{transform:translateX(-50%)}}
+
+/* mixed directions so the bands cross instead of stacking in parallel */
+.tband--1{top:-10%; transform:rotate(-19deg); --d:30s}
+.tband--2{top:4%;  transform:rotate(6deg);   --d:23s}
+.tband--3{top:18%; transform:rotate(-13deg); --d:34s}
+.tband--4{top:31%; transform:rotate(-24deg); --d:26s}
+.tband--5{top:44%; transform:rotate(4deg);   --d:21s}
+.tband--6{top:58%; transform:rotate(-16deg); --d:29s}
+.tband--7{top:72%; transform:rotate(-8deg);  --d:24s}
+.tband--8{top:88%; transform:rotate(-21deg); --d:32s}
+.tband--2 .tband__t,.tband--4 .tband__t,.tband--6 .tband__t,.tband--8 .tband__t{animation-direction:reverse}
+
+@media (prefers-reduced-motion:reduce){.tband__t{animation:none}}
 @media (max-width:860px){
   .cta-band__inner{grid-template-columns:1fr}
-  .tapeblock{min-height:0;order:2;margin-top:1.5rem}
+  .tapeblock{order:2;margin-top:1.8rem;min-height:240px}
   .cta-band__c{order:1}
 }
 

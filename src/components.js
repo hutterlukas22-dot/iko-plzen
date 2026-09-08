@@ -100,8 +100,7 @@ function isActive(path, href) {
 /* ---------- Footer ------------------------------------------------------ */
 function footer() {
   const c = site.contact;
-  return `${tape({ blue: true })}
-<footer class="footer">
+  return `<footer class="footer">
   <div class="container footer__main">
     <div>
       ${wordmark('white')}
@@ -155,7 +154,7 @@ function footer() {
 /* Per the design system the band carries the repeated IKO *logotype*, so the
    mark is the official SVG (viewBox cropped to the ink) rather than set text.
    fill:currentColor lets --tape-fg drive it: blue on white, white on blue. */
-const IKO_MARK =
+export const IKO_MARK =
   '<svg class="tape__mark" viewBox="12.9 9.18 98.33 38.16" aria-hidden="true" focusable="false">' +
   '<path fill="currentColor" d="M12.9,46.6h12.65V10.1h-12.65v36.5ZM35.9,10.1v36.5h12.25V10.1h-12.25ZM58.52,10.1l-10.37,18.25,10.37,18.25h13.2l-10.37-18.25,10.37-18.25h-13.2ZM92.07,9.18c-10.58,0-19.16,8.58-19.16,19.16s8.58,19.16,19.16,19.16,19.16-8.58,19.16-19.16-8.58-19.16-19.16-19.16ZM92.07,36.46c-4.47,0-8.11-3.64-8.11-8.11s3.64-8.11,8.11-8.11,8.11,3.64,8.11,8.11-3.64,8.11-8.11,8.11Z"/></svg>';
 

@@ -1,7 +1,7 @@
 import { site, principles, milestones, services } from '../data/site.js';
 import { projects } from '../data/projects.js';
 import { esc, icon } from '../lib/util.js';
-import { eyebrow, sectionHead, btn, statBand, tape } from '../components.js';
+import { eyebrow, sectionHead, btn, statBand, tape, IKO_MARK } from '../components.js';
 import { projectRow, principlesGrid, serviceBlock, timeline, newsCard } from '../blocks.js';
 import { newsSorted } from '../data/news.js';
 
@@ -177,19 +177,20 @@ function hero() {
 </section>`;
 }
 
-/* Static IKO bands set at opposing angles, per the brand manual — the client
-   asked for these instead of the scrolling marquee. */
+/* IKO bands layered over each other at angles, as in the brand manual. They carry
+   the drawn logotype, not set type — Pepi ships only Regular and Bold, so no
+   typeset weight matches the mark's density. Each band scrolls on its own
+   (duplicated content, translated -50%). */
 function tapeBlock() {
-  const row = (n) => Array.from({ length: n }, () => '<span>IKO</span>').join('');
-  return `<div class="tapeblock" aria-hidden="true">
-    <div class="tapeblock__b tapeblock__b--1">${row(10)}</div>
-    <div class="tapeblock__b tapeblock__b--2">${row(10)}</div>
-    <div class="tapeblock__b tapeblock__b--3">${row(10)}</div>
-  </div>`;
+  const cell = Array.from({ length: 9 }, () => `<span>${IKO_MARK}</span>`).join('');
+  const bands = [1, 2, 3, 4, 5, 6, 7, 8]
+    .map((i) => `<div class="tband tband--${i}"><div class="tband__t">${cell}${cell}</div></div>`)
+    .join('');
+  return `<div class="tapeblock" aria-hidden="true">${bands}</div>`;
 }
 
 export function ctaBand() {
-  return `<section class="cta-band">
+  return `<section class="cta-band" id="zacnime">
   <div class="container cta-band__inner" data-reveal>
     ${tapeBlock()}
     <div class="cta-band__c">
