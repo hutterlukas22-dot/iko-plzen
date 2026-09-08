@@ -26,8 +26,11 @@ export function kontaktPage() {
       </div>
       <div class="social-row">
         ${[['facebook', 'Facebook'], ['youtube', 'YouTube'], ['instagram', 'Instagram'], ['linkedin', 'LinkedIn']]
-          .filter(([k]) => c[k]) // only networks we actually have a URL for
-          .map(([k, l]) => `<a href="${c[k]}" aria-label="${l} IKO" target="_blank" rel="noopener">${icon(k)}</a>`)
+          // networks without a URL yet still show, but as a plain icon rather
+          // than a link that goes nowhere
+          .map(([k, l]) => (c[k]
+            ? `<a href="${c[k]}" aria-label="${l} IKO" target="_blank" rel="noopener">${icon(k)}</a>`
+            : `<span class="is-soon" title="${l} — odkaz doplníme">${icon(k)}</span>`))
           .join('')}
       </div>
     </div>

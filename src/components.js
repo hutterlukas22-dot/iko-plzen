@@ -132,9 +132,12 @@ function footer() {
         <li>${esc(c.city)}</li>
         <li><a href="tel:${c.phoneHref}">${esc(c.phone)}</a></li>
         <li><a href="mailto:${c.email}">${esc(c.email)}</a></li>
-        <li style="display:flex;gap:.8rem;margin-top:.4rem">
-          <a href="${c.facebook}" aria-label="Facebook" style="width:20px">${icon('facebook')}</a>
-          <a href="${c.youtube}" aria-label="YouTube" style="width:22px">${icon('youtube')}</a>
+        <li class="footer__social">
+          ${[['facebook', 'Facebook'], ['youtube', 'YouTube'], ['instagram', 'Instagram'], ['linkedin', 'LinkedIn']]
+            .map(([k, l]) => (c[k]
+              ? `<a href="${c[k]}" aria-label="${l}" target="_blank" rel="noopener">${icon(k)}</a>`
+              : `<span class="is-soon" title="${l} — odkaz doplníme">${icon(k)}</span>`))
+            .join('')}
         </li>
       </ul>
     </div>
