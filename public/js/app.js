@@ -166,12 +166,14 @@
     if (isNaN(target)) return;
     el.dataset.counted = '1';
     if (reduce || target > 1900) { return; } // don't animate years
-    var dur = 1100, start = null;
+    // 4s so the figures visibly roll; a gentler curve than cubic, which over this
+    // length would leave the number almost still for the last half
+    var dur = 4000, start = null;
     function fmt(n) { return n.toLocaleString('cs-CZ').replace(/ /g, ' '); }
     function step(t) {
       if (!start) start = t;
       var p = Math.min((t - start) / dur, 1);
-      var eased = 1 - Math.pow(1 - p, 3);
+      var eased = 1 - Math.pow(1 - p, 2);
       el.textContent = fmt(Math.round(target * eased)) + suffix;
       if (p < 1) requestAnimationFrame(step);
     }
