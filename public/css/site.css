@@ -1276,28 +1276,26 @@ html.no-js [data-reveal],.no-reveal [data-reveal]{opacity:1;transform:none}
 .cta-band{position:relative;overflow:hidden}
 .tapeblock{position:absolute;left:0;top:0;bottom:0;width:clamp(300px,46%,780px);overflow:hidden}
 .cta-band__c{grid-column:2}
-/* wider than the frame and started above it, so bands run off every edge */
-.tband{position:absolute;left:-40%;width:190%;overflow:hidden;
-  background:#fff;color:var(--iko-blue);
+/* wider than the frame and started above it, so bands run off every edge. The
+   logotype is a repeating background: the browser tiles it infinitely and the
+   loop shifts by exactly one tile, so no gap can ever appear. */
+.tband{position:absolute;left:-40%;width:190%;
+  --th:clamp(20px,2.4vw,30px);          /* logotype height */
+  --tw:calc(var(--th) * 3.2529);        /* tile width, from the artwork ratio */
+  height:calc(var(--th) + 14px);
+  background:#fff url(../img/iko-tape-tile.svg) repeat-x 0 center / var(--tw) var(--th);
   box-shadow:0 12px 28px rgba(0,21,38,.42), 0 2px 6px rgba(0,21,38,.28);
-  transform-origin:center}
-/* the mark is drawn, so the band hugs it: minimal padding above/below and between */
-.tband__t{display:flex;align-items:center;width:max-content;white-space:nowrap;
-  padding-block:7px;animation:tband-run var(--d,26s) linear infinite}
-.tband__t span{display:flex;align-items:center;padding-inline:.30em}
-/* explicit width beats the global svg{width:1.1em}; 2.577 = the mark's ratio */
-.tband__t svg{--h:clamp(20px,2.4vw,30px);height:var(--h);width:calc(var(--h) * 2.577);
-  display:block;flex:none;fill:currentColor}
-@keyframes tband-run{to{transform:translateX(-50%)}}
-
+  transform-origin:center;
+  animation:tband-run var(--d,26s) linear infinite}
+@keyframes tband-run{to{background-position-x:calc(-1 * var(--tw))}}
 /* mixed directions so the bands cross instead of stacking in parallel */
 .tband--1{top:-4%; transform:rotate(-18deg); --d:30s}
 .tband--2{top:24%; transform:rotate(5deg);   --d:23s}
 .tband--3{top:52%; transform:rotate(-22deg); --d:34s}
 .tband--4{top:80%; transform:rotate(-7deg);  --d:26s}
-.tband--2 .tband__t,.tband--4 .tband__t{animation-direction:reverse}
+.tband--2,.tband--4{animation-direction:reverse}
 
-@media (prefers-reduced-motion:reduce){.tband__t{animation:none}}
+@media (prefers-reduced-motion:reduce){.tband{animation:none}}
 @media (max-width:860px){
   .cta-band__inner{grid-template-columns:1fr}
   .tapeblock{position:relative;width:auto;min-height:230px;margin-bottom:1.6rem}

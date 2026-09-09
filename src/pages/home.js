@@ -184,10 +184,9 @@ function hero() {
    typeset weight matches the mark's density. Each band scrolls on its own
    (duplicated content, translated -50%). */
 function tapeBlock() {
-  const cell = Array.from({ length: 9 }, () => `<span>${IKO_MARK}</span>`).join('');
-  const bands = [1, 2, 3, 4]
-    .map((i) => `<div class="tband tband--${i}"><div class="tband__t">${cell}${cell}</div></div>`)
-    .join('');
+  // The logotype is a tiled background rather than repeated markup: the browser
+  // repeats it forever, so the band can never run out of marks at any width.
+  const bands = [1, 2, 3, 4].map((i) => `<div class="tband tband--${i}"></div>`).join('');
   return `<div class="tapeblock" aria-hidden="true">${bands}</div>`;
 }
 
