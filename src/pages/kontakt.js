@@ -14,7 +14,7 @@ export function kontaktPage() {
     <div data-reveal>
       ${eyebrow('Kontakt')}
       <h1 class="display balance" style="margin:1rem 0 1.2rem;max-width:18ch">Začněme u vašich představ.</h1>
-      <p class="lead muted" style="max-width:46ch">Řekněte nám, co hledáte. My vám představíme možnosti, které pro vás připadají v úvahu. Osobně, srozumitelně a bez zbytečných frází.</p>
+      <p class="lead muted" style="max-width:46ch">Řekněte nám, co hledáte. My vám představíme možnosti, které pro vás připadají v úvahu.</p>
       <div class="contact-lines">
         ${line('map-pin', 'Adresa', `${c.company}, ${c.street}, ${c.city}`)}
         ${line('phone', 'Telefon', c.phone, `tel:${c.phoneHref}`)}
@@ -42,14 +42,15 @@ export function kontaktPage() {
 
 <section class="section--tight bg-page">
   <div class="container split split--media-first">
-    <figure class="split__media reveal-media" data-reveal style="margin:0">
+    <!-- whole frame, not cropped (client) -->
+    <figure class="split__media split__media--natural reveal-media" data-reveal style="margin:0">
       <img src="/photos/sidlo-lg.jpg" alt="Sídlo IKO stavby ve Vltavínové ulici v Plzni-Černicích" loading="lazy" decoding="async">
     </figure>
     <div data-reveal data-delay="1">
       ${eyebrow('Kde nás najdete')}
-      <h2 class="display" style="margin:.6rem 0 1.2rem">Vltavínová 3 není<br>jen naše adresa.</h2>
+      <h2 class="display" style="margin:.6rem 0 .8rem">Vltavínová 3 je<br>naše adresa.</h2>
+      <p class="lead" style="color:var(--text-strong);max-width:40ch;margin-bottom:1.2rem">Je to také ukázka naší práce. Najdete nás v Plzni-Černicích, v administrativním domě, který jsme postavili.</p>
       <div class="prose muted">
-        <p>Sídlo naší společnosti najdete v Plzni-Černicích, v administrativním domě, který jsme sami postavili. Je to také ukázka naší práce.</p>
         <p>Pokud přijíždíte autem, stačí do navigace zadat <strong>Vltavínová 3, Plzeň</strong> — ta vás zavede přímo k našemu sídlu. Zaparkujete přímo před domem, případně v některé z přilehlých ulic.</p>
       </div>
       <div class="contact-lines" style="margin-top:1.6rem">

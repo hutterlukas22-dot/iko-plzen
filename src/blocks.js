@@ -1,48 +1,4 @@
 import { esc, icon } from './lib/util.js';
-import { statusMeta } from './data/projects.js';
-
-const href = (p) => `/projekty/${p.slug}/`;
-
-/* ---------- Project card (grid) ----------------------------------------- */
-export function projectCard(p, idx = 0) {
-  const sold = p.units && p.units.every((u) => u.status === 'sold');
-  return `<a class="pcard${sold ? ' pcard--sold' : ''}" href="${href(p)}" data-reveal data-delay="${(idx % 3) + 1}">
-    <div class="pcard__media reveal-media">
-      <span class="badge badge--available badge--onmedia"><span class="dot"></span>${esc(p.statusLabel)}</span>
-      <img src="${p.cover}" alt="${esc(p.coverAlt)}" loading="lazy" decoding="async" width="900" height="675">
-    </div>
-    <div class="pcard__body">
-      <h3 class="pcard__title">${esc(p.name)}</h3>
-      <div class="pcard__loc">${esc(p.location)}</div>
-      <div class="pcard__specs"><span>${esc(p.kind)}</span></div>
-      <div class="pcard__foot">
-        <span class="pcard__price">${esc(p.statusLabel)}</span>
-        <span class="pcard__more">Zobrazit projekt ${icon('arrow-right')}</span>
-      </div>
-    </div>
-  </a>`;
-}
-
-/* ---------- Editorial project row (home feature) ------------------------ */
-export function projectRow(p, idx) {
-  return `<article class="proj-row" data-reveal>
-    <div class="proj-row__media reveal-media">
-      <a href="${href(p)}" aria-label="${esc(p.name)}">
-        <img src="${p.cover}" alt="${esc(p.coverAlt)}" loading="lazy" decoding="async" width="900" height="675">
-      </a>
-    </div>
-    <div class="proj-row__text">
-      <div class="proj-row__idx">${String(idx + 1).padStart(2, '0')} / ${esc(p.statusLabel)}</div>
-      <h3 class="proj-row__title">${esc(p.name)}</h3>
-      <div class="proj-row__loc">${icon('map-pin', 'inline-ic')} ${esc(p.location)}</div>
-      <p class="muted" style="margin-top:1rem;max-width:46ch">${esc(p.intro)}</p>
-      <div class="proj-row__tags">
-        <span class="tag">${esc(p.kind)}</span>
-      </div>
-      <a class="btn btn--secondary" href="${href(p)}">Prohlédnout projekt <span class="arrow">${icon('arrow-right')}</span></a>
-    </div>
-  </article>`;
-}
 
 /* ---------- Meta grid --------------------------------------------------- */
 export const metaGrid = (meta) =>
@@ -62,44 +18,6 @@ export function gallery(p) {
       </figure>`;
     })
     .join('')}</div>`;
-}
-
-/* ---------- Units table (Radobyčice) ------------------------------------ */
-export function unitsTable(units) {
-  return `<div class="units-wrap"><table class="units">
-    <thead><tr><th>Dům</th><th>Dispozice</th><th>Plocha</th><th>Parcely</th><th>Stav</th><th style="text-align:right">Cena</th></tr></thead>
-    <tbody>${units
-      .map((u) => {
-        const m = statusMeta[u.status];
-        return `<tr data-unit data-layout="${esc(u.layout)}" data-status="${esc(u.status)}">
-        <td class="u-name">${esc(u.name)}</td>
-        <td>${esc(u.layout)}</td>
-        <td>${esc(u.area)}</td>
-        <td>${esc(u.plot)}</td>
-        <td><span class="status-pill ${m.cls}"><span class="dot"></span>${esc(m.label)}</span></td>
-        <td class="u-price" style="text-align:right">${u.status === 'sold' ? '—' : esc(u.price)}</td>
-      </tr>`;
-      })
-      .join('')}</tbody>
-  </table></div>`;
-}
-
-/* ---------- Composition list (Slovanské / Cukrovarská) ------------------ */
-export function compositionList(items) {
-  return `<div class="units-wrap"><table class="units">
-    <thead><tr><th>Typ bydlení</th><th>Označení</th><th>Charakter</th><th style="text-align:right">Stav</th></tr></thead>
-    <tbody>${items
-      .map((it) => {
-        const m = statusMeta[it.status] || statusMeta.available;
-        return `<tr>
-        <td class="u-name">${esc(it.name)}</td>
-        <td>${esc(it.code)}</td>
-        <td>${esc(it.note)}</td>
-        <td style="text-align:right"><span class="status-pill ${m.cls}"><span class="dot"></span>${esc(m.label)}</span></td>
-      </tr>`;
-      })
-      .join('')}</tbody>
-  </table></div>`;
 }
 
 /* ---------- Location: text beside a separate map preview ---------------- */
@@ -130,24 +48,29 @@ export const locationCard = (place) => `<div class="loc" data-reveal>
     ${mapPreview(place.name)}
   </div>`;
 
-/* ---------- News card --------------------------------------------------- */
-export function newsCard(n, idx = 0) {
-  const d = n.date.split('-');
-  const date = `${Number(d[2])}. ${Number(d[1])}. ${d[0]}`;
-  return `<article class="ncard" data-reveal data-delay="${(idx % 3) + 1}" data-cat="${esc(n.category)}">
+/* ---------- Pipeline (Připravujeme) card -------------------------------- */
+/* Same tile the news section used, so the client can keep adding entries in the
+   same shape; the whole card opens the project's detail. */
+export function pipelineCard(p, idx = 0) {
+  const img = p.gallery && p.gallery[0];
+  return `<article class="ncard" data-reveal data-delay="${(idx % 3) + 1}">
+    <a class="ncard__link" href="/pripravujeme/${p.slug}/" aria-label="${esc(p.name)} — detail"></a>
     <div class="ncard__media reveal-media">
-      <span class="ncard__cat">${esc(n.category)}</span>
-      <img src="${n.image}" alt="${esc(n.title)}" loading="lazy" decoding="async">
+      <span class="ncard__cat">Připravujeme</span>
+      ${img ? `<img src="${img.src}" alt="${esc(img.alt)}" loading="lazy" decoding="async">` : placeholder('Vizualizace připravujeme')}
     </div>
     <div class="ncard__body">
-      <div class="ncard__meta">${esc(date)}${n.project ? ` · ${esc(n.project)}` : ''}</div>
-      <h3 class="ncard__title">${esc(n.title)}</h3>
-      <p class="ncard__excerpt">${esc(n.excerpt)}</p>
-      <span class="tlink" style="margin-top:auto">Číst více ${icon('arrow-right')}</span>
+      <div class="ncard__meta">${icon('map-pin', 'inline-ic')} ${esc(p.location)}${p.units ? ` · ${p.units} jednotek` : ''}</div>
+      <h3 class="ncard__title">${esc(p.name)}</h3>
+      <p class="ncard__excerpt">${esc(p.excerpt)}</p>
+      <span class="tlink" style="margin-top:auto">Zobrazit projekt ${icon('arrow-right')}</span>
     </div>
   </article>`;
 }
-export const newsGrid = (items) => `<div class="card-grid">${items.map((n, i) => newsCard(n, i)).join('')}</div>`;
+
+/* Branded stand-in for imagery that does not exist yet. */
+export const placeholder = (label = '') =>
+  `<div class="pjc__ph" aria-hidden="true"><span>IKO</span>${label ? `<small>${esc(label)}</small>` : ''}</div>`;
 
 /* ---------- Team card --------------------------------------------------- */
 export function teamCard(p, idx = 0) {
@@ -167,30 +90,29 @@ export function teamCard(p, idx = 0) {
 }
 
 /* ---------- Current project tile ---------------------------------------- */
-/* `web` (the project's own site) wins when known, otherwise the internal detail
-   page; a project with neither renders the CTA disabled rather than dead. */
+/* Image, title and button all open the internal detail page; the project's own
+   website, where one exists, is a secondary link under the button. */
 export function currentProjectCard(p, meta, idx = 0) {
   const m = meta[p.status] || meta.selling;
-  const href = p.web || (p.slug ? `/projekty/${p.slug}/` : null);
+  const href = `/projekty/${p.slug}/`;
   const facts = [
-    p.completion ? ['Dokončení', p.completion] : null,
-    p.units ? ['Počet jednotek', String(p.units)] : null,
-  ].filter(Boolean);
+    ['Dokončení', p.completion || 'Upřesníme'],
+    ['Počet jednotek', p.units ? String(p.units) : '—'],
+  ];
   return `<article class="pjc" data-reveal data-delay="${(idx % 3) + 1}">
-    <div class="pjc__media">
+    <a class="pjc__media" href="${href}" tabindex="-1" aria-hidden="true">
       <span class="badge badge--${m.cls} badge--onmedia"><span class="dot"></span>${esc(m.label)}</span>
-      ${p.img
-        ? `<img src="${p.img}" alt="${esc(p.name)}" loading="lazy" decoding="async">`
-        : `<div class="pjc__ph" aria-hidden="true"><span>IKO</span></div>`}
-    </div>
+      ${p.img ? `<img src="${p.img}" alt="" loading="lazy" decoding="async">` : placeholder()}
+    </a>
     <div class="pjc__body">
       <div class="pjc__loc">${icon('map-pin')} ${esc(p.location)}</div>
-      <h3 class="pjc__name">${esc(p.name)}</h3>
-      ${facts.length ? `<dl class="pjc__facts">${facts
-        .map((f) => `<div><dt>${f[0]}</dt><dd>${f[1]}</dd></div>`).join('')}</dl>` : ''}
-      ${href
-        ? `<a class="btn btn--secondary btn--sm pjc__cta" href="${href}"${p.web ? ' target="_blank" rel="noopener"' : ''}>Zobrazit projekt ${icon(p.web ? 'arrow-up-right' : 'arrow-right')}</a>`
-        : `<span class="pjc__soon">Web projektu připravujeme</span>`}
+      <h3 class="pjc__name"><a href="${href}">${esc(p.name)}</a></h3>
+      <dl class="pjc__facts">${facts
+        .map((f) => `<div><dt>${f[0]}</dt><dd>${esc(f[1])}</dd></div>`).join('')}</dl>
+      <div class="pjc__actions">
+        <a class="btn btn--secondary btn--block pjc__cta" href="${href}">Zobrazit projekt <span class="arrow">${icon('arrow-right')}</span></a>
+        ${p.web ? `<a class="tlink pjc__web" href="${p.web}" target="_blank" rel="noopener">Web projektu ${icon('arrow-up-right')}</a>` : ''}
+      </div>
     </div>
   </article>`;
 }

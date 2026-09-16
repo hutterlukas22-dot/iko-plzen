@@ -1,7 +1,7 @@
 import { currentProjects, projectStatusMeta, pipeline, completed } from '../data/projects.js';
 import { esc, icon } from '../lib/util.js';
 import { eyebrow, btn } from '../components.js';
-import { currentProjectCard } from '../blocks.js';
+import { currentProjectCard, pipelineCard } from '../blocks.js';
 import { ctaBand } from './home.js';
 import { allUnits, unitProjects, unitRanges } from '../data/units.js';
 import { unitMarketplaceBar, unitMarketplace } from '../units-ui.js';
@@ -17,7 +17,7 @@ export function projektyPage() {
   </div>
 </section>
 
-<section class="section--tight" aria-labelledby="cur-h">
+<section class="section--tight anchor" id="aktualni" aria-labelledby="cur-h">
   <div class="container">
     <div class="sec-head" data-reveal>
       <div>${eyebrow('Aktuální nabídka')}<h2 class="sec-head__title h1" id="cur-h">Aktuální projekty</h2></div>
@@ -29,13 +29,13 @@ export function projektyPage() {
   </div>
 </section>
 
-<!-- Unit search -->
-<section class="section bg-brand" aria-labelledby="mkt-h">
+<!-- Unit search — the header's "Volné jednotky" lands here -->
+<section class="section bg-brand anchor" id="vyhledavac" aria-labelledby="mkt-h">
   <div class="container">
     <div class="sec-head" data-reveal>
       <div>${eyebrow('Byty a domy na prodej', { onbrand: true })}
       <h2 class="sec-head__title h1" id="mkt-h" style="color:#fff">Vyberte si konkrétní jednotku</h2>
-      <p class="lead" style="color:rgba(255,255,255,.9)">Filtrujte podle projektu, typu, dispozice, plochy a stavu. Přepněte si zobrazení na seznam nebo dlaždice.</p></div>
+      <p class="lead" style="color:rgba(255,255,255,.9)">Filtrujte podle projektu, typu, dispozice, ceny a stavu. Přepněte si zobrazení na seznam nebo dlaždice.</p></div>
     </div>
     <div data-reveal>${unitMarketplaceBar({ units: allUnits, projects: unitProjects, ranges: unitRanges, showProjectFilter: true })}</div>
   </div>
@@ -47,25 +47,23 @@ export function projektyPage() {
   </div>
 </section>
 
-<section class="section--tight bg-page" aria-labelledby="prep-h">
+<section class="section--tight bg-page anchor" id="pripravujeme" aria-labelledby="prep-h">
   <div class="container">
     <div class="sec-head" data-reveal>
       <div>${eyebrow('Připravujeme')}<h2 class="sec-head__title h1" id="prep-h">Chystané lokality</h2>
       <p class="lead muted">Nové etapy a lokality, které postupně uvádíme do prodeje. Ozvěte se a dáme vám vědět mezi prvními.</p></div>
     </div>
-    <div class="prep-grid">
-      ${pipeline.map((p, i) => `<article class="prep" data-reveal data-delay="${(i % 3) + 1}">
-        <div class="prep__loc">${icon('map-pin')} ${esc(p.location)}</div>
-        <h3>${esc(p.name)}</h3>
-        ${p.units ? `<span class="prep__u">${p.units} jednotek</span>` : ''}
-        <p>${esc(p.note)}</p>
-      </article>`).join('')}
+    <div class="card-grid">
+      ${pipeline.map((p, i) => pipelineCard(p, i)).join('')}
     </div>
-    <div style="margin-top:2rem" data-reveal>${btn('Chci vědět o zahájení prodeje', '/kontakt/', 'secondary')}</div>
+    <div style="margin-top:2rem;display:flex;gap:.9rem;flex-wrap:wrap" data-reveal>
+      ${btn('Všechny připravované projekty', '/pripravujeme/', 'secondary')}
+      ${btn('Chci vědět o zahájení prodeje', '/kontakt/', 'ghost-ink')}
+    </div>
   </div>
 </section>
 
-<section class="section" aria-labelledby="done-h">
+<section class="section anchor" id="dokoncene" aria-labelledby="done-h">
   <div class="container">
     <div class="sec-head" data-reveal>
       <div>${eyebrow('Dokončené projekty')}<h2 class="sec-head__title h1" id="done-h">Co už v Plzni stojí</h2>

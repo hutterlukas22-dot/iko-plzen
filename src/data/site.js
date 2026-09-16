@@ -10,7 +10,7 @@ export const site = {
   years: 35, // 1991 → 2026
   tagline: 'Stavíme tam, kde sami chceme bydlet.',
   description:
-    'Rodinná stavební a developerská firma z Plzně. Od roku 1991 stavíme a prodáváme rezidenční bydlení — rodinné domy, řadové domy, dvojdomy i byty — v Plzni a okolí.',
+    'Rodinná stavební a developerská firma z Plzně. Od roku 1991 stavíme a od roku 2003 realizujeme i vlastní rezidenční projekty — rodinné domy, řadové domy, dvojdomy i byty — v Plzni a okolí.',
   contact: {
     company: 'IKO stavby s.r.o.',
     street: 'Vltavínová 1334/3',
@@ -31,8 +31,8 @@ export const site = {
     { href: '/projekty/', label: 'Projekty' },
     { href: '/proc-iko/', label: 'Proč IKO' },
     { href: '/pruvodce-nakupem/', label: 'Průvodce nákupem' },
-    { href: '/tym/', label: 'Tým' },
-    { href: '/aktuality/', label: 'Aktuality' },
+    // Tým is switched off for now (client); the page is not built either
+    { href: '/pripravujeme/', label: 'Připravujeme' },
     { href: '/o-nas/', label: 'O nás' },
     { href: '/sluzby/', label: 'Služby' },
     { href: '/kariera/', label: 'Kariéra' },
@@ -43,7 +43,7 @@ export const site = {
   // leaves the original three plus three, i.e. six columns.
   stats: [
     { v: '35', l: 'let na trhu', s: 'Rodinná firma z Plzně od roku 1991' },
-    { v: '1875+', l: 'postavených bytových jednotek', s: 'Od roku 1991 po dnešek' },
+    { v: '1875+', l: 'postavených bytových jednotek', s: 'Od roku 2003 do dnes' },
     { v: '19+', l: 'realizovaných kompletních projektů', s: 'Celé obytné lokality' },
     { v: '1400+', l: 'připravovaných jednotek', s: 'V 9 lokalitách' },
     { v: '100 %', l: 'vlastní kapitál', s: 'Bez rizika zastavení projektu' },
@@ -71,7 +71,7 @@ export const principles = [
   },
   {
     t: 'Domov podle vás',
-    d: 'Kde to projekt umožňuje, řešíme klientské změny individuálně — přímo v našem zázemí a ve spolupráci s projektanty. Protože domov má odpovídat vašemu životu, ne jen původnímu půdorysu.',
+    d: 'Kde to projekt umožňuje, řešíme klientské změny individuálně — přímo v našem zázemí a ve spolupráci s projektanty. Protože domov má odpovídat vašemu životu, ne jen původnímu projektu.',
   },
   {
     t: 'Zkušenost, která nekončí podpisem smlouvy',
@@ -90,6 +90,16 @@ export const milestones = [
     year: '2003',
     t: 'Přechod k developmentu',
     d: 'IKO rozšiřuje činnost o developerskou výstavbu zaměřenou na rezidenční bydlení — rodinné domy, řadové domy a bytové domy.',
+  },
+  {
+    year: '2007',
+    t: 'Spolupráce s Projectstudio8',
+    d: 'Zahájení trvalé spolupráce s architektonickým ateliérem Projectstudio8 s.r.o.',
+  },
+  {
+    year: '2017',
+    t: 'Nové sídlo v Černicích',
+    d: 'Změna hlavního sídla společnosti do nové administrativní budovy v Černicích — Vltavínová 3, Plzeň.',
   },
   {
     year: '2017',

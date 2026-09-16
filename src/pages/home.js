@@ -1,12 +1,10 @@
-import { site, principles, milestones, services } from '../data/site.js';
-import { projects } from '../data/projects.js';
+import { site, principles, services } from '../data/site.js';
+import { currentProjects, projectStatusMeta, pipeline } from '../data/projects.js';
 import { esc, icon } from '../lib/util.js';
-import { eyebrow, sectionHead, btn, statBand, tape, IKO_MARK } from '../components.js';
-import { projectRow, principlesGrid, serviceBlock, timeline, newsCard } from '../blocks.js';
-import { newsSorted } from '../data/news.js';
+import { eyebrow, sectionHead, btn, statBand } from '../components.js';
+import { currentProjectCard, principlesGrid, serviceBlock, pipelineCard } from '../blocks.js';
 
 export function homePage() {
-  const featured = projects; // all three current projects
   const body = `
 ${hero()}
 
@@ -42,8 +40,9 @@ ${hero()}
       lead: 'Rezidenční bydlení v Plzni a okolí — od městských bytů po rodinné domy se zahradou. Každý projekt je samostatný architektonický příběh.',
       action: btn('Všechny projekty', '/projekty/', 'secondary'),
     })}
-    <div class="proj-list">
-      ${featured.map((p, i) => projectRow(p, i)).join('')}
+    <!-- same offer as the Projekty page (client) -->
+    <div class="pjc-grid">
+      ${currentProjects.map((p, i) => currentProjectCard(p, projectStatusMeta, i)).join('')}
     </div>
   </div>
 </section>
@@ -90,15 +89,15 @@ ${hero()}
   </div>
 </section>
 
-<section class="section" aria-labelledby="news-h">
+<section class="section" aria-labelledby="prep-h">
   <div class="container">
     ${sectionHead({
-      eyebrow: 'Aktuality',
-      title: 'Co je nového u IKO',
-      lead: 'Kolaudace, zahájení prodeje i dny otevřených dveří — novinky ze všech projektů na jednom místě.',
-      action: btn('Všechny aktuality', '/aktuality/', 'secondary'),
+      eyebrow: 'Připravujeme',
+      title: 'Projekty, na kterých právě pracujeme',
+      lead: 'Nové lokality a etapy, které postupně uvádíme do prodeje.',
+      action: btn('Všechny připravované projekty', '/pripravujeme/', 'secondary'),
     })}
-    <div class="card-grid">${newsSorted.slice(0, 3).map((n, i) => newsCard(n, i)).join('')}</div>
+    <div class="card-grid">${pipeline.slice(0, 3).map((p, i) => pipelineCard(p, i)).join('')}</div>
   </div>
 </section>
 

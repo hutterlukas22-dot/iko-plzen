@@ -1,25 +1,22 @@
-import { projects } from '../data/projects.js';
+import { currentProjects, projectStatusMeta, getCurrent } from '../data/projects.js';
 import { site } from '../data/site.js';
 import { esc, icon } from '../lib/util.js';
 import { eyebrow, btn } from '../components.js';
-import { metaGrid, gallery, unitsTable, compositionList, locationCard, projectCard } from '../blocks.js';
-import { contactForm } from '../blocks.js';
-import { projectBuildings, projectUnitList } from '../data/units.js';
-import { floorSelector, unitMarketplace } from '../units-ui.js';
+import { metaGrid, gallery, locationCard, currentProjectCard, contactForm, placeholder } from '../blocks.js';
 
-const rangesOf = (units) => ({
-  dispositions: [...new Set(units.map((u) => u.disposition))].sort(),
-  area: [Math.floor(Math.min(...units.map((u) => u.area))), Math.ceil(Math.max(...units.map((u) => u.area)))],
-  price: [Math.min(...units.map((u) => u.price || Infinity)), Math.max(...units.map((u) => u.price || 0))],
-});
+// Unit count and completion sit beside the other facts, as on the project tiles.
+function factsOf(p) {
+  const cur = getCurrent(p.slug) || {};
+  const units = cur.units ?? p.unitCount;
+  return [
+    { k: 'Počet jednotek', v: units ? String(units) : '—' },
+    { k: 'Dokončení', v: cur.completion || p.completion || 'Upřesníme' },
+  ];
+}
 
+/* The unit selection (floor plans + listing) is deliberately not here any more —
+   the project's own website covers it (client). */
 export function projektDetailPage(p) {
-  const related = projects.filter((x) => x.slug !== p.slug);
-  const hasUnits = Array.isArray(p.units);
-  const buildings = projectBuildings(p.slug);
-  const projUnits = projectUnitList(p.slug);
-  const hasApartments = buildings.length > 0;
-
   const body = `
 <article>
 <section class="pdetail-hero" data-hero>
@@ -34,23 +31,7 @@ export function projektDetailPage(p) {
   </div>
 </section>
 
-<section class="section">
-  <div class="container">
-    <nav class="crumb" aria-label="Drobečková navigace"><a href="/projekty/">Projekty</a> ${icon('arrow-right')} <span>${esc(p.name)}</span></nav>
-    <div class="split" style="margin-top:2rem;align-items:start">
-      <div data-reveal>
-        ${eyebrow('O projektu')}
-        <p class="lead" style="margin-top:1rem;font-size:var(--fs-h3);font-weight:var(--fw-medium);color:var(--text-strong);max-width:30ch;line-height:1.3">${esc(p.intro)}</p>
-        ${p.web ? `<a class="btn btn--primary btn--lg" style="margin-top:1.8rem" href="${p.web}" target="_blank" rel="noopener">
-          Web projektu ${icon('arrow-up-right')}
-        </a>` : ''}
-      </div>
-      <div data-reveal data-delay="1">
-        ${metaGrid(p.meta)}
-      </div>
-    </div>
-  </div>
-</section>
+${introSection(p, p.intro, [...p.meta, ...factsOf(p)], webOf(p))}
 
 <section class="section--tight">
   <div class="container">
@@ -75,55 +56,8 @@ export function projektDetailPage(p) {
   </div>
 </section>
 
-${hasApartments ? `
-<section class="section" aria-labelledby="avail-h">
-  <div class="container">
-    <div class="sec-head" data-reveal>
-      <div>${eyebrow('Byty na prodej')}<h2 class="sec-head__title h1" id="avail-h">Vyberte si byt podle patra</h2>
-      <p class="lead muted">Klikněte na patro a prohlédněte si jeho půdorys i volné byty. Nebo si všechny jednotky projděte jako seznam či dlaždice níže.</p></div>
-    </div>
-    <div data-reveal>${floorSelector(buildings, p.name)}</div>
-    <div style="margin-top:clamp(2.5rem,5vw,4rem)" data-reveal>
-      ${unitMarketplace({ units: projUnits, projects: [], ranges: rangesOf(projUnits), showProjectFilter: false })}
-    </div>
-  </div>
-</section>` : `
-<section class="section" aria-labelledby="avail-h" data-units-root>
-  <div class="container">
-    <div class="sec-head" data-reveal>
-      <div>${eyebrow('Nabídka a dostupnost')}<h2 class="sec-head__title h1" id="avail-h">${hasUnits ? 'Dostupné domy' : 'Co zde najdete'}</h2></div>
-    </div>
-    ${hasUnits ? unitsFilter() : ''}
-    ${hasUnits ? unitsTable(p.units) : compositionList(p.composition)}
-    ${!hasUnits ? '<p class="muted" style="margin-top:1rem;font-size:var(--fs-sm);max-width:60ch">Aktuální dostupnost a ceny jednotlivých jednotek vám rádi zašleme na vyžádání — ozvěte se nám a připravíme vám konkrétní nabídku.</p>' : ''}
-  </div>
-</section>`}
-
-<section class="section--tight bg-brand">
-  <div class="container grid-2" style="align-items:center">
-    <div data-reveal>
-      ${eyebrow('Máte zájem?', { onbrand: true })}
-      <h2 class="display" style="color:#fff;margin:.5rem 0 1rem">Nezávazně se zeptejte na ${esc(p.name)}.</h2>
-      <p style="color:rgba(255,255,255,.9);max-width:44ch">Domluvíme prohlídku, pošleme podklady nebo poradíme s financováním. Ozveme se do 24 hodin.</p>
-      <div style="margin-top:1.6rem;display:flex;gap:.9rem;flex-wrap:wrap">
-        <a class="btn btn--ghost btn--lg" href="tel:${site.contact.phoneHref}">${icon('phone')} ${esc(site.contact.phone)}</a>
-      </div>
-    </div>
-    <div data-reveal data-delay="1">
-      ${contactForm({ compact: true })}
-    </div>
-  </div>
-</section>
-
-<section class="section">
-  <div class="container">
-    <div class="sec-head" data-reveal>
-      <div>${eyebrow('Další projekty')}<h2 class="sec-head__title h1">Prohlédněte si i tyto</h2></div>
-      ${btn('Všechny projekty', '/projekty/', 'secondary')}
-    </div>
-    <div class="card-grid">${related.map((r, i) => projectCard(r, i)).join('')}</div>
-  </div>
-</section>
+${enquiryBand(p.name)}
+${relatedSection(p.slug)}
 </article>
 `;
 
@@ -133,31 +67,115 @@ ${hasApartments ? `
     description: `${p.name} — ${p.intro}`,
     body,
     ogImage: p.hero,
-    jsonLd: JSON.stringify({
-      '@context': 'https://schema.org',
-      '@type': 'ResidentialComplex',
-      name: p.name,
-      description: p.intro,
-      url: `${site.url}/projekty/${p.slug}/`,
-      image: site.url + p.hero,
-      address: { '@type': 'PostalAddress', addressLocality: 'Plzeň', addressCountry: 'CZ' },
-      developer: { '@type': 'Organization', name: site.contact.company },
-    }),
+    jsonLd: jsonLd(p.name, p.intro, p.slug, p.hero),
   };
 }
 
-function unitsFilter() {
-  const layouts = ['Vše', '4+kk', '5+kk', '6+kk'];
-  const states = [['Vše', 'vse'], ['Volné', 'available'], ['Rezervováno', 'reserved'], ['Prodáno', 'sold']];
-  return `<div class="filterbar" data-reveal>
-    <div class="filterbar__group">
-      <span class="filterbar__label">Dispozice</span>
-      ${layouts.map((l, i) => `<button class="tag${i === 0 ? ' is-selected' : ''}" data-filter="layout" data-value="${l === 'Vše' ? 'vse' : l}">${esc(l)}</button>`).join('')}
+/* Projects from the current offer that have no full content yet: the same page
+   frame, filled only with the facts the client supplied. */
+export function projektLitePage(c) {
+  const m = projectStatusMeta[c.status] || projectStatusMeta.selling;
+  const intro = c.text || 'Podrobné informace, vizualizace a ceník tohoto projektu právě připravujeme. Aktuální nabídku jednotek vám rádi pošleme — stačí se nám ozvat.';
+  const meta = [
+    { k: 'Lokalita', v: c.location },
+    { k: 'Stav', v: m.label },
+    { k: 'Developer', v: site.contact.company },
+    { k: 'Počet jednotek', v: c.units ? String(c.units) : '—' },
+    { k: 'Dokončení', v: c.completion || 'Upřesníme' },
+    { k: 'Web projektu', v: c.web ? 'K dispozici' : 'Připravujeme' },
+  ];
+  const body = `
+<article>
+<section class="pdetail-hero${c.img ? '' : ' pdetail-hero--ph'}" data-hero>
+  ${c.img ? `<img src="${c.img}" alt="${esc(c.name)}" fetchpriority="high" decoding="async">` : placeholder()}
+  <div class="scrim"></div>
+  <div class="pdetail-hero__inner">
+    <div class="pill-row" data-reveal style="margin-bottom:1.2rem">
+      <span class="chip-label">${esc(m.label)}</span>
     </div>
-    <div class="filterbar__group">
-      <span class="filterbar__label">Stav</span>
-      ${states.map(([l, v], i) => `<button class="tag${i === 0 ? ' is-selected' : ''}" data-filter="status" data-value="${v}">${esc(l)}</button>`).join('')}
+    <div class="eyebrow eyebrow--onbrand" data-reveal>${icon('map-pin')} ${esc(c.location)}</div>
+    <h1 data-reveal data-delay="1" style="margin-top:.5rem">${esc(c.name)}</h1>
+  </div>
+</section>
+
+${introSection(c, intro, meta, c.web)}
+
+${enquiryBand(c.name)}
+${relatedSection(c.slug)}
+</article>
+`;
+  return {
+    path: `/projekty/${c.slug}/`,
+    title: c.name,
+    description: `${c.name} — ${c.location}. ${m.label}.`,
+    body,
+    ...(c.img ? { ogImage: c.img } : {}),
+    jsonLd: jsonLd(c.name, intro, c.slug, c.img),
+  };
+}
+
+const webOf = (p) => getCurrent(p.slug)?.web || p.web;
+
+function introSection(p, intro, meta, web) {
+  return `<section class="section">
+  <div class="container">
+    <nav class="crumb" aria-label="Drobečková navigace"><a href="/projekty/">Projekty</a> ${icon('arrow-right')} <span>${esc(p.name)}</span></nav>
+    <div class="split" style="margin-top:2rem;align-items:start">
+      <div data-reveal>
+        ${eyebrow('O projektu')}
+        <p class="lead" style="margin-top:1rem;font-size:var(--fs-h3);font-weight:var(--fw-medium);color:var(--text-strong);max-width:30ch;line-height:1.3">${esc(intro)}</p>
+        ${web ? `<a class="btn btn--primary btn--lg" style="margin-top:1.8rem" href="${web}" target="_blank" rel="noopener">
+          Web projektu ${icon('arrow-up-right')}
+        </a>` : ''}
+      </div>
+      <div data-reveal data-delay="1">
+        ${metaGrid(meta)}
+      </div>
     </div>
-    <span class="count" data-units-count style="margin-left:auto"></span>
-  </div>`;
+  </div>
+</section>`;
+}
+
+function enquiryBand(name) {
+  return `<section class="section--tight bg-brand">
+  <div class="container grid-2" style="align-items:center">
+    <div data-reveal>
+      ${eyebrow('Máte zájem?', { onbrand: true })}
+      <h2 class="display" style="color:#fff;margin:.5rem 0 1rem">Nezávazně se zeptejte na ${esc(name)}.</h2>
+      <p style="color:rgba(255,255,255,.9);max-width:44ch">Domluvíme prohlídku, pošleme podklady nebo poradíme s financováním. Ozveme se do 24 hodin.</p>
+      <div style="margin-top:1.6rem;display:flex;gap:.9rem;flex-wrap:wrap">
+        <a class="btn btn--ghost btn--lg" href="tel:${site.contact.phoneHref}">${icon('phone')} ${esc(site.contact.phone)}</a>
+      </div>
+    </div>
+    <div data-reveal data-delay="1">
+      ${contactForm({ compact: true })}
+    </div>
+  </div>
+</section>`;
+}
+
+function relatedSection(slug) {
+  const related = currentProjects.filter((x) => x.slug !== slug).slice(0, 3);
+  return `<section class="section">
+  <div class="container">
+    <div class="sec-head" data-reveal>
+      <div>${eyebrow('Další projekty')}<h2 class="sec-head__title h1">Prohlédněte si i tyto</h2></div>
+      ${btn('Všechny projekty', '/projekty/', 'secondary')}
+    </div>
+    <div class="pjc-grid">${related.map((r, i) => currentProjectCard(r, projectStatusMeta, i)).join('')}</div>
+  </div>
+</section>`;
+}
+
+function jsonLd(name, description, slug, image) {
+  return JSON.stringify({
+    '@context': 'https://schema.org',
+    '@type': 'ResidentialComplex',
+    name,
+    description,
+    url: `${site.url}/projekty/${slug}/`,
+    ...(image ? { image: site.url + image } : {}),
+    address: { '@type': 'PostalAddress', addressCountry: 'CZ' },
+    developer: { '@type': 'Organization', name: site.contact.company },
+  });
 }

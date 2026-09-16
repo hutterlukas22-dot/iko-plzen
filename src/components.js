@@ -66,7 +66,7 @@ function header(path) {
     <a class="header__compare" href="/porovnat/" aria-label="Porovnávač jednotek" title="Porovnávač jednotek">
       ${icon('scale')}<span class="header__compare-count" data-compare-count hidden>0</span>
     </a>
-    <a class="btn btn--primary btn--sm header__cta" href="/projekty/">Volné jednotky</a>
+    <a class="btn btn--primary btn--sm header__cta" href="/projekty/#vyhledavac">Volné jednotky</a>
     <button class="burger" data-menu-open aria-label="Otevřít menu" aria-expanded="false" aria-controls="mobile-menu">
       <span></span><span></span><span></span>
     </button>
@@ -110,8 +110,10 @@ function footer() {
       <h4>Projekty</h4>
       <ul>
         <li><a href="/projekty/rezidence-slovanske-udoli/">Slovanské údolí</a></li>
-        <li><a href="/projekty/bytovy-dum-cukrovarska/">Cukrovarská</a></li>
-        <li><a href="/projekty/radobycice-brizova/">Radobyčice — Břízová</a></li>
+        <li><a href="/projekty/ke-strilne-zruc-senec/">Ke Střílně, Zruč — Senec</a></li>
+        <li><a href="/projekty/myto-a1-u-sladovny/">Mýto A1, U Sladovny</a></li>
+        <li><a href="/projekty/nove-skvrnany-bd-03/">Nové Skvrňany BD 03</a></li>
+        <li><a href="/pripravujeme/">Připravujeme</a></li>
         <li><a href="/projekty/">Všechny projekty</a></li>
       </ul>
     </div>

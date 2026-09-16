@@ -96,7 +96,7 @@ export function unitMarketplaceBar({ units, projects = [], ranges, showProjectFi
       <div class="mkt-group"><span class="mkt-group__label">Typ</span><div class="mkt-chips">${typeChips}</div></div>
       <div class="mkt-group"><span class="mkt-group__label">Dispozice</span><div class="mkt-chips">${dispChips}</div></div>
       <div class="mkt-group"><span class="mkt-group__label">Stav</span><div class="mkt-chips">${statusChips}</div></div>
-      <div class="mkt-group"><span class="mkt-group__label">Plocha (m²)</span><div class="mkt-range"><input class="control" type="number" inputmode="numeric" data-filter-min="area" placeholder="od" min="0"><span>–</span><input class="control" type="number" inputmode="numeric" data-filter-max="area" placeholder="do"></div></div>
+      <div class="mkt-group"><span class="mkt-group__label">Cena (Kč)</span><div class="mkt-range mkt-range--price"><input class="control" type="text" inputmode="numeric" data-filter-min="price" placeholder="od" aria-label="Cena od (Kč)"><span>–</span><input class="control" type="text" inputmode="numeric" data-filter-max="price" placeholder="do" aria-label="Cena do (Kč)"></div></div>
       <div class="mkt-group mkt-spacer"><span class="mkt-group__label">Řazení</span><select class="control" data-sort><option value="num">Doporučené</option><option value="price-asc">Cena: od nejnižší</option><option value="price-desc">Cena: od nejvyšší</option><option value="area-asc">Plocha: od nejmenší</option><option value="area-desc">Plocha: od největší</option></select></div>
     </div>`;
 }
@@ -124,27 +124,8 @@ export const unitJSON = (units, { withRooms = false } = {}) =>
  * hideBar: set to true when filters are shown separately in blue section
  */
 export function unitMarketplace({ units, projects = [], ranges, showProjectFilter = true, hideBar = false }) {
-  const chip = (val, label, group, sel = false) =>
-    `<button class="tag${sel ? ' is-selected' : ''}" data-filter="${group}" data-value="${esc(val)}">${esc(label)}</button>`;
-  const dispChips = ['Vše', ...ranges.dispositions].map((d) => chip(d === 'Vše' ? 'vse' : d, d, 'disp', d === 'Vše')).join('');
-  const statusChips = [['vse', 'Vše'], ['available', 'Volné'], ['reserved', 'Rezervováno'], ['sold', 'Prodáno'], ['preparing', 'Připravujeme']]
-    .map(([v, l], i) => chip(v, l, 'status', i === 0)).join('');
-  const typeChips = [['vse', 'Vše'], ['Byt', 'Byty'], ['Dům', 'Rodinné domy'], ['Řadový dům', 'Řadové domy'], ['Dvojdům', 'Dvojdomy'], ['Pozemek', 'Pozemky']]
-    .map(([v, l], i) => chip(v, l, 'type', i === 0)).join('');
-  const projectOptions = ['<option value="vse">Všechny projekty</option>', ...projects.map((p) => `<option value="${esc(p.slug)}">${esc(p.name)}</option>`)].join('');
-
   return `<div class="mkt" data-marketplace>
-    ${!hideBar ? `<div class="mkt-bar">
-      ${showProjectFilter ? `<div class="mkt-group">
-        <span class="mkt-group__label">Projekt</span>
-        <select class="control" data-filter-select="project">${projectOptions}</select>
-      </div>` : ''}
-      <div class="mkt-group"><span class="mkt-group__label">Typ</span><div class="mkt-chips">${typeChips}</div></div>
-      <div class="mkt-group"><span class="mkt-group__label">Dispozice</span><div class="mkt-chips">${dispChips}</div></div>
-      <div class="mkt-group"><span class="mkt-group__label">Stav</span><div class="mkt-chips">${statusChips}</div></div>
-      <div class="mkt-group"><span class="mkt-group__label">Plocha (m²)</span><div class="mkt-range"><input class="control" type="number" inputmode="numeric" data-filter-min="area" placeholder="od" min="0"><span>–</span><input class="control" type="number" inputmode="numeric" data-filter-max="area" placeholder="do"></div></div>
-      <div class="mkt-group mkt-spacer"><span class="mkt-group__label">Řazení</span><select class="control" data-sort><option value="num">Doporučené</option><option value="price-asc">Cena: od nejnižší</option><option value="price-desc">Cena: od nejvyšší</option><option value="area-asc">Plocha: od nejmenší</option><option value="area-desc">Plocha: od největší</option></select></div>
-    </div>` : ''}
+    ${hideBar ? '' : unitMarketplaceBar({ units, projects, ranges, showProjectFilter })}
 
     <div class="mkt-head">
       <span class="mkt-count" data-count><b>${units.length}</b> jednotek</span>
@@ -157,7 +138,9 @@ export function unitMarketplace({ units, projects = [], ranges, showProjectFilte
       <div data-rows>${units.map(unitRow).join('')}</div>
     </div>
     <div class="utiles" data-view-tiles style="display:none">${units.map(unitTile).join('')}</div>
-    <div class="empty" data-empty hidden>Žádná jednotka neodpovídá zvoleným filtrům.</div>
+    <div class="empty" data-empty hidden
+      data-nomatch="Žádná jednotka neodpovídá zvoleným filtrům."
+      data-nostock="Jednotky tohoto projektu do vyhledávače právě doplňujeme. Aktuální nabídku vám rádi pošleme — ozvěte se nám.">Žádná jednotka neodpovídá zvoleným filtrům.</div>
 
     <div class="demo-note">${icon('shield-check')}<span>Dispozice a půdorysy vycházejí z reálných podkladů IKO. Ceny, plochy a dostupnost jsou v této ukázce demonstrační a v ostrém provozu je nahradí data z CMS.</span></div>
     ${unitJSON(units)}

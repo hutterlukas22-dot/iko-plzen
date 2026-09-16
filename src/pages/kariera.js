@@ -66,7 +66,7 @@ export function karieraPage() {
       <ul class="ticks">
         ${['praxe ve stavebnictví, developmentu nebo technických oborech',
            'zodpovědný přístup a chuť dotahovat věci do konce',
-           'schopnost spolupracovat a komunikovat na rovinu',
+           'schopnost spolupracovat a komunikovat',
            'zájem učit se a podílet se na kvalitních projektech']
           .map((t) => `<li>${icon('check')}<span>${esc(t)}</span></li>`).join('')}
       </ul>

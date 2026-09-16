@@ -39,7 +39,7 @@ export function onasPage() {
       <h2 class="display" style="margin:.6rem 0 1.2rem">Stavíme komunity,<br>ne jen domy.</h2>
       <div class="prose muted">
         <p>Lokality vybíráme stejně pečlivě jako naši klienti. Zajímá nás dostupnost, zeleň, sousedství i to, jak bude místo fungovat za deset let.</p>
-        <p>Protože prodáváme ve vlastní režii, jednáte přímo s těmi, kdo dům staví. Bez prostředníků, bez přehazování zodpovědnosti — s jistotou, kterou rodinná firma s 35letou historií unese.</p>
+        <p>Protože prodáváme ve vlastní režii, jednáte přímo s těmi, kdo dům staví. Bez prostředníků.</p>
       </div>
       <div style="margin-top:1.8rem">${btn('Naše projekty', '/projekty/', 'secondary')}</div>
     </div>

@@ -60,7 +60,7 @@ export const projects = [
     imgPrefix: 'cukrovarska',
     name: 'Bytový dům Cukrovarská',
     status: 'aktualni',
-    statusLabel: 'V prodeji',
+    statusLabel: 'Připravujeme',
     location: 'Plzeň — Cukrovarská',
     kind: 'Městský bytový dům',
     cover: P('cukrovarska', 3, 'sm'),
@@ -77,7 +77,7 @@ export const projects = [
     meta: [
       { k: 'Lokalita', v: 'Plzeň — Cukrovarská' },
       { k: 'Typ', v: 'Bytový dům' },
-      { k: 'Stav', v: 'V prodeji' },
+      { k: 'Stav', v: 'Připravujeme' },
       { k: 'Charakter', v: 'Cihelná fasáda, zelené terasy' },
     ],
     composition: [
@@ -107,8 +107,11 @@ export const projects = [
     web: null,
     imgPrefix: 'radobycice',
     name: 'Radobyčice — Břízová',
-    status: 'aktualni',
-    statusLabel: 'V prodeji',
+    status: 'dokonceny',
+    statusLabel: 'Vyprodáno',
+    // not in currentProjects, so the detail page reads these two facts from here
+    completion: '2026',
+    unitCount: 25,
     location: 'Plzeň — Radobyčice',
     kind: 'Rodinné domy · dvojdomy · řadové domy',
     cover: P('radobycice', 2, 'sm'),
@@ -125,7 +128,7 @@ export const projects = [
     meta: [
       { k: 'Lokalita', v: 'Plzeň — Radobyčice' },
       { k: 'Typ', v: 'Rodinné domy' },
-      { k: 'Stav', v: 'V prodeji' },
+      { k: 'Stav', v: 'Vyprodáno' },
       { k: 'Energetika', v: 'Tepelné čerpadlo + FVE' },
     ],
     // Unit specs sourced from the IKO Design System (ui_kits/web).
@@ -151,24 +154,27 @@ export const projects = [
   },
 ];
 
-// Currently prepared / selling elsewhere (no dedicated gallery yet).
-/* Current offer, as supplied by the client. `web` is the project's own site — the
-   tile CTA goes there once the URL is known; until then it falls back to the
-   internal detail page (`slug`). Projects without imagery render a branded
-   placeholder rather than borrowing another project's photo. */
+/* Current offer, as supplied by the client — the same list drives the homepage,
+   the Projekty page and the project filter of the unit search. Every entry has a
+   detail page: the three with full content render the rich template, the rest a
+   lighter one built from these fields. `web` is the project's own site, where known.
+   Projects without imagery render a branded placeholder rather than borrowing
+   another project's photo. */
 export const currentProjects = [
-  { name: 'Rezidence Slovanské údolí', location: 'Plzeň — Slovanské údolí', status: 'selling',
-    completion: '2028', units: 75, slug: 'rezidence-slovanske-udoli', web: null, img: P('slovanske-udoli', 6) },
-  { name: 'Ke Střílně, Zruč — Senec', location: 'Zruč — Senec', status: 'selling',
-    completion: '2027', units: 14, slug: null, web: null, img: null },
-  { name: 'Mýto A1, U Sladovny', location: 'Mýto u Rokycan', status: 'selling',
-    completion: '2026', units: 17, slug: null, web: null, img: null },
-  { name: 'Nové Skvrňany BD 03', location: 'Plzeň — Skvrňany', status: 'selling',
-    completion: '2026', units: 51, slug: null, web: null, img: null },
-  { name: 'Újezd — jih, I. etapa', location: 'Plzeň — Újezd', status: 'soldout',
-    completion: '2026', units: null, slug: null, web: null, img: '/photos/ujezd-jih-lg.jpg' },
-  { name: 'Bytový dům Cukrovarská', location: 'Plzeň — Cukrovarská', status: 'preparing',
-    completion: null, units: 12, slug: 'bytovy-dum-cukrovarska', web: null, img: P('cukrovarska', 1) },
+  { slug: 'rezidence-slovanske-udoli', name: 'Rezidence Slovanské údolí', location: 'Plzeň — Slovanské údolí',
+    status: 'selling', completion: '2028', units: 75, web: 'https://www.rezidenceslovanskeudoli.cz/',
+    img: P('slovanske-udoli', 6) },
+  { slug: 'ke-strilne-zruc-senec', name: 'Ke Střílně, Zruč — Senec', location: 'Zruč — Senec',
+    status: 'selling', completion: '2027', units: 14, web: null, img: null },
+  { slug: 'myto-a1-u-sladovny', name: 'Mýto A1, U Sladovny', location: 'Mýto u Rokycan',
+    status: 'selling', completion: '2026', units: 17, web: null, img: null },
+  { slug: 'nove-skvrnany-bd-03', name: 'Nové Skvrňany BD 03', location: 'Plzeň — Skvrňany',
+    status: 'selling', completion: '2026', units: 51, web: null, img: null },
+  { slug: 'ujezd-jih-1-etapa', name: 'Újezd — jih, I. etapa', location: 'Plzeň — Újezd',
+    status: 'soldout', completion: '2026', units: null, web: null, img: '/photos/ujezd-jih-lg.jpg',
+    text: 'Řešené území o rozloze 4,99 ha zahrnuje 154 bytů v bytových domech, 35 řadových domů a 15 samostatných rodinných domů. 1. PP je vždy vyčleněné pro parkování, popř. sklepní kóje, v 1. až 4. NP jsou umístěny bytové jednotky 1+kk až 4+kk s výměrami 29,5 m² až 103,9 m², včetně balkonů, lodžií a teras. Různorodá struktura zástavby kombinuje bytové domy v centrální části s řadovými a rodinnými domy na okrajích, čímž zajišťuje variabilitu a zabraňuje monotónnosti. Důraz je kladen na prostupnost území a propojení s okolní zelení, s cílem vytvořit kvalitní obytné prostředí.' },
+  { slug: 'bytovy-dum-cukrovarska', name: 'Bytový dům Cukrovarská', location: 'Plzeň — Cukrovarská',
+    status: 'preparing', completion: null, units: 12, web: null, img: P('cukrovarska', 1) },
 ];
 
 export const projectStatusMeta = {
@@ -177,14 +183,21 @@ export const projectStatusMeta = {
   soldout: { label: 'Vyprodáno', cls: 'sold' },
 };
 
-/* In preparation — descriptions supplied by the client. */
+export const getCurrent = (slug) => currentProjects.find((p) => p.slug === slug);
+
+/* In preparation — texts supplied by the client. `excerpt` feeds the tiles, `text`
+   the detail page. `gallery` is empty until the visualisations exist; the detail
+   page shows placeholders in their place. */
 export const pipeline = [
-  { name: 'Újezd — jih, 2. etapa', location: 'Plzeň — Újezd', units: 242,
-    note: 'V návaznosti na probíhající výstavbu 1. etapy připravujeme pokračování výstavby v této lokalitě. Celkem se bude jednat o 242 bytových jednotek v bytových a řadových rodinných domech. Součástí bude i 6 nebytových jednotek pro zlepšení občanské vybavenosti a vybudování kompletní technické a dopravní infrastruktury včetně ploch zeleně a ploch pro sportování.' },
-  { name: 'K Cihelnám, Černice', location: 'Plzeň — Černice', units: 70,
-    note: 'Trojice bytových domů sevřených do jednoho obytného celku s vnitroblokem plným zeleně a herních prvků. Objekty obsahují 6 samostatných vstupů ve třech nadzemních a jednom podzemním podlaží, na střechách pobytové terasy pro společné využití a v suterénu parkování pro obyvatele. Celkem 70 bytových jednotek nedaleko nově vznikajícího víceúčelového sportoviště.' },
-  { name: 'Radobyčice — jih 2', location: 'Plzeň — Radobyčice', units: 77,
-    note: 'Pokračování unikátního projektu rodinného bydlení na okraji Plzně. Domy typů A–E jsou navrženy tak, aby byly v souladu s charakterem území. Celkem 77 bytových jednotek v podobě řadových domů s vlastními zahradami, garážemi nebo parkovacími stáními, včetně komunikací, veřejného prostoru a herních prvků.' },
+  { slug: 'ujezd-jih-2-etapa', name: 'Újezd — jih, 2. etapa', location: 'Plzeň — Újezd', units: 242, gallery: [],
+    excerpt: 'Pokračování výstavby v lokalitě Újezd — jih: 242 bytových jednotek v bytových a řadových rodinných domech a 6 nebytových jednotek pro občanskou vybavenost.',
+    text: 'V návaznosti na probíhající výstavbu 1. etapy připravujeme pokračování výstavby v této lokalitě. Celkem se bude jednat o 242 bytových jednotek v bytových a řadových rodinných domech. Současně bude tato etapa obsahovat i vybudování 6 nebytových jednotek pro zlepšení občanské vybavenosti v této části města. Součástí výstavby bude samozřejmě vybudování kompletní technické a dopravní infrastruktury včetně ploch zeleně a ploch pro sportování.' },
+  { slug: 'k-cihelnam-cernice', name: 'K Cihelnám, Černice', location: 'Plzeň — Černice', units: 70, gallery: [],
+    excerpt: 'Trojice bytových domů sevřených do jednoho obytného celku s vnitroblokem plným zeleně — celkem 70 bytů nedaleko nového sportoviště v Černicích.',
+    text: 'Nový záměr obsahuje trojici bytových domů, sevřených do jednoho obytného celku s vnitroblokem plným zeleně a herních prvků. Související komunikace, chodníky a přípojky budou v této lokalitě také vybudovány. Objekty BD obsahují celkově 6 samostatných vstupů ve třech nadzemních a jednom podzemním podlaží. Na střechách budou umístěny pobytové terasy pro společné využití. V suterénu bude umístěno parkování pro obyvatele. Celkem bude vytvořeno 70 bytových jednotek nedaleko nově vznikajícího víceúčelového sportoviště v Černicích.' },
+  { slug: 'radobycice-jih-2', name: 'Radobyčice — jih 2', location: 'Plzeň — Radobyčice', units: 77, gallery: [],
+    excerpt: 'Pokračování rodinného bydlení na okraji Plzně: 77 bytových jednotek v řadových domech s vlastními zahradami, garážemi nebo parkovacími stáními.',
+    text: 'V návaznosti na předchozí výstavbu v Radobyčicích připravujeme pokračování výstavby v unikátním projektu rodinného bydlení na okraji Plzně. Nové domy typů A, B, C, D, E jsou navrženy tak, aby byly v souladu s charakterem území. Celkem bude vytvořeno 77 bytových jednotek v podobě řadových domů s vlastními zahradami, garážemi, nebo parkovacími stáními. Související komunikace, veřejný prostor, herní prvky, chodníky a přípojky budou v této lokalitě také vybudovány.' },
 ];
 
 /* Completed developments — real photography of finished localities. */

@@ -3,7 +3,7 @@
 // (dispozice + floor-plan images are real). Prices, exact areas, floors and
 // availability are DEMO placeholders — a CMS/implementer replaces them with real data.
 import { readFileSync } from 'node:fs';
-import { projects } from './projects.js';
+import { currentProjects } from './projects.js';
 
 const gen = JSON.parse(readFileSync(new URL('./units.generated.json', import.meta.url), 'utf8'));
 
@@ -51,20 +51,8 @@ for (const [key, b] of Object.entries(gen)) {
   }
 }
 
-// ---- Radobyčice houses as units (real data from projects.js) ----
-const rado = projects.find((p) => p.slug === 'radobycice-brizova');
-export const houseUnits = (rado?.units || []).map((u, i) => ({
-  id: `radobycice-${i + 1}`,
-  projectSlug: rado.slug, projectName: rado.name, city: 'Plzeň',
-  building: null, buildingKey: 'radobycice',
-  label: u.name,
-  num: u.name, disposition: u.layout, area: parseFloat(u.area), floor: null,
-  status: u.status, price: parseInt(String(u.price).replace(/\D/g, '')) || null, orient: null,
-  parking: true, cellar: false, terrace: false, balcony: false,
-  img: `/projects/radobycice-${String((i % 6) + 1).padStart(2, '0')}-sm.jpg`, type: 'Dům', plot: u.plot,
-}));
-
-export const allUnits = [...apartmentUnits, ...houseUnits];
+// Radobyčice — Břízová is sold out (client), so its houses are no longer listed.
+export const allUnits = [...apartmentUnits];
 
 // ---- Equipment / amenities ------------------------------------------------
 // DEMO like the prices: seeded from the unit id so a unit always keeps the same
@@ -102,10 +90,11 @@ for (const u of allUnits) {
   u.amenities = AMENITIES.filter((a) => u[a.key]);
 }
 
-// distinct projects that actually have units, in display order
-export const unitProjects = [];
-for (const u of allUnits) if (!unitProjects.some((p) => p.slug === u.projectSlug))
-  unitProjects.push({ slug: u.projectSlug, name: u.projectName });
+// the project filter lists the whole current offer except sold-out projects —
+// including ones whose units are not in the search yet (client)
+export const unitProjects = currentProjects
+  .filter((p) => p.status !== 'soldout')
+  .map((p) => ({ slug: p.slug, name: p.name }));
 
 // ranges for filter defaults
 export const unitRanges = {

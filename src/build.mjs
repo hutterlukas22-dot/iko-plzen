@@ -5,18 +5,17 @@ import { fileURLToPath } from 'node:url';
 
 import { layout } from './components.js';
 import { site } from './data/site.js';
-import { projects } from './data/projects.js';
+import { projects, currentProjects, pipeline } from './data/projects.js';
 import { homePage } from './pages/home.js';
 import { projektyPage } from './pages/projekty.js';
-import { projektDetailPage } from './pages/projekt.js';
+import { projektDetailPage, projektLitePage } from './pages/projekt.js';
 import { onasPage } from './pages/onas.js';
 import { sluzbyPage } from './pages/sluzby.js';
 import { karieraPage } from './pages/kariera.js';
 import { kontaktPage } from './pages/kontakt.js';
 import { procIkoPage } from './pages/proc-iko.js';
 import { pruvodceNakupemPage } from './pages/pruvodce-nakupem.js';
-import { tymPage } from './pages/tym.js';
-import { aktualityPage } from './pages/aktuality.js';
+import { pripravujemePage, pripravujemeDetailPage } from './pages/pripravujeme.js';
 import { jednotkaPage } from './pages/jednotka.js';
 import { porovnatPage } from './pages/porovnat.js';
 import { notFoundPage } from './pages/notfound.js';
@@ -84,14 +83,17 @@ async function run() {
     homePage(),
     projektyPage(),
     ...projects.map((p) => projektDetailPage(p)),
+    // current-offer projects without full content get the lighter template
+    ...currentProjects.filter((c) => !projects.some((p) => p.slug === c.slug)).map((c) => projektLitePage(c)),
     onasPage(),
     sluzbyPage(),
     karieraPage(),
     kontaktPage(),
     procIkoPage(),
     pruvodceNakupemPage(),
-    tymPage(),
-    aktualityPage(),
+    // tymPage() — switched off for now (client); src/pages/tym.js is kept for later
+    pripravujemePage(),
+    ...pipeline.map((p) => pripravujemeDetailPage(p)),
     jednotkaPage(),
     porovnatPage(),
     notFoundPage(),

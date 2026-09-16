@@ -5,29 +5,29 @@ import { ctaBand } from './home.js';
 
 /* Eight steps, wording supplied by the client. */
 const steps = [
-  { t: 'Výběr jednotky', d: 'Vyberte si byt nebo dům podle dispozice, plochy a patra. Pomůže vám interaktivní výběr podle podlaží i porovnávač jednotek.' },
-  { t: 'Nezávazná rezervace', d: 'Vybranou jednotku vám na dohodnutou dobu blokujeme. Bez závazku a bez poplatku, než si vše v klidu promyslíte.' },
+  { t: 'Výběr nemovitosti', d: 'Vyberte si byt nebo dům podle dispozice, plochy a patra. Pomůže vám vyhledávač i porovnávač nemovitostí.' },
+  { t: 'Nezávazná rezervace', d: 'Vybranou nemovitost vám na dohodnutou dobu blokujeme. Bez závazku a bez poplatku, než si vše v klidu promyslíte.' },
   { t: 'Financování', d: 'V případě zájmu zprostředkujeme financování.' },
-  { t: 'Rezervační smlouva', d: 'Podpisem rezervační smlouvy a složením rezervačního poplatku je jednotka závazně potvrzena.' },
+  { t: 'Rezervační smlouva', d: 'Podpisem rezervační smlouvy a složením rezervačního poplatku je nemovitost závazně potvrzena.' },
   { t: 'Uzavření SoSBK', d: 'Uzavření Smlouvy o smlouvě budoucí kupní a platba první splátky.' },
   { t: 'Klientské změny', d: 'Naši specialisté z klientského centra s vámi projdou standardy a pomohou s případným výběrem nadstandardů.' },
-  { t: 'Dokončení jednotky', d: 'Kolaudace a předání jednotky k dokončení.' },
-  { t: 'Kupní smlouva a předání', d: 'Úhrada celé kupní ceny včetně klientských změn, podpis kupní smlouvy a převod jednotky na katastru nemovitostí.' },
+  { t: 'Dokončení nemovitosti', d: 'Kolaudace a předání nemovitosti k dokončení.' },
+  { t: 'Kupní smlouva a předání', d: 'Úhrada celé kupní ceny včetně klientských změn, podpis kupní smlouvy a převod nemovitosti na katastru nemovitostí.' },
 ];
 
 const financing = [
-  { ic: 'wallet', t: 'Hypotéka', d: 'Provedeme vás nabídkami bank a pomůžeme vybrat řešení na míru — bez běhání po pobočkách.' },
-  { ic: 'key', t: 'Vlastní zdroje', d: 'Kupujete-li z vlastního, nastavíme individuální financování.' },
+  { ic: 'wallet', t: 'Hypotéka', d: 'V případě zájmu zprostředkujeme financování hypotékou.' },
+  { ic: 'key', t: 'Vlastní zdroje', d: 'Jsme schopni se domluvit na individuálním financování.' },
   { ic: 'handshake', t: 'Kombinace', d: 'Část vlastními prostředky, část hypotékou — poradíme s optimálním poměrem.' },
 ];
 
 const faqs = [
-  { q: 'Jak dlouho platí nezávazná rezervace?', a: 'Vybranou jednotku vám blokujeme po dohodnutou dobu (obvykle několik dní), abyste měli klid na rozmyšlenou i na jednání s bankou. Konkrétní podmínky vám sdělíme u konkrétní jednotky.' },
-  { q: 'Mohu si upravit dispozici nebo standard bytu?', a: 'Ano. Klientské změny — dispoziční i materiálové — zpracováváme interně v rámci našeho klientského centra a při náročnějších změnách také ve spolupráci s projektovým studiem. Rozsah závisí na fázi výstavby dané jednotky.' },
-  { q: 'Pomůžete mi se zajištěním hypotéky?', a: 'Pomůžeme. V případě zájmu zprostředkujeme financování koupě jednotky.' },
-  { q: 'Kdy platím jakou částku?', a: 'Platby jsou navázané na jednotlivé kroky — rezervační poplatek, smlouvu o smlouvě budoucí a doplatek při předání. Přesný splátkový kalendář dostanete ke konkrétní jednotce.' },
-  { q: 'Co všechno je součástí ceny?', a: 'Rozsah dodávky je uvedený v podkladech ke každé jednotce (prodejní list a katalogový list). Rádi vám ho projdeme položku po položce.' },
-  { q: 'Jak probíhá předání?', a: 'Po kolaudaci vás pozveme na předání, kde společně zkontrolujeme byt, sepíšeme protokol a předáme klíče. Případné připomínky řešíme obratem.' },
+  { q: 'Jak dlouho platí nezávazná rezervace?', a: 'Vybranou nemovitost vám blokujeme po dohodnutou dobu (obvykle několik dní), abyste měli klid na rozmyšlenou i na jednání s bankou. Konkrétní podmínky vám sdělíme u konkrétní nemovitosti.' },
+  { q: 'Mohu si upravit dispozici nebo standard bytu?', a: 'Ano. Klientské změny — dispoziční i materiálové — zpracováváme interně v rámci našeho klientského centra a při náročnějších změnách také ve spolupráci s projektovým studiem. Rozsah závisí na fázi výstavby dané nemovitosti.' },
+  { q: 'Pomůžete mi se zajištěním hypotéky?', a: 'Pomůžeme. V případě zájmu zprostředkujeme financování koupě nemovitosti.' },
+  { q: 'Kdy platím jakou částku?', a: 'Platby jsou navázané na jednotlivé kroky — rezervační poplatek, smlouvu o smlouvě budoucí a doplatek při předání. Přesný splátkový kalendář dostanete ke konkrétní nemovitosti.' },
+  { q: 'Co všechno je součástí ceny?', a: 'Rozsah dodávky je uvedený v podkladech ke každé nemovitosti (prodejní list a katalogový list). Rádi ho s vámi projdeme položku po položce.' },
+  { q: 'Jak probíhá předání?', a: 'Po kolaudaci vás pozveme na předání, kde společně zkontrolujeme nemovitost, sepíšeme protokol a předáme klíče. Případné připomínky řešíme obratem.' },
 ];
 
 export function pruvodceNakupemPage() {
@@ -36,7 +36,7 @@ export function pruvodceNakupemPage() {
   <div class="container container--narrow" data-reveal>
     ${eyebrow('Průvodce nákupem')}
     <h1 class="display balance" style="margin:1rem 0 1.2rem;max-width:20ch">Cesta k novému domovu, krok za krokem.</h1>
-    <p class="lead muted" style="max-width:60ch">Provedeme vás celým procesem od výběru jednotky až po předání klíčů — přehledně, bez tlaku a s pomocí, kdykoli ji budete potřebovat.</p>
+    <p class="lead muted" style="max-width:60ch">Provedeme vás celým procesem od výběru nemovitosti až po předání klíčů — přehledně, bez tlaku a s pomocí, kdykoli ji budete potřebovat.</p>
   </div>
 </section>
 
@@ -71,7 +71,7 @@ export function pruvodceNakupemPage() {
       ${eyebrow('Klientské změny')}
       <h2 class="display" style="margin:.6rem 0 1.1rem">Standard, který si upravíte podle sebe.</h2>
       <p class="muted" style="max-width:46ch">Dispoziční i materiálové úpravy zpracováváme interně ve spolupráci s projektovým studiem. Domov tak vznikne přesně podle vašich představ — a vy máte jednoho partnera na všechno.</p>
-      <div style="margin-top:1.8rem">${btn('Vybrat jednotku', '/projekty/', 'primary')}</div>
+      <div style="margin-top:1.8rem">${btn('Vybrat nemovitost', '/projekty/#vyhledavac', 'primary')}</div>
     </div>
   </div>
 </section>

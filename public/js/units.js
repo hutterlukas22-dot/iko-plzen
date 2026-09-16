@@ -1,4 +1,4 @@
-/* IKO — units: marketplace filters, floor selector, unit-detail page, comparator, news filter. */
+/* IKO — units: marketplace filters, floor selector, unit-detail page, comparator. */
 (function () {
   'use strict';
   var $ = function (s, c) { return (c || document).querySelector(s); };
@@ -60,7 +60,7 @@
 
   /* ---------- Marketplace ---------- */
   $$('[data-marketplace]').forEach(function (root) {
-    var state = { project: 'vse', disp: 'vse', status: 'vse', areaMin: null, areaMax: null, sort: 'num', view: 'list' };
+    var state = { project: 'vse', type: 'vse', disp: 'vse', status: 'vse', priceMin: null, priceMax: null, sort: 'num', view: 'list' };
     var rowsBox = $('[data-rows]', root), tilesBox = $('[data-view-tiles]', root);
     var rows = $$('.urow', rowsBox), tiles = $$('.ucard', tilesBox);
     var listWrap = $('[data-view-list]', root), emptyEl = $('[data-empty]', root), countEl = $('[data-count]', root);
@@ -72,11 +72,14 @@
     function match(el) {
       var d = el.dataset;
       if (state.project !== 'vse' && d.project !== state.project) return false;
+      if (state.type !== 'vse' && d.type !== state.type) return false;
       if (state.disp !== 'vse' && d.disp !== state.disp) return false;
       if (state.status !== 'vse' && d.status !== state.status) return false;
-      var a = parseFloat(d.area);
-      if (state.areaMin != null && a < state.areaMin) return false;
-      if (state.areaMax != null && a > state.areaMax) return false;
+      // a unit without a price never matches a price range
+      var p = +d.price || 0;
+      if ((state.priceMin != null || state.priceMax != null) && !p) return false;
+      if (state.priceMin != null && p < state.priceMin) return false;
+      if (state.priceMax != null && p > state.priceMax) return false;
       return true;
     }
     function cmp(a, b) {
@@ -95,7 +98,12 @@
         });
       });
       if (countEl) countEl.innerHTML = '<b>' + shown + '</b> ' + (shown === 1 ? 'jednotka' : (shown >= 2 && shown <= 4 ? 'jednotky' : 'jednotek'));
-      if (emptyEl) emptyEl.hidden = shown !== 0;
+      if (emptyEl) {
+        emptyEl.hidden = shown !== 0;
+        // a project in the offer whose units are not loaded yet gets its own message
+        var noStock = state.project !== 'vse' && !rows.some(function (el) { return el.dataset.project === state.project; });
+        emptyEl.textContent = noStock ? emptyEl.dataset.nostock : emptyEl.dataset.nomatch;
+      }
       listWrap.style.display = (state.view === 'list' && shown) ? '' : 'none';
       tilesBox.style.display = (state.view === 'tiles' && shown) ? 'grid' : 'none';
     }
@@ -108,9 +116,18 @@
     });
     var projSel = c1('[data-filter-select="project"]');
     if (projSel) projSel.addEventListener('change', function () { state.project = projSel.value; apply(); });
-    var aMin = c1('[data-filter-min="area"]'), aMax = c1('[data-filter-max="area"]');
-    if (aMin) aMin.addEventListener('input', function () { state.areaMin = aMin.value ? parseFloat(aMin.value) : null; apply(); });
-    if (aMax) aMax.addEventListener('input', function () { state.areaMax = aMax.value ? parseFloat(aMax.value) : null; apply(); });
+    // price inputs take any digits and show them grouped: 5000000 → 5 000 000
+    var aMin = c1('[data-filter-min="price"]'), aMax = c1('[data-filter-max="price"]');
+    function priceInput(el, key) {
+      if (!el) return;
+      el.addEventListener('input', function () {
+        var digits = el.value.replace(/\D/g, '');
+        state[key] = digits ? parseInt(digits, 10) : null;
+        el.value = digits.replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+        apply();
+      });
+    }
+    priceInput(aMin, 'priceMin'); priceInput(aMax, 'priceMax');
     var sortSel = c1('[data-sort]');
     if (sortSel) sortSel.addEventListener('change', function () { state.sort = sortSel.value; apply(); });
     cA('[data-view-btn]').forEach(function (btn) {
@@ -122,7 +139,7 @@
     });
     var reset = c1('[data-reset]');
     if (reset) reset.addEventListener('click', function () {
-      state.project = 'vse'; state.disp = 'vse'; state.status = 'vse'; state.areaMin = null; state.areaMax = null; state.sort = 'num';
+      state.project = 'vse'; state.type = 'vse'; state.disp = 'vse'; state.status = 'vse'; state.priceMin = null; state.priceMax = null; state.sort = 'num';
       cA('[data-filter]').forEach(function (b) { b.classList.toggle('is-selected', b.getAttribute('data-value') === 'vse'); });
       if (projSel) projSel.value = 'vse'; if (aMin) aMin.value = ''; if (aMax) aMax.value = ''; if (sortSel) sortSel.value = 'num';
       apply();
@@ -443,21 +460,6 @@
     };
     renderCompare();
   })();
-
-  /* ---------- News category filter ---------- */
-  $$('[data-news-root]').forEach(function (root) {
-    var cards = $$('.ncard', root), empty = $('[data-news-empty]', root);
-    $$('[data-news-filter]', root).forEach(function (btn) {
-      btn.addEventListener('click', function () {
-        var v = btn.getAttribute('data-value');
-        $$('[data-news-filter]', root).forEach(function (b) { b.classList.remove('is-selected'); });
-        btn.classList.add('is-selected');
-        var shown = 0;
-        cards.forEach(function (c) { var ok = v === 'vse' || c.getAttribute('data-cat') === v; c.style.display = ok ? '' : 'none'; if (ok) shown++; });
-        if (empty) empty.hidden = shown !== 0;
-      });
-    });
-  });
 
   updateCompareUI();
 })();

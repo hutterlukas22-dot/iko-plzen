@@ -5,7 +5,7 @@ import { principlesGrid } from '../blocks.js';
 import { ctaBand } from './home.js';
 
 const pillars = [
-  { ic: 'handshake', t: 'Přímé jednání', d: 'Jednáte přímo s tím, kdo dům staví a prodává. Bez prostředníků, bez alibismu — s odpovědností, kterou rodinná firma unese svým jménem.' },
+  { ic: 'handshake', t: 'Přímé jednání', d: 'Jednáte přímo s tím, kdo dům staví a prodává. Bez prostředníků a s odpovědností.' },
   { ic: 'shield-check', t: 'Kvalita provedení', d: 'Realizaci vedou naši vlastní stavbyvedoucí a mistři. Kvalitu hlídáme od základů po předání klíčů, ne přes anonymní subdodávky.' },
   { ic: 'map-pin', t: 'Blízký vztah k lokalitě', d: 'Stavíme tam, kde se sami vyznáme. Známe Plzeň, její čtvrti i to, jak bude místo fungovat za deset let — a podle toho vybíráme pozemky.' },
 ];
@@ -32,7 +32,11 @@ export function procIkoPage() {
         <p>V IKO stavby spojujeme zkušenost stavební firmy s přístupem developera, který zná své projekty od první čáry až po předání klíčů.</p>
         <p>Stavíme v Plzni a blízkém okolí, kde jsme doma — a za každým projektem si stojíme vlastním jménem.</p>
       </div>
-      <div style="margin-top:1.8rem">${btn('Naše projekty', '/projekty/', 'secondary')}</div>
+      <!-- three destinations side by side (client) -->
+      <div style="margin-top:1.8rem;display:flex;gap:.6rem;flex-wrap:wrap">
+        ${[['Aktuální projekty', '/projekty/#aktualni'], ['Připravované projekty', '/pripravujeme/'], ['Dokončené projekty', '/projekty/#dokoncene']]
+          .map(([l, h]) => `<a class="btn btn--secondary btn--sm" href="${h}">${l}</a>`).join('')}
+      </div>
     </div>
   </div>
 </section>

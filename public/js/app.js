@@ -28,6 +28,17 @@
     });
   }
 
+  /* ---- Arriving with a #hash (e.g. "Volné jednotky" → the unit search):
+     re-align once everything has loaded, since late layout can shift the target ---- */
+  if (location.hash.length > 1) {
+    window.addEventListener('load', function () {
+      var t; try { t = document.querySelector(decodeURIComponent(location.hash)); } catch (e) { return; }
+      if (!t) return;
+      if (lenis) lenis.scrollTo(t, { offset: -90, immediate: true });
+      else t.scrollIntoView();
+    });
+  }
+
   /* ---- Hero carousel: one project per slide, each with its own video ---- */
   (function () {
     var hero = $('[data-carousel]'); if (!hero) return;
